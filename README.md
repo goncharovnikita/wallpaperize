@@ -23,3 +23,7 @@ Util for setting wallpapers from most famous sources
   // Set random high-quality photo as wallpaper
   wallpaperize -r
 ```
+
+## TODO
+- [] Save initial image and allow to rollback
+- [] Support other platforms
