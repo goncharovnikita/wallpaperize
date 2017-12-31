@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"os/user"
 	"path/filepath"
 )
 
@@ -20,7 +21,9 @@ func main() {
 
 func setPhotoOfTheDay() {
 	var (
-		tempFilename = "bing_daily_image.png"
+		tempFilename = "/bing_daily_image.png"
+		cacheDirname = "/.wallpaperize_cache"
+		usr          *user.User
 		absPath      string
 		err          error
 		file         *os.File
@@ -28,7 +31,18 @@ func setPhotoOfTheDay() {
 
 	dailyImage = bingAPI.GetDailyImage()
 
-	if file, err = os.Create(tempFilename); err != nil {
+	if usr, err = user.Current(); err != nil {
+		log.Fatal(err)
+	}
+
+	if err = os.Mkdir(usr.HomeDir+cacheDirname, 0777); err != nil {
+		var ok bool
+		if _, ok = err.(*os.PathError); !ok {
+			log.Fatal(err)
+		}
+	}
+
+	if file, err = os.OpenFile(usr.HomeDir+cacheDirname+tempFilename, os.O_CREATE|os.O_RDWR, 0666); err != nil {
 		log.Fatal(err)
 	}
 
@@ -38,7 +52,7 @@ func setPhotoOfTheDay() {
 		log.Fatal(err)
 	}
 
-	if absPath, err = filepath.Abs("./" + tempFilename); err != nil {
+	if absPath, err = filepath.Abs(usr.HomeDir + cacheDirname + tempFilename); err != nil {
 		log.Fatal(err)
 	}
 
