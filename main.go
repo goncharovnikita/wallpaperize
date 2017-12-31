@@ -9,7 +9,8 @@ import (
 	"path/filepath"
 )
 
-var randomFlag = flag.Bool("r", false, "set random picture as wallpaper")
+var unsplashRandomFlag = flag.Bool("u", false, "set random picture from unsplash as wallpaper")
+var picsumRandomFlag = flag.Bool("p", false, "set random picture from lorem picsum as wallpaper")
 var cacheDirname = "/.wallpaperize_cache"
 
 func init() {
@@ -17,16 +18,28 @@ func init() {
 }
 
 func main() {
-	if !isGNOMECompatible() {
-		fmt.Printf("cannot perform wallpaperize - such system is not compatible yet\n")
-		return
-	}
 	flag.Parse()
-	if *randomFlag != false {
-		setRandomPhoto()
-		return
+	switch true {
+	case !isGNOMECompatible():
+		fmt.Printf("cannot perform wallpaperize - such system is not compatible yet\n")
+		break
+	case *unsplashRandomFlag != false:
+		var unsplashAPI UnsplashAPI
+		setRandomPhoto(unsplashAPI)
+		break
+	case *picsumRandomFlag != false:
+		var picsumAPI PicsumAPI
+		setRandomPhoto(picsumAPI)
+		break
+	default:
+		setPhotoOfTheDay()
+		break
 	}
-	setPhotoOfTheDay()
+}
+
+// RandomImageGetter interface provide get random inage method
+type RandomImageGetter interface {
+	GetRandomImage() []byte
 }
 
 func setPhotoOfTheDay() {
@@ -62,19 +75,18 @@ func setPhotoOfTheDay() {
 	}
 }
 
-func setRandomPhoto() {
+func setRandomPhoto(imageGetter RandomImageGetter) {
 	var (
 		tempFilename = "/random_image.png"
 		absPath      string
 		err          error
 		file         *os.File
 		randomImage  []byte
-		unsplashAPI  UnsplashAPI
 	)
 
 	createCacheFolder()
 
-	randomImage = unsplashAPI.GetRandomImage()
+	randomImage = imageGetter.GetRandomImage()
 
 	if file, err = os.OpenFile(getAbsCacheDirname()+tempFilename, os.O_CREATE|os.O_RDWR, 0666); err != nil {
 		log.Fatal(err)

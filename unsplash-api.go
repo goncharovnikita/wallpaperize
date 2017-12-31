@@ -13,11 +13,6 @@ var (
 	unsplashAppID          = "288c71e3029fe7ff9572e518dfce06b383676fb0a7c1d8bc10cc3e06af252ed5"
 )
 
-// RandomImageGetter interface provide get random inage method
-type RandomImageGetter interface {
-	GetRandomImage() ([]byte, error)
-}
-
 // UnsplashAPI implementation
 type UnsplashAPI struct{}
 
