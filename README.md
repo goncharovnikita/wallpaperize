@@ -25,5 +25,5 @@ Util for setting wallpapers from most famous sources
 ```
 
 ## TODO
-- [] Save initial image and allow to rollback
-- [] Support other platforms
+- [ ] Save initial image and allow to rollback
+- [ ] Support other platforms
