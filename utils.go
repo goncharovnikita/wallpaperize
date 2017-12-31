@@ -4,7 +4,10 @@ import (
 	"log"
 	"os"
 	"os/user"
+	"strings"
 )
+
+var Desktop = os.Getenv("XDG_CURRENT_DESKTOP")
 
 func createCacheFolder() {
 	var (
@@ -33,4 +36,8 @@ func getAbsCacheDirname() string {
 	}
 
 	return usr.HomeDir + cacheDirname
+}
+
+func isGNOMECompatible() bool {
+	return strings.Contains(Desktop, "GNOME") || Desktop == "Unity" || Desktop == "Pantheon"
 }

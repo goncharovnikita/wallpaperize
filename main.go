@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -16,6 +17,10 @@ func init() {
 }
 
 func main() {
+	if !isGNOMECompatible() {
+		fmt.Printf("cannot perform wallpaperize - such system is not compatible yet\n")
+		return
+	}
 	flag.Parse()
 	if *randomFlag != false {
 		setRandomPhoto()
