@@ -20,8 +20,11 @@ Util for setting wallpapers from most famous sources
   // Set Bing's photo of the day as wallpaper
   wallpaperize
 
-  // Set random high-quality photo as wallpaper
-  wallpaperize -r
+  // Set random high-quality photo from unsplash as wallpaper
+  wallpaperize -u
+
+  // Set random high-quality photo from lorem picsum as wallpaper
+  wallpaperize -p
 ```
 
 ## TODO
