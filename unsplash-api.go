@@ -31,7 +31,7 @@ type unsplashRandomImageResponse struct {
 }
 
 // GetRandomImage implementation
-func (u UnsplashAPI) GetRandomImage() (result []byte) {
+func (u UnsplashAPI) GetRandomImage() (result []byte, err error) {
 	var (
 		response *http.Response
 		data     unsplashRandomImageResponse
@@ -39,29 +39,28 @@ func (u UnsplashAPI) GetRandomImage() (result []byte) {
 		client   http.Client
 		request  *http.Request
 		URL      string
-		err      error
 	)
 
 	URL = unsplashAPIprefix + unsplashRandomPhotoURL + "?orientation=landscape&w=1920&h=1080"
 
 	if request, err = http.NewRequest(http.MethodGet, URL, nil); err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	request.Header.Set("Authorization", "Client-ID "+unsplashAppID)
 
 	if response, err = client.Do(request); err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	defer response.Body.Close()
 
 	if body, err = ioutil.ReadAll(response.Body); err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	if err = json.Unmarshal(body, &data); err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	if len(data.URLs.RAW) < 1 {
@@ -70,14 +69,14 @@ func (u UnsplashAPI) GetRandomImage() (result []byte) {
 	}
 
 	if response, err = http.Get(data.URLs.RAW); err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	defer response.Body.Close()
 
 	if body, err = ioutil.ReadAll(response.Body); err != nil {
-		log.Fatal(err)
+		return
 	}
 
-	return body
+	return body, nil
 }

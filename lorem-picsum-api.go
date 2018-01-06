@@ -2,7 +2,6 @@ package main
 
 import (
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -15,31 +14,30 @@ var (
 type PicsumAPI struct{}
 
 // GetRandomImage implementation
-func (u PicsumAPI) GetRandomImage() (result []byte) {
+func (u PicsumAPI) GetRandomImage() (result []byte, err error) {
 	var (
 		response *http.Response
 		body     []byte
 		client   http.Client
 		request  *http.Request
 		URL      string
-		err      error
 	)
 
 	URL = picsumAPIprefix + picsumRandomPhotoURL
 
 	if request, err = http.NewRequest(http.MethodGet, URL, nil); err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	if response, err = client.Do(request); err != nil {
-		log.Fatal(err)
+		return
 	}
 
 	defer response.Body.Close()
 
 	if body, err = ioutil.ReadAll(response.Body); err != nil {
-		log.Fatal(err)
+		return
 	}
 
-	return body
+	return body, nil
 }

@@ -39,7 +39,7 @@ func main() {
 
 // RandomImageGetter interface provide get random inage method
 type RandomImageGetter interface {
-	GetRandomImage() []byte
+	GetRandomImage() ([]byte, error)
 }
 
 func setPhotoOfTheDay() {
@@ -86,7 +86,9 @@ func setRandomPhoto(imageGetter RandomImageGetter) {
 
 	createCacheFolder()
 
-	randomImage = imageGetter.GetRandomImage()
+	if randomImage, err = imageGetter.GetRandomImage(); err != nil {
+		log.Fatal(err)
+	}
 
 	if file, err = os.OpenFile(getAbsCacheDirname()+tempFilename, os.O_CREATE|os.O_RDWR, 0666); err != nil {
 		log.Fatal(err)
