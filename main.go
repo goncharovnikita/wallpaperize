@@ -7,6 +7,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/goncharovnikita/wallpaperize/api"
 )
 
 var unsplashRandomFlag = flag.Bool("u", false, "set random picture from unsplash as wallpaper")
@@ -24,7 +26,7 @@ func main() {
 		fmt.Printf("cannot perform wallpaperize - such system is not compatible yet\n")
 		break
 	case *unsplashRandomFlag != false:
-		var unsplashAPI UnsplashAPI
+		var unsplashAPI api.UnsplashAPI
 		setRandomPhoto(unsplashAPI)
 		break
 	case *picsumRandomFlag != false:
