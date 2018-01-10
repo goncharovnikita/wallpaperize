@@ -17,6 +17,7 @@ var cacheDirname = "/.wallpaperize_cache"
 
 func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	createCacheFolder()
 }
 
 func main() {
@@ -54,8 +55,6 @@ func setPhotoOfTheDay() {
 		bingAPI      BingAPI
 	)
 
-	createCacheFolder()
-
 	dailyImage = bingAPI.GetDailyImage()
 
 	if file, err = os.OpenFile(getAbsCacheDirname()+tempFilename, os.O_CREATE|os.O_RDWR, 0666); err != nil {
@@ -85,8 +84,6 @@ func setRandomPhoto(imageGetter RandomImageGetter) {
 		file         *os.File
 		randomImage  []byte
 	)
-
-	createCacheFolder()
 
 	if randomImage, err = imageGetter.GetRandomImage(); err != nil {
 		log.Fatal(err)
