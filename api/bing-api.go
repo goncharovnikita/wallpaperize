@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"encoding/base64"
@@ -11,11 +11,6 @@ import (
 
 var apiURL = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US"
 var apiPrefix = "http://www.bing.com/"
-
-// DailyImageGetter interface provide get daily image function
-type DailyImageGetter interface {
-	GetDailyImage() (result []byte, err error)
-}
 
 // BingAPI DailyImageGetter implementation
 type BingAPI struct{}
@@ -93,8 +88,8 @@ func (b BingAPI) GetDailyImage() (result []byte) {
 	return
 }
 
-// GetDailyImageReader implementation
-func (b BingAPI) GetDailyImageReader() (result io.Reader, err error) {
+// GetImageReader implementation
+func (b BingAPI) GetImageReader() (result io.ReadCloser, err error) {
 	var (
 		response *http.Response
 		data     getImageInfoResponse
