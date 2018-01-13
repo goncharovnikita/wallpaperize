@@ -11,3 +11,8 @@ type RandomImageGetter interface {
 type RandomImageReader interface {
 	GetRandomImageReader() (io.ReadCloser, error)
 }
+
+// ImageReaderGetter interface
+type ImageReaderGetter interface {
+	GetImageReader() (io.ReadCloser, error)
+}

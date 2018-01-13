@@ -24,6 +24,13 @@ func createCacheFolder() {
 			log.Fatal(err)
 		}
 	}
+
+	if err = os.Mkdir(usr.HomeDir+cacheDirname+"/random", 0777); err != nil {
+		var ok bool
+		if _, ok = err.(*os.PathError); !ok {
+			log.Fatal(err)
+		}
+	}
 }
 
 func getAbsCacheDirname() string {

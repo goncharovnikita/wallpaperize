@@ -9,7 +9,6 @@ import (
 )
 
 var (
-	conf     config
 	fileperm = os.FileMode(0666)
 )
 
@@ -19,11 +18,9 @@ type config struct {
 	exists  bool
 }
 
-func init() {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
+func (c config) setup() {
 	fmt.Println("Init config...")
-	absCacheDirname = getAbsCacheDirname()
-	conf = config{name: "config", absName: absCacheDirname + "/config"}
+	conf = config{name: "config", absName: absRandomDirname + "/config"}
 	var err error
 	if conf.exists, err = conf.checkExists(); err != nil {
 		log.Fatal(err)
@@ -39,12 +36,14 @@ func init() {
 
 // create config file if not exists
 func (c config) create() (err error) {
+	fmt.Println("creating config file")
 	_, err = os.OpenFile(c.absName, os.O_CREATE, fileperm)
 	return
 }
 
 // get config entity
 func (c config) read() (result string, err error) {
+	fmt.Println("reading config file")
 	var (
 		file   *os.File
 		entity []byte
@@ -67,6 +66,7 @@ func (c config) read() (result string, err error) {
 // get count of cached images, and ordered
 // array of all cached images
 func (c config) parseConfig() (names []string, err error) {
+	fmt.Println("parsing config file")
 	var entity string
 	if entity, err = c.read(); err != nil {
 		return
@@ -77,6 +77,7 @@ func (c config) parseConfig() (names []string, err error) {
 
 // switch to next position and remove previous
 func (c config) switchNext() (next string, err error) {
+	fmt.Println("switch next config file")
 	var (
 		names []string
 		file  *os.File
@@ -91,7 +92,7 @@ func (c config) switchNext() (next string, err error) {
 
 	next = names[1]
 
-	if file, err = os.OpenFile(c.absName, os.O_RDWR, fileperm); err != nil {
+	if file, err = os.OpenFile(c.absName, os.O_RDWR|os.O_TRUNC, fileperm); err != nil {
 		return
 	}
 
@@ -106,6 +107,7 @@ func (c config) switchNext() (next string, err error) {
 
 // addNewToConfig add new name to config
 func (c config) add(name string) (err error) {
+	fmt.Printf("adding %s to config file\n", name)
 	var (
 		file *os.File
 	)
@@ -127,7 +129,7 @@ func (c config) add(name string) (err error) {
 
 // checking for config file exists
 func (c config) checkExists() (result bool, err error) {
-
+	fmt.Println("checking if config file exists")
 	if _, err = os.OpenFile(c.absName, os.O_RDONLY, fileperm); err != nil {
 		if _, ok := err.(*os.PathError); ok {
 			return false, nil

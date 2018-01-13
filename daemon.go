@@ -6,8 +6,6 @@ import (
 	"os"
 	"os/signal"
 	"time"
-
-	"github.com/goncharovnikita/wallpaperize/api"
 )
 
 // runAsDaemon start infinite loop
@@ -29,8 +27,7 @@ func runAsDaemon() {
 		seconds := rand.Int31n(15)
 		fmt.Printf("Next change will be in a %ds\n", seconds)
 		time.Sleep(time.Second * time.Duration(seconds))
-		var unsplashAPI api.UnsplashAPI
-		setRandomPhoto(unsplashAPI)
+		setRandomPhoto()
 	}
 }
 
