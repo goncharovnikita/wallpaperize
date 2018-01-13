@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -84,5 +86,49 @@ func (b BingAPI) GetDailyImage() (result []byte) {
 		log.Fatal(err)
 	}
 
-	return body
+	if _, err = base64.StdEncoding.Decode(result, body); err != nil {
+		log.Fatal(err)
+	}
+
+	return
+}
+
+// GetDailyImageReader implementation
+func (b BingAPI) GetDailyImageReader() (result io.Reader, err error) {
+	var (
+		response *http.Response
+		data     getImageInfoResponse
+		url      string
+		body     []byte
+	)
+
+	if response, err = http.Get(apiURL); err != nil {
+		log.Fatal(err)
+	}
+
+	defer response.Body.Close()
+
+	if body, err = ioutil.ReadAll(response.Body); err != nil {
+		log.Fatal(err)
+	}
+
+	if err = json.Unmarshal(body, &data); err != nil {
+		log.Fatal(err)
+	}
+
+	if len(data.Images) < 1 {
+		log.Printf("%+v\n", data)
+		log.Fatal("images size less than 1")
+	}
+
+	if url = data.Images[0].URL; len(url) < 1 {
+		log.Fatal("url len less than 1")
+	}
+
+	if response, err = http.Get(apiPrefix + url); err != nil {
+		log.Fatal(err)
+	}
+
+	result = response.Body
+	return
 }

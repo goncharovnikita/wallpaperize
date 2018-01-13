@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -79,4 +80,51 @@ func (u UnsplashAPI) GetRandomImage() (result []byte, err error) {
 	}
 
 	return body, nil
+}
+
+// GetRandomImageReader returns an Reader with
+// image entity
+func (u UnsplashAPI) GetRandomImageReader() (result io.ReadCloser, err error) {
+	var (
+		response *http.Response
+		data     unsplashRandomImageResponse
+		body     []byte
+		client   http.Client
+		request  *http.Request
+		URL      string
+	)
+
+	URL = unsplashAPIprefix + unsplashRandomPhotoURL + "?orientation=landscape&w=1920&h=1080"
+
+	if request, err = http.NewRequest(http.MethodGet, URL, nil); err != nil {
+		return
+	}
+
+	request.Header.Set("Authorization", "Client-ID "+unsplashAppID)
+
+	if response, err = client.Do(request); err != nil {
+		return
+	}
+
+	defer response.Body.Close()
+
+	if body, err = ioutil.ReadAll(response.Body); err != nil {
+		return
+	}
+
+	if err = json.Unmarshal(body, &data); err != nil {
+		return
+	}
+
+	if len(data.URLs.RAW) < 1 {
+		log.Printf("%+v\n", data)
+		log.Fatal("raw url len less than 1")
+	}
+
+	if response, err = http.Get(data.URLs.RAW); err != nil {
+		return
+	}
+
+	result = response.Body
+	return
 }
