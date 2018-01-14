@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/user"
 	"strings"
+	"time"
 )
 
 var Desktop = os.Getenv("XDG_CURRENT_DESKTOP")
@@ -47,4 +48,8 @@ func getAbsCacheDirname() string {
 
 func isGNOMECompatible() bool {
 	return strings.Contains(Desktop, "GNOME") || Desktop == "Unity" || Desktop == "Pantheon"
+}
+
+func compareDates(v1 *time.Time, v2 *time.Time) bool {
+	return v1.Year() == v2.Year() && v1.Month() == v2.Month() && v1.Day() == v2.Day()
 }

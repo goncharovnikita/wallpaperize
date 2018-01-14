@@ -25,37 +25,51 @@ type cache struct {
 func (c cache) cache() {
 	var (
 		err   error
-		names []string
+		struc configStructure
 	)
 
-	if names, err = conf.parseConfig(); err != nil {
+	if struc, err = conf.parseConfig(); err != nil {
 		log.Fatal(err)
 	}
 
-	if len(names) < cacheLimit {
+	if len(struc.RandomPhotos) < cacheLimit {
 		var u api.UnsplashAPI
 		var name string
-		for i := 0; i < (cacheLimit - len(names)); i++ {
+		for i := 0; i < (cacheLimit - len(struc.RandomPhotos)); i++ {
 			if name, err = c.saveToCache(u, false); err != nil {
 				log.Fatal(err)
 			}
-			if err = conf.add(name); err != nil {
+			if err = conf.addRandomPhoto(name); err != nil {
 				log.Fatal(err)
 			}
 		}
 	}
 
-	if _, err = c.retrieveStatic(); err != nil {
+	if _, ex := struc.DailyImages["bing"]; !ex {
 		var u api.BingAPI
 		if _, err = c.saveToCache(u, true); err != nil {
 			log.Fatal(err)
+		}
+	} else {
+		now := time.Now()
+		t, e := time.Parse("2006-01-02", struc.DailyImages["bing"].Date)
+
+		if e != nil {
+			log.Fatal(e)
+		}
+
+		if !compareDates(&now, &t) {
+			var u api.BingAPI
+			if _, err = c.saveToCache(u, true); err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
 }
 
 // saveToCache performs getting image and
 // saving to cache
-func (c cache) saveToCache(imageGetter ImageReaderGetter, static bool) (name string, err error) {
+func (c cache) saveToCache(imageGetter ImageReaderGetter, random bool) (name string, err error) {
 	var (
 		result  io.ReadCloser
 		img     image.Image
