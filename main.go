@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"log"
 )
 
@@ -16,6 +15,7 @@ var (
 	ch                 cache
 	conf               config
 	cl                 cleaner
+	wallmaster         WallMaster
 )
 
 func init() {
@@ -29,10 +29,8 @@ func init() {
 }
 
 func main() {
+	wallmaster = getOS()
 	switch true {
-	case !isGNOMECompatible():
-		fmt.Printf("cannot perform wallpaperize - such system is not compatible yet\n")
-		break
 	case *unsplashRandomFlag != false:
 		setRandomPhoto()
 		break

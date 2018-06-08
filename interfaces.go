@@ -16,3 +16,9 @@ type RandomImageReader interface {
 type ImageReaderGetter interface {
 	GetImageReader() (io.ReadCloser, error)
 }
+
+// WallMaster is responsible for setting up os wallpapers
+type WallMaster interface {
+	Get() (string, error)
+	SetFromFile(file string) error
+}

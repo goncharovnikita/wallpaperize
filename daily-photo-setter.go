@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"os/exec"
 	"path/filepath"
 )
 
@@ -22,7 +21,7 @@ func setPhotoOfTheDay() {
 		log.Fatal(err)
 	}
 
-	if err = exec.Command("gsettings", "set", "org.gnome.desktop.background", "picture-uri", absPath).Run(); err != nil {
+	if err = wallmaster.SetFromFile(absPath); err != nil {
 		log.Fatal(err)
 	}
 

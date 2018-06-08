@@ -36,7 +36,7 @@ func (c cache) cache() {
 		var u api.UnsplashAPI
 		var name string
 		for i := 0; i < (cacheLimit - len(struc.RandomPhotos)); i++ {
-			if name, err = c.saveToCache(u, false); err != nil {
+			if name, err = c.saveToCache(u, true); err != nil {
 				log.Fatal(err)
 			}
 			if err = conf.addRandomPhoto(name); err != nil {
@@ -90,7 +90,7 @@ func (c cache) saveToCache(imageGetter ImageReaderGetter, random bool) (name str
 		return
 	}
 
-	if !static {
+	if random {
 		name = string(time.Now().Format(time.UnixDate)) + "." + format
 		dirname = absRandomDirname + "/" + name
 	} else {

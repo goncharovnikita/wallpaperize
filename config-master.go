@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	fileperm = os.FileMode(0666)
+	fileperm = os.FileMode(0777)
 )
 
 type configRandomPhoto struct {
@@ -93,9 +93,17 @@ func (c config) parseConfig() (result configStructure, err error) {
 	fmt.Println("parsing config file")
 	var entity []byte
 	if entity, err = c.read(); err != nil {
+		log.Println(err)
 		return
 	}
-	err = json.Unmarshal(entity, result)
+
+	if len(entity) < 1 {
+		return configStructure{
+			DailyImages:  make(map[string]configDailyImage),
+			RandomPhotos: make([]configRandomPhoto, 0),
+		}, nil
+	}
+	err = json.Unmarshal(entity, &result)
 	return
 }
 
