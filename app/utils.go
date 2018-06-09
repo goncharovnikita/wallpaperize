@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/goncharovnikita/wallpaperize/cerrors"
+	"github.com/goncharovnikita/wallpaperize/app/cerrors"
 )
 
 func ensureDir(path string) {

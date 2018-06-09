@@ -1,8 +1,8 @@
 build:
-	go build
+	cd app && go build && cd ..
 
 install:
-	go install
+	cd app && go install && cd ..
 
 run:
 	make install && wallpaperize

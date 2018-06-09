@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/goncharovnikita/wallpaperize/hash"
+	"github.com/goncharovnikita/wallpaperize/app/hash"
 )
 
 // Random image getter type

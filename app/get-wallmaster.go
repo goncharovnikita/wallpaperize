@@ -4,7 +4,7 @@ import (
 	"log"
 	"runtime"
 
-	"github.com/goncharovnikita/wallpaperize/darwin"
+	"github.com/goncharovnikita/wallpaperize/app/darwin"
 )
 
 func getWallmaster() Wallmaster {

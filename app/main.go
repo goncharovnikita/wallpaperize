@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 
-	"github.com/goncharovnikita/wallpaperize/api"
-	"github.com/goncharovnikita/wallpaperize/cmd"
-	"github.com/goncharovnikita/wallpaperize/daily"
-	"github.com/goncharovnikita/wallpaperize/random"
+	"github.com/goncharovnikita/wallpaperize/app/api"
+	"github.com/goncharovnikita/wallpaperize/app/cmd"
+	"github.com/goncharovnikita/wallpaperize/app/daily"
+	"github.com/goncharovnikita/wallpaperize/app/random"
 )
 
 const (

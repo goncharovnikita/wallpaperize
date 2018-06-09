@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/goncharovnikita/wallpaperize/cerrors"
+	"github.com/goncharovnikita/wallpaperize/app/cerrors"
 )
 
 // Daily fetch daily images
