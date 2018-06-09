@@ -4,23 +4,26 @@ import (
 	"log"
 
 	"github.com/goncharovnikita/wallpaperize/api"
+	"github.com/goncharovnikita/wallpaperize/cmd"
 	"github.com/goncharovnikita/wallpaperize/daily"
 )
 
-var app *application
+const (
+	appVersion = "1.0.0"
+)
 
 type application struct {
 	cache       *cacher
 	rec         *recoverer
 	master      Wallmaster
-	dailyGetter ImageGetter
+	dailyGetter *daily.Daily
 }
 
 func newApplication() *application {
 	master := getWallmaster()
 	cache := newCacher()
 	rec := newRecoverer(master, cache.getRecoverPath())
-	dailyGetter := daily.NewDailyGetter(api.BingAPI{})
+	dailyGetter := daily.NewDailyGetter(api.BingAPI{}, cache.getDailyPath())
 	return &application{
 		cache:       cache,
 		rec:         rec,
@@ -31,15 +34,9 @@ func newApplication() *application {
 
 func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	app = newApplication()
 }
 
 func main() {
-	dail, err := app.dailyGetter.GetImage()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	name := app.cache.saveDaily(dail)
-	app.master.SetFromFile(name)
+	app := newApplication()
+	cmd.Execute(app)
 }

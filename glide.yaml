@@ -1,0 +1,6 @@
+package: github.com/goncharovnikita/wallpaperize
+import:
+- package: github.com/spf13/cobra
+  version: ^0.0.3
+  subpackages:
+  - cobra

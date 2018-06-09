@@ -36,6 +36,14 @@ func (c cacher) getRecoverPath() string {
 	return c.dir + "/preserved"
 }
 
+func (c cacher) getDailyPath() string {
+	return c.dir + "/daily"
+}
+
+func (c cacher) getRandomPath() string {
+	return c.dir + "/random"
+}
+
 func (c *cacher) getCacheDir() {
 	result, err := filepath.Abs(os.Getenv("HOME") + "/.wallpaperize_cache")
 	if err != nil {
