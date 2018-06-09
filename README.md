@@ -5,6 +5,7 @@ Util for setting wallpapers from most famous sources
 
 - Ubuntu 
 - - Gnome
+- Mac OS X
 
 ## Installing
 
@@ -17,17 +18,27 @@ Util for setting wallpapers from most famous sources
 ## Usage
 
 ```go
-  // Set Bing's photo of the day as wallpaper
-  wallpaperize
+  // Show all usage
+  wallpaperize --help
 
-  // Set random high-quality photo from unsplash as wallpaper
-  wallpaperize -u
+  // Set daily image from bing as wallpaper
+  wallpaperize daily
 
-  // Set random high-quality photo from lorem picsum as wallpaper
-  wallpaperize -p
+  // Set random high-quality photo from random source as wallpaper
+  wallpaperize random
+
+  // Get info about disk usage
+  wallpaperize info
+
+  // If you bored or angry, set your previous wallpaper
+  wallpaperize restore
 ```
 
 ## TODO
-- [ ] Save initial image and allow to rollback
-- [ ] Support other platforms
+- [x] Save initial image and allow to rollback
+- [x] Support other platforms
 - [ ] Add more sources
+- [ ] Support as many platforms as possible
+- [ ] Provide useful API
+- [ ] Daemonize
+- [ ] Add UI
