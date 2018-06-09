@@ -10,6 +10,10 @@ type recoverer struct {
 	filepath string
 }
 
+func (r *recoverer) getRecoverFilepath() string {
+	return r.filepath
+}
+
 func newRecoverer(master Wallmaster, path string) *recoverer {
 	ensureFile(path + "/config.txt")
 	rec := &recoverer{}
@@ -41,5 +45,10 @@ func (r *recoverer) initRecoverImage(master Wallmaster, path string) {
 		if err != nil {
 			log.Fatal(err)
 		}
+
+		r.filepath = fname
+		return
 	}
+
+	r.filepath = string(data)
 }

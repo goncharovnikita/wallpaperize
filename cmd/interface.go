@@ -5,4 +5,6 @@ package cmd
 type App interface {
 	Daily()
 	Info()
+	Random()
+	Restore()
 }

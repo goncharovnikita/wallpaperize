@@ -6,6 +6,7 @@ import (
 	"github.com/goncharovnikita/wallpaperize/api"
 	"github.com/goncharovnikita/wallpaperize/cmd"
 	"github.com/goncharovnikita/wallpaperize/daily"
+	"github.com/goncharovnikita/wallpaperize/random"
 )
 
 const (
@@ -17,6 +18,7 @@ type application struct {
 	rec         *recoverer
 	master      Wallmaster
 	dailyGetter *daily.Daily
+	rndGetter   *random.Random
 }
 
 func newApplication() *application {
@@ -24,11 +26,13 @@ func newApplication() *application {
 	cache := newCacher()
 	rec := newRecoverer(master, cache.getRecoverPath())
 	dailyGetter := daily.NewDailyGetter(api.BingAPI{}, cache.getDailyPath())
+	rndGetter := random.NewRandomImageGetter(api.UnsplashAPI{}, cache.getRandomPath())
 	return &application{
 		cache:       cache,
 		rec:         rec,
 		master:      master,
 		dailyGetter: dailyGetter,
+		rndGetter:   rndGetter,
 	}
 }
 
