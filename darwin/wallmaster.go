@@ -7,8 +7,8 @@ import (
 	"os/exec"
 	"os/user"
 	"path/filepath"
-	"strconv"
 	"strings"
+	"time"
 )
 
 // DarwinWallMaster implementation
@@ -27,10 +27,24 @@ func (DarwinWallMaster) Get() (string, error) {
 
 // SetFromFile uses AppleScript to tell Finder to set the desktop wallpaper to specified file.
 func (DarwinWallMaster) SetFromFile(file string) error {
-	cmd := exec.Command("osascript", "-e", `tell application "Finder" to set desktop picture to POSIX file `+strconv.Quote(file))
+	cmd := exec.Command("sqlite3", os.Getenv("HOME")+"/Library/Application Support/Dock/desktoppicture.db", "update data set value = '"+file+"'")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	return cmd.Run()
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	cmd = exec.Command("killall", "Dock")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	time.Sleep(time.Second * 3)
+	return nil
 }
 
 func getCacheDir() (string, error) {

@@ -3,53 +3,41 @@ package main
 import (
 	"log"
 	"os"
-	"os/user"
-	"strings"
-	"time"
 )
 
-var Desktop = os.Getenv("XDG_CURRENT_DESKTOP")
-
-func createCacheFolder() {
-	var (
-		err error
-		usr *user.User
-	)
-	if usr, err = user.Current(); err != nil {
+func ensureDir(path string) {
+	info, err := os.Stat(path)
+	if err != nil {
+		if err.Error() == newStatNoSuchFileErr(path).Error() {
+			err = os.Mkdir(path, 0777)
+			if err != nil {
+				log.Fatal(err)
+			}
+			return
+		}
 		log.Fatal(err)
 	}
 
-	if err = os.Mkdir(usr.HomeDir+cacheDirname, 0777); err != nil {
-		var ok bool
-		if _, ok = err.(*os.PathError); !ok {
-			log.Fatal(err)
-		}
-	}
-
-	if err = os.Mkdir(usr.HomeDir+cacheDirname+"/random", 0777); err != nil {
-		var ok bool
-		if _, ok = err.(*os.PathError); !ok {
-			log.Fatal(err)
-		}
+	if !info.IsDir() {
+		log.Fatal("Path is not directory. Remove or replace file - " + path)
 	}
 }
 
-func getAbsCacheDirname() string {
-	var (
-		err error
-		usr *user.User
-	)
-	if usr, err = user.Current(); err != nil {
+func ensureFile(path string) {
+	info, err := os.Stat(path)
+	if err != nil {
+		if err.Error() == newStatNoSuchFileErr(path).Error() {
+			file, err := os.OpenFile(path, os.O_CREATE, 0777)
+			if err != nil {
+				log.Fatal(err)
+			}
+			file.Close()
+			return
+		}
 		log.Fatal(err)
 	}
 
-	return usr.HomeDir + cacheDirname
-}
-
-func isGNOMECompatible() bool {
-	return strings.Contains(Desktop, "GNOME") || Desktop == "Unity" || Desktop == "Pantheon"
-}
-
-func compareDates(v1 *time.Time, v2 *time.Time) bool {
-	return v1.Year() == v2.Year() && v1.Month() == v2.Month() && v1.Day() == v2.Day()
+	if info.IsDir() {
+		log.Fatal("Path is directory. Remove or replace file - " + path)
+	}
 }

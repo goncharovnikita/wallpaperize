@@ -7,7 +7,7 @@ import (
 	"github.com/goncharovnikita/wallpaperize/darwin"
 )
 
-func getOS() WallMaster {
+func getWallmaster() Wallmaster {
 	switch runtime.GOOS {
 	case "darwin":
 		return darwin.DarwinWallMaster{}
