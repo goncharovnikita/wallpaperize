@@ -8,7 +8,9 @@
         "ordered-imports": false,
         "quotemark": false,
         "object-literal-sort-keys": false,
-        "trailing-comma": false
+        "trailing-comma": false,
+        "member-access": false,
+        "no-console": false
     },
     "rulesDirectory": []
 }

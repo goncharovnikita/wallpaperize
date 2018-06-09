@@ -5,13 +5,14 @@ import * as webpack from 'webpack';
 const config: webpack.Configuration = {
     mode: 'development',
     entry: {
-        bundle: path.resolve(__dirname, 'src', 'App.tsx')
+        bundle: path.resolve(__dirname, 'src', 'Index.tsx')
     },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader'
+                use: 'ts-loader',
+                exclude: /node_modules/
             },
             {
                 test: /\.sass$/,
@@ -24,7 +25,12 @@ const config: webpack.Configuration = {
         ]
     },
     plugins: [
-        new HtmlPlugin({template: path.resolve(__dirname, 'src', 'index.html')})
+        new HtmlPlugin(
+            {
+                template: path.resolve(__dirname, 'src', 'index.html'),
+                excludeChunks: ['server']
+            }
+        )
     ],
     output: {
         path: path.resolve(__dirname, 'dist'),
