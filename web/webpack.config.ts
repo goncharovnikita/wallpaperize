@@ -1,11 +1,13 @@
 import * as path from 'path';
 import * as HtmlPlugin from 'html-webpack-plugin';
 import * as webpack from 'webpack';
+import * as CopyPlugin from 'copy-webpack-plugin';
 
 const config: webpack.Configuration = {
     mode: 'development',
     entry: {
-        bundle: path.resolve(__dirname, 'src', 'Index.tsx')
+        bundle: path.resolve(__dirname, 'src', 'Index.tsx'),
+        vendor: path.resolve(__dirname, 'src', 'vendor', 'vendor.ts')
     },
     module: {
         rules: [
@@ -21,6 +23,13 @@ const config: webpack.Configuration = {
                     'css-loader',
                     'sass-loader'
                 ]
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                ]
             }
         ]
     },
@@ -30,11 +39,17 @@ const config: webpack.Configuration = {
                 template: path.resolve(__dirname, 'src', 'index.html'),
                 excludeChunks: ['server']
             }
-        )
+        ),
+        new CopyPlugin([
+            {
+                from: path.resolve(__dirname, 'src', 'assets'),
+                to: path.resolve(__dirname, 'dist', 'assets')
+            }
+        ])
     ],
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),

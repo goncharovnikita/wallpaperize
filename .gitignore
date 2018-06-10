@@ -3,3 +3,4 @@ wallpaperize
 wallpaperize.service
 start.sh
 vendor
+\.DS_Store
