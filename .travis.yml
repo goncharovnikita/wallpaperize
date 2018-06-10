@@ -9,3 +9,7 @@ jobs:
         - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
         - docker build -t goncharovnikita/wallpaperize:back --rm .
         - docker push goncharovnikita/wallpaperize:back
+    - deploy_app:
+      script:
+        - cd app
+        - make deploy
