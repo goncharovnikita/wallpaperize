@@ -5,4 +5,5 @@ type AppInfo struct {
 	AppVersion string `json:"app_version"`
 	Arch       string `json:"arch"`
 	OS         string `json:"os"`
+	Build      string `json:"build"`
 }

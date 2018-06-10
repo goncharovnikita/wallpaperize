@@ -7,7 +7,7 @@ import (
 func serve(path string) {
 	http.HandleFunc(
 		"/add/build",
-		mFilter("PUT",
+		mFilter("POST",
 			contentLengthFilter(
 				headersFilter(
 					[]string{VERSION_HEADER},
@@ -15,5 +15,10 @@ func serve(path string) {
 				),
 			),
 		),
+	)
+
+	http.HandleFunc(
+		"/get/maxversion",
+		maxVersionHandler(path),
 	)
 }

@@ -30,6 +30,7 @@ func (a application) jsonInfo() {
 		AppVersion: appVersion,
 		Arch:       runtime.GOARCH,
 		OS:         runtime.GOOS,
+		Build:      appBuild,
 	}
 
 	stringed, err := json.Marshal(&data)
@@ -42,15 +43,15 @@ func (a application) jsonInfo() {
 
 func (a application) simpleInfo() {
 	fmt.Printf(`
-		Application version %s
-		
-		**
-		%s
-		**
-		%s
-		**
-		
-		`, appVersion,
+Application version %s
+
+**
+%s
+**
+%s
+**
+
+`, appVersion,
 		a.info("daily photos storage", a.cache.getDailyPath()),
 		a.info("random photos storage", a.cache.getRandomPath()),
 	)

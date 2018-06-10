@@ -9,8 +9,9 @@ import (
 	"github.com/goncharovnikita/wallpaperize/app/random"
 )
 
-const (
-	appVersion = "1.0.0"
+var (
+	appVersion string
+	appBuild   string
 )
 
 type application struct {

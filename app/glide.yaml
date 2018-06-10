@@ -4,3 +4,4 @@ import:
   version: ^0.0.3
   subpackages:
   - cobra
+- package: github.com/reujab/wallpaper
