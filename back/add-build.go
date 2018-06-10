@@ -36,13 +36,13 @@ func handleNewBuild(rdr io.Reader, path string) error {
 		return err
 	}
 
-	defer tmpFile.Close()
-
 	_, err = io.Copy(tmpFile, rdr)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
+
+	tmpFile.Close()
 
 	info := bytes.NewBuffer([]byte{})
 
