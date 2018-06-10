@@ -13,4 +13,6 @@ jobs:
     - deploy_app:
       script:
         - cd app
+        - curl https://glide.sh/get | sh
+        - glide install
         - make deploy
