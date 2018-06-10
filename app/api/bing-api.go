@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-var apiURL = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US"
+var apiURL = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1"
 var apiPrefix = "http://www.bing.com/"
 
 // BingAPI DailyImageGetter implementation
@@ -38,7 +38,18 @@ func (b BingAPI) GetDailyImage() (result []byte, err error) {
 		url  string
 	)
 
-	response1, err := http.Get(apiURL)
+	client := http.Client{}
+
+	req1, err := http.NewRequest("GET", apiURL, nil)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	qu := req1.URL.Query()
+	qu.Add("mkt", "ru-RU")
+	req1.URL.RawQuery = qu.Encode()
+
+	response1, err := client.Do(req1)
 	if err != nil {
 		log.Println(err)
 		return nil, err
