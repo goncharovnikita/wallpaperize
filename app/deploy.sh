@@ -2,7 +2,7 @@
 
 version=$1
 
-platforms=("darwin/amd64" "linux/386")
+platforms=("darwin/amd64" "linux/amd64")
 
 for platform in "${platforms[@]}"
 do
