@@ -1,24 +1,19 @@
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"io"
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
-	"strings"
 
 	"github.com/goncharovnikita/wallpaperize/app/cerrors"
-
-	"github.com/goncharovnikita/wallpaperize/app/api"
 )
 
 func addBuild(path string) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
-		err := handleNewBuild(r.Body, path)
+		name := r.Header.Get(VERSION_HEADER)
+		err := handleNewBuild(r.Body, path, name)
 		if err != nil {
 			rw.WriteHeader(500)
 			rw.Write([]byte("error occured"))
@@ -28,7 +23,7 @@ func addBuild(path string) http.HandlerFunc {
 	}
 }
 
-func handleNewBuild(rdr io.Reader, path string) error {
+func handleNewBuild(rdr io.Reader, path string, name string) error {
 	tmpName := os.TempDir() + "/" + randStringBytes(10)
 	tmpFile, err := os.OpenFile(tmpName, os.O_CREATE|os.O_RDWR, 0777)
 	if err != nil {
@@ -44,31 +39,7 @@ func handleNewBuild(rdr io.Reader, path string) error {
 
 	tmpFile.Close()
 
-	info := bytes.NewBuffer([]byte{})
-
-	cmd := exec.Command(tmpName, "info", "-o", "json")
-	cmd.Stdout = info
-	err = cmd.Run()
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-
-	var serializedInfo api.AppInfo
-
-	err = json.Unmarshal(info.Bytes(), &serializedInfo)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-
-	fname := path + "/" + strings.Join(
-		[]string{
-			serializedInfo.OS,
-			serializedInfo.Arch,
-			serializedInfo.AppVersion,
-		}, "-",
-	)
+	fname := path + "/" + name
 
 	_, err = os.Stat(fname)
 	if err != nil {

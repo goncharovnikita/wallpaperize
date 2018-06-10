@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -24,5 +25,20 @@ func contentLengthFilter(next http.Handler) http.HandlerFunc {
 		} else {
 			next.ServeHTTP(rw, r)
 		}
+	}
+}
+
+func headersFilter(headers []string, next http.Handler) http.HandlerFunc {
+	return func(rw http.ResponseWriter, r *http.Request) {
+		for _, v := range headers {
+			hdr := r.Header.Get(v)
+			if hdr == "" {
+				rw.WriteHeader(400)
+				rw.Write([]byte(fmt.Sprintf("header %s is not present", v)))
+				return
+			}
+		}
+
+		next.ServeHTTP(rw, r)
 	}
 }

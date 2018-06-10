@@ -5,6 +5,10 @@ import (
 	"os"
 )
 
+const (
+	VERSION_HEADER = "BUILD_VERSION"
+)
+
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
