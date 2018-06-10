@@ -12,7 +12,7 @@ import (
 
 	"github.com/goncharovnikita/wallpaperize/app/cerrors"
 
-	wallpaperize "github.com/goncharovnikita/wallpaperize/app/api"
+	"github.com/goncharovnikita/wallpaperize/app/api"
 )
 
 func addBuild(path string) http.HandlerFunc {
@@ -54,7 +54,7 @@ func handleNewBuild(rdr io.Reader, path string) error {
 		return err
 	}
 
-	var serializedInfo wallpaperize.AppInfo
+	var serializedInfo api.AppInfo
 
 	err = json.Unmarshal(info.Bytes(), &serializedInfo)
 	if err != nil {
