@@ -4,7 +4,7 @@ package cmd
 // in all commands
 type App interface {
 	Daily()
-	Info()
+	Info(format string)
 	Random()
 	Restore()
 }

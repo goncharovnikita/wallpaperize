@@ -18,17 +18,20 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var infoOutputType string
+
 // infoCmd represents the info command
 var infoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "Get info about wallpaperize disk usage",
 	Run: func(cmd *cobra.Command, args []string) {
-		app.Info()
+		app.Info(infoOutputType)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(infoCmd)
+	infoCmd.Flags().StringVarP(&infoOutputType, "output", "o", "", "")
 
 	// Here you will define your flags and configuration settings.
 

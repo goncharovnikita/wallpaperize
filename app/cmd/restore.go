@@ -21,7 +21,7 @@ import (
 // restoreCmd represents the restore command
 var restoreCmd = &cobra.Command{
 	Use:   "restore",
-	Short: "Set initial desctop wallpaper",
+	Short: "Set initial desktop wallpaper",
 	Run: func(cmd *cobra.Command, args []string) {
 		app.Restore()
 	},

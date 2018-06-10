@@ -1,23 +1,56 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
+
+	"github.com/goncharovnikita/wallpaperize/app/api"
 )
 
-func (a application) Info() {
+func (a application) Info(format string) {
+	switch format {
+	case "", "simple":
+		a.simpleInfo()
+		break
+	case "json":
+		a.jsonInfo()
+		break
+	default:
+		println("Unsupported format type", format)
+	}
+}
+
+func (a application) jsonInfo() {
+	data := api.AppInfo{
+		AppVersion: appVersion,
+		Arch:       runtime.GOARCH,
+		OS:         runtime.GOOS,
+	}
+
+	stringed, err := json.Marshal(&data)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("%s\n", string(stringed))
+}
+
+func (a application) simpleInfo() {
 	fmt.Printf(`
-Application version %s
-
-**
-%s
-**
-%s
-**
-
-`, appVersion,
+		Application version %s
+		
+		**
+		%s
+		**
+		%s
+		**
+		
+		`, appVersion,
 		a.info("daily photos storage", a.cache.getDailyPath()),
 		a.info("random photos storage", a.cache.getRandomPath()),
 	)

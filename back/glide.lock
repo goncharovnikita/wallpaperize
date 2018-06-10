@@ -1,0 +1,10 @@
+hash: c5d7e891ef4ed895b6096e6a77bdab329d535e74181d0a6e5e1195fa532690e4
+updated: 2018-06-10T15:25:59.124946+03:00
+imports:
+- name: github.com/goncharovnikita/wallpaperize
+  version: 2f60f337d872361009364d497abb3aa8f8e21494
+  subpackages:
+  - app
+  - app/api
+  - app/cerrors
+testImports: []
