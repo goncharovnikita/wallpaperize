@@ -1,9 +1,5 @@
 SHELL := /bin/bash
 
-# The name of the executable (default is current directory name)
-TARGET := $(shell echo $${PWD\#\#*/})
-.DEFAULT_GOAL: $(TARGET)
-
 # These will be provided to the target
 VERSION := 1.0.0
 BUILD := `git rev-parse HEAD`
