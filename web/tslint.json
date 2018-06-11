@@ -12,7 +12,9 @@
         "member-access": false,
         "no-console": false,
         "max-line-length": false,
-        "variable-name": false
+        "variable-name": false,
+        "member-ordering": false,
+        "arrow-parens": false
     },
     "rulesDirectory": []
 }

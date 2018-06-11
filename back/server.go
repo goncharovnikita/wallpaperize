@@ -19,6 +19,6 @@ func serve(path string) {
 
 	http.HandleFunc(
 		"/get/maxversion",
-		maxVersionHandler(path),
+		corsHeader(maxVersionHandler(path)),
 	)
 }

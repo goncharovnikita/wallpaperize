@@ -42,3 +42,11 @@ func headersFilter(headers []string, next http.Handler) http.HandlerFunc {
 		next.ServeHTTP(rw, r)
 	}
 }
+
+func corsHeader(next http.Handler) http.HandlerFunc {
+	return func(rw http.ResponseWriter, r *http.Request) {
+		rw.Header().Add("Access-Control-Allow-Origin", "*")
+
+		next.ServeHTTP(rw, r)
+	}
+}

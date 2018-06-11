@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/goncharovnikita/wallpaperize#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "bootstrap": "^4.1.1",
     "express": "^4.16.3",
     "react": "^16.4.0",
