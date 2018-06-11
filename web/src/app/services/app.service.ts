@@ -9,7 +9,7 @@ class App {
 
     constructor(env: string) {
         if (env === 'production') {
-            this._baseURL = 'https://wallpaperize.goncharovnikita.com/';
+            this._baseURL = 'https://wallpaperize.goncharovnikita.com/api';
         } else {
             this._baseURL = 'http://localhost:8080/';
         }

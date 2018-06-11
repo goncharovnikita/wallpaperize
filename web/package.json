@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --progress --colors --config webpack.dev.ts",
     "build:prod": "webpack --progress --colors --config webpack.prod.ts",
+    "build:prod:ssr": "webpack --progress --colors --config webpack.server.ts",
     "start": "webpack-dev-server --progress --colors --config webpack.dev.ts"
   },
   "repository": {

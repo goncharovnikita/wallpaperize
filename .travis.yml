@@ -2,12 +2,14 @@ sudo: true
 dist: trusty
 language: go
 
+before_script:
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+
 jobs:
   include:
     - deploy_back:
       script:
         - cd back
-        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
         - docker build -t goncharovnikita/wallpaperize:back --rm .
         - docker push goncharovnikita/wallpaperize:back
     - deploy_app:
@@ -16,3 +18,8 @@ jobs:
         - curl https://glide.sh/get | sh
         - glide install
         - make deploy
+    - deploy_web:
+      script:
+        - cd web
+        - docker build -t goncharovnikita/wallpaperize:web --rm .
+        - docker push goncharovnikita/wallpaperize:web
