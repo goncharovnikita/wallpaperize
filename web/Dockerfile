@@ -8,16 +8,16 @@ RUN npm install
 
 FROM node:alpine as dist
 
-COPY --from=deps /app/node_modules /app/node_modules
+COPY --from=deps /app/node_modules /web/node_modules
 
-COPY . /app
+COPY . /web
 
-WORKDIR /app
+WORKDIR /web
 
 RUN npm run build:prod
 
 FROM abiosoft/caddy
 
-COPY --from=dist /app/dist /app
+COPY --from=dist /web/dist /app
 
 COPY Caddyfile /etc/Caddyfile
