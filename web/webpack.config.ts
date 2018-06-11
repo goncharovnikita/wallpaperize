@@ -7,7 +7,7 @@ const config: webpack.Configuration = {
     mode: 'development',
     entry: {
         bundle: path.resolve(__dirname, 'src', 'Index.tsx'),
-        vendor: path.resolve(__dirname, 'src', 'vendor', 'vendor.ts')
+        // vendor: path.resolve(__dirname, 'src', 'vendor', 'vendor.ts')
     },
     module: {
         rules: [
