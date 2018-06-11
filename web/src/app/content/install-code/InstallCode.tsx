@@ -55,8 +55,7 @@ export class InstallCode extends React.Component {
     private _getInstallCode(version: string, url: string): string {
         return `
         curl ${url}/${version} --output wallpaperize && chmod +x ./wallpaperize &&
-        cp ./wallpaperize /usr/local/bin/wallpaperize | rm ./wallpaperize &&
-        . ~/.bashrc
+        sudo mv ./wallpaperize /usr/local/bin/wallpaperize && . ~/.bashrc | rm ./wallpaperize
         `;
     }
 }
