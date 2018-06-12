@@ -1,4 +1,4 @@
-FROM node:alpine as deps
+FROM node:9.11.1-alpine as deps
 
 COPY package.json /app/package.json
 
@@ -6,7 +6,7 @@ WORKDIR /app
 
 RUN npm install
 
-FROM node:alpine as dist
+FROM node:9.11.1-alpine as dist
 
 COPY --from=deps /app/node_modules /web/node_modules
 
