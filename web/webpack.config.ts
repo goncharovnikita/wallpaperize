@@ -6,8 +6,8 @@ import * as CopyPlugin from 'copy-webpack-plugin';
 const config: webpack.Configuration = {
     mode: 'development',
     entry: {
-        bundle: path.resolve(__dirname, 'src', 'Index.tsx'),
-        vendor: path.resolve(__dirname, 'src', 'vendor', 'vendor.ts')
+        bundle: './src/Index.tsx',
+        vendor: './src/vendor/vendor.ts'
     },
     module: {
         rules: [
