@@ -16,8 +16,8 @@ export class Content extends React.Component {
                 <h1 className="font-weight-light text-center">{this.props.texts.about}</h1>
                 <hr className="my-4" />
                 <div className="row">
-                    <div className="col-md-2"></div>
-                    <div className="col-md-8">
+                    <div className="col-md-1"></div>
+                    <div className="col-md-10">
                         <SelectPlatform />
                         <div className="alert alert-dark">
                             <div className="code">
@@ -25,7 +25,7 @@ export class Content extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-2"></div>
+                    <div className="col-md-1"></div>
                 </div>
             </div>
         );

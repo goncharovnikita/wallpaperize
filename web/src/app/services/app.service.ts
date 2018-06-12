@@ -35,7 +35,11 @@ class App {
 
     private  _getSelectedPlatform(): ReplaySubject<Platform> {
         const result = new ReplaySubject<Platform>();
-        result.next(Platform.Mac);
+        if (/mac(\w+)?/gmi.test(navigator.platform)) {
+            result.next(Platform.Mac);
+        } else {
+            result.next(Platform.Ubuntu);
+        }
         return result;
     }
 
