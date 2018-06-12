@@ -11,7 +11,7 @@ export class Content extends React.Component {
 
     content(): JSX.Element {
         return (
-            <div className="jumbotron h-50">
+            <div className="jumbotron">
                 <h1 className="display-1 text-center">Wallpaperize</h1>
                 <h1 className="font-weight-light text-center">{this.props.texts.about}</h1>
                 <hr className="my-4" />
@@ -34,8 +34,13 @@ export class Content extends React.Component {
     render() {
         return(
             <div className="position-relative">
-                {this.content()}
-                {/* <div className="overlay position-absolute h-100 w-100"></div> */}
+                <div className="row">
+                <div className="col-md-1 col-sm-0 col-lg-2"></div>
+                <div className="col-md-10 col-sm-12 col-lg-8">
+                    {this.content()}
+                </div>
+                <div className="col-md-1 col-sm-0 col-lg-2"></div>
+                </div>
             </div>
         );
     }
