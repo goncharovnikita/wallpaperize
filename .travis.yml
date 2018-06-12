@@ -4,6 +4,10 @@ language: go
 before_script:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 
+branches:
+  only:
+    - master
+
 jobs:
   include:
     - deploy_back:
