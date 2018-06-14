@@ -3,11 +3,13 @@ package main
 import "log"
 
 // Random implementation
-func (a application) Random() {
+func (a application) Random(loadOnly bool) {
 	fname, err := a.rndGetter.GetImage()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	a.master.SetFromFile(fname)
+	if !loadOnly {
+		a.master.SetFromFile(fname)
+	}
 }

@@ -5,6 +5,7 @@ package cmd
 type App interface {
 	Daily()
 	Info(format string)
-	Random()
+	Random(loadOnly bool)
 	Restore()
+	Set(path string)
 }

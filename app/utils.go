@@ -53,3 +53,12 @@ func getSizeAsString(size int64) string {
 
 	return fmt.Sprintf("%d MB", mbs)
 }
+
+func getFileNames(path string, infos []os.FileInfo) []string {
+	result := make([]string, 0, len(infos))
+	for _, v := range infos {
+		result = append(result, path+"/"+v.Name())
+	}
+
+	return result
+}

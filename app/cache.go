@@ -12,7 +12,7 @@ type cacher struct {
 
 func newCacher() *cacher {
 	result := &cacher{}
-	result.getCacheDir()
+	result.setCacheDir()
 	result.initCacheDir()
 	return result
 }
@@ -44,7 +44,7 @@ func (c cacher) getRandomPath() string {
 	return c.dir + "/random"
 }
 
-func (c *cacher) getCacheDir() {
+func (c *cacher) setCacheDir() {
 	result, err := filepath.Abs(os.Getenv("HOME") + "/.wallpaperize_cache")
 	if err != nil {
 		log.Fatal(err)

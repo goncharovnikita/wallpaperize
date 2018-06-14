@@ -26,11 +26,17 @@ func (a application) Info(format string) {
 }
 
 func (a application) jsonInfo() {
+	randomDir := a.cache.getRandomPath()
+	dailyDir := a.cache.getDailyPath()
+	randomInfo := a.getDirInfo(randomDir)
+	dailyInfo := a.getDirInfo(dailyDir)
 	data := api.AppInfo{
-		AppVersion: appVersion,
-		Arch:       runtime.GOARCH,
-		OS:         runtime.GOOS,
-		Build:      appBuild,
+		AppVersion:   appVersion,
+		Arch:         runtime.GOARCH,
+		OS:           runtime.GOOS,
+		Build:        appBuild,
+		RandomImages: getFileNames(randomDir, randomInfo),
+		DailyImages:  getFileNames(dailyDir, dailyInfo),
 	}
 
 	stringed, err := json.Marshal(&data)

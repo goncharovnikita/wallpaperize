@@ -33,7 +33,7 @@ clean:
 	@rm -f $(TARGET)
 
 install:
-	@go build -o $(GOPATH)/bin/wallpaperize $(LDFLAGS)
+	go build -o $(GOPATH)/bin/wallpaperize $(LDFLAGS)
 
 uninstall: clean
 	@rm -f $$(which ${TARGET})

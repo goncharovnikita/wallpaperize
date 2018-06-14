@@ -8,7 +8,6 @@ import (
 	"os/user"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 // Wallmaster implementation
@@ -43,7 +42,6 @@ func (Wallmaster) SetFromFile(file string) error {
 		return err
 	}
 
-	time.Sleep(time.Second * 3)
 	return nil
 }
 
