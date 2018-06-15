@@ -54,7 +54,7 @@ func (r *RandomCrawler) crawl() {
 	img, err := r.getter.GetImage()
 	if err != nil {
 		log.Println(err)
-		time.Sleep(time.Second * 15)
+		time.Sleep(time.Minute * 15)
 		r.crawl()
 		return
 	}
