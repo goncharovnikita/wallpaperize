@@ -3,21 +3,17 @@ import { Image } from '@app/app/images-sector/image/Image';
 
 export interface ImagesSectorProps {
     title: string;
+    selected: string;
     images: string[];
+    cachedImages: string[];
     loadHandler: () => Promise<void>;
+    getSrc: (s: string) => string;
 }
 
-export class ImagesSector extends React.Component {
-    private _btnDisabled: boolean;
-    state: ImagesSectorProps;
+export class ImagesSector extends React.Component<ImagesSectorProps, ImagesSectorProps> {
     constructor(props: ImagesSectorProps) {
         super(props);
-        this.state = {
-            images: props.images,
-            title: props.title,
-            loadHandler: () => new Promise(r => r())
-        };
-        this._btnDisabled = false;
+        this.state = props;
     }
 
     shouldComponentUpdate(nextProps: ImagesSectorProps, _: any): boolean {
@@ -30,14 +26,14 @@ export class ImagesSector extends React.Component {
 
     getImages(): JSX.Element[] {
         return this.state.images.map((img, index) => {
-            return <Image key={index} {...{image: img}} />;
+            const cached = this.state.cachedImages.some(v => v === img);
+            const selected = img === this.state.selected;
+            return <Image key={index} {...{image: img, getSrc: this.state.getSrc, cached, selected}} />;
         });
     }
 
     async onBtnClick(): Promise<void> {
-        this._btnDisabled = true;
         await this.state.loadHandler();
-        this._btnDisabled = false;
     }
 
     render() {
@@ -45,8 +41,6 @@ export class ImagesSector extends React.Component {
             <div>
                 <h3 className="display-3">
                 {this.state.title}
-                    <button onClick={(_) => this.onBtnClick()}
-                        disabled={this._btnDisabled} className="ml-2 btn btn-secondary">Load more</button>
                 </h3>
                 <hr/>
                 <div className="row">

@@ -8,4 +8,5 @@ type App interface {
 	Random(loadOnly bool)
 	Restore()
 	Set(path string)
+	GetSelected()
 }

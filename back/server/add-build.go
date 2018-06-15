@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"io"
@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/goncharovnikita/wallpaperize/app/cerrors"
+	"github.com/goncharovnikita/wallpaperize/back/utils"
 )
 
 func addBuild(path string) http.HandlerFunc {
@@ -24,7 +25,7 @@ func addBuild(path string) http.HandlerFunc {
 }
 
 func handleNewBuild(rdr io.Reader, path string, name string) error {
-	tmpName := os.TempDir() + "/" + randStringBytes(10)
+	tmpName := os.TempDir() + "/" + utils.RandStringBytes(10)
 	tmpFile, err := os.OpenFile(tmpName, os.O_CREATE|os.O_RDWR, 0777)
 	if err != nil {
 		log.Println(err)

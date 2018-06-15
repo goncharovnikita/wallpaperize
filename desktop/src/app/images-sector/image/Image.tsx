@@ -1,25 +1,47 @@
 import React, { Component } from 'react';
 import { setWallpaper } from '@app/wallpaperize-proxy/set-wallpaper';
+import './Image.sass';
 
-export class Image extends Component {
-    state: {image: string};
-    constructor(props: {image: string}) {
+export interface ImageProps {
+    image: string;
+    cached: boolean;
+    selected: boolean;
+    getSrc: (s: string) => string;
+}
+
+export class Image extends Component<ImageProps, ImageProps> {
+    constructor(props: ImageProps) {
         super(props);
-        this.state = {image: props.image};
+        this.state = props;
     }
 
-    onClick() {
-        setWallpaper(this.state.image);
+    async onClick() {
+        await setWallpaper(this.state.getSrc(this.state.image));
+        this.setState({...this.state, cached: true});
     }
 
-    getSrc(path: string): string {
-        return 'file://' + path;
+    getCached = (): JSX.Element|undefined => {
+        if (this.state.cached) {
+            return <i className="position-absolute far fa-check-circle"></i>;
+        }
+    }
+
+    getClassName(): string {
+        if (!this.state.selected) {
+            return 'img-thumbnail pointer';
+        } else {
+            return 'img-thumbnail pointer bg-primary';
+        }
     }
 
     render() {
         return (
-        <div className="col-md-3 col-sm-6">
-            <img onClick={(_) => this.onClick()} className="img-thumbnail" src={this.getSrc(this.state.image)} alt=""/>
+        <div className="col-md-3 col-sm-6 mb-2">
+            <div className="position-relative">
+                <img className={this.getClassName()}
+                onClick={(_) => this.onClick()} src={this.state.getSrc(this.state.image)} alt=""/>
+                {this.getCached()}
+            </div>
         </div>
         );
     }

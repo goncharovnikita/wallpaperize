@@ -8,10 +8,8 @@ import (
 
 	"github.com/goncharovnikita/wallpaperize/app/api"
 	"github.com/goncharovnikita/wallpaperize/back/crawler"
-)
-
-const (
-	VERSION_HEADER = "BUILD_VERSION"
+	"github.com/goncharovnikita/wallpaperize/back/server"
+	"github.com/goncharovnikita/wallpaperize/back/utils"
 )
 
 func main() {
@@ -35,22 +33,23 @@ func main() {
 	maxRandomUsageInt := int64(0)
 	maxRandomUsage := os.Getenv("MAX_RANDOM_DISK_USAGE")
 	if maxRandomUsage == "" {
-		maxRandomUsageInt = getBytesFromGigabytes(1)
+		maxRandomUsageInt = utils.GetBytesFromGigabytes(1)
 	} else {
-		gbInt, err := strconv.Atoi(maxRandomUsage)
+		gbInt, err := strconv.ParseFloat(maxRandomUsage, 64)
 		if err != nil {
 			log.Fatal(err)
 		}
 		if gbInt > 5 {
-			log.Println("we cannot afford that")
+			log.Fatal("we cannot afford that")
 		}
-		maxRandomUsageInt = getBytesFromGigabytes(gbInt)
+		maxRandomUsageInt = utils.GetBytesFromGigabytes(gbInt)
 	}
 
 	rndCrawler := crawler.NewRandomCrawler(randomImagesPath, maxRandomUsageInt, api.UnsplashAPI{})
-	rndCrawler.Crawl()
+	go rndCrawler.Crawl()
 
-	serve(path)
+	s := server.NewServer(path, randomImagesPath)
+	go s.Serve()
 	println("app listen on :: ", port)
 
 	http.ListenAndServe(":"+port, nil)

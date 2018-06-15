@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -46,6 +46,16 @@ func headersFilter(headers []string, next http.Handler) http.HandlerFunc {
 func corsHeader(next http.Handler) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		rw.Header().Add("Access-Control-Allow-Origin", "*")
+
+		next.ServeHTTP(rw, r)
+	}
+}
+
+func addHeadersFilter(hdrs map[string]string, next http.Handler) http.HandlerFunc {
+	return func(rw http.ResponseWriter, r *http.Request) {
+		for name, value := range hdrs {
+			rw.Header().Add(name, value)
+		}
 
 		next.ServeHTTP(rw, r)
 	}
