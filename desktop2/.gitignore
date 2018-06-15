@@ -1,0 +1,7 @@
+node_modules
+dist
+.cache
+desktop
+go-vendor
+output
+bind_darwin_amd64.go
