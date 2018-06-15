@@ -9,9 +9,9 @@ WORKDIR ${dist}
 RUN apk add curl --no-cache && \
     apk add git --no-cache
 
-RUN curl https://glide.sh/get | sh
+# RUN curl https://glide.sh/get | sh
 
-RUN glide install
+# RUN glide install
 
 RUN env GOOS=linux GOARCH=386 go build
 
