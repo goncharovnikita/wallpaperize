@@ -18,8 +18,8 @@ jobs:
     - deploy_app:
       script:
         - cd app
-        # - curl https://glide.sh/get | sh
-        # - glide install
+        - curl https://glide.sh/get | sh
+        - glide install
         - make deploy
     - deploy_web:
       script:
