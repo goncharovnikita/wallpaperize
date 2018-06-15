@@ -1,7 +1,0 @@
-package: github.com/goncharovnikita/wallpaperize/back
-import:
-- package: github.com/goncharovnikita/wallpaperize
-  subpackages:
-  - app/api
-  - app/cerrors
-  - app

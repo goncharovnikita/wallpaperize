@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+
+	"github.com/goncharovnikita/wallpaperize/app/api"
+	"github.com/goncharovnikita/wallpaperize/back/crawler"
 )
 
 const (
@@ -20,7 +23,13 @@ func main() {
 	path := os.Getenv("BUILDS_PATH")
 	if path == "" {
 		path = "uploads"
-		os.Mkdir("uploads", 0777)
+		os.Mkdir(path, 0777)
+	}
+
+	randomImagesPath := os.Getenv("RANDOM_IMAGES_PATH")
+	if randomImagesPath == "" {
+		randomImagesPath = "random_images"
+		os.Mkdir(randomImagesPath, 0777)
 	}
 
 	maxRandomUsageInt := int64(0)
@@ -37,6 +46,9 @@ func main() {
 		}
 		maxRandomUsageInt = getBytesFromGigabytes(gbInt)
 	}
+
+	rndCrawler := crawler.NewRandomCrawler(randomImagesPath, maxRandomUsageInt, api.UnsplashAPI{})
+	rndCrawler.Crawl()
 
 	serve(path)
 	println("app listen on :: ", port)

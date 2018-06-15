@@ -32,6 +32,11 @@ type unsplashRandomImageResponse struct {
 	URLs        unsplashRandomImageURLs `json:"urls"`
 }
 
+// GetImage implementation
+func (u UnsplashAPI) GetImage() (result []byte, err error) {
+	return u.GetRandomImage()
+}
+
 // GetRandomImage implementation
 func (u UnsplashAPI) GetRandomImage() (result []byte, err error) {
 	var (

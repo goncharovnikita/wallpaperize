@@ -1,6 +1,8 @@
 package main
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -13,6 +15,6 @@ func randStringBytes(n int) string {
 }
 
 func getBytesFromGigabytes(gb int) int64 {
-	result := gb * (1024 * 4)
+	result := gb * (1024 * 1024 * 1024)
 	return int64(result)
 }
