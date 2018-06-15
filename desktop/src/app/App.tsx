@@ -60,7 +60,8 @@ export class App extends React.Component {
     }
 
     getRemoteSrc(p: string): string {
-        return 'http://localhost:2015/' + p;
+        // return 'http://localhost:2015/' + p;
+        return 'https://wallpaperize.goncharovnikita.com/i/random/' + p;
     }
 
     render() {
