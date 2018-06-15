@@ -36,7 +36,7 @@ export class Image extends Component<ImageProps, ImageProps> {
 
     render() {
         return (
-        <div className="col-md-3 col-sm-6 mb-2">
+        <div className="col-md-3 col-sm-6 col-6 mb-2">
             <div className="position-relative">
                 <img className={this.getClassName()}
                 onClick={(_) => this.onClick()} src={this.state.getSrc(this.state.image)} alt=""/>

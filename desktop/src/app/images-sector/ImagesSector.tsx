@@ -6,6 +6,7 @@ export interface ImagesSectorProps {
     selected: string;
     images: string[];
     cachedImages: string[];
+    afterTitle?: JSX.Element;
     loadHandler: () => Promise<void>;
     getSrc: (s: string) => string;
 }
@@ -40,7 +41,7 @@ export class ImagesSector extends React.Component<ImagesSectorProps, ImagesSecto
         return (
             <div>
                 <h3 className="display-3">
-                {this.state.title}
+                {this.state.title}{this.state.afterTitle}
                 </h3>
                 <hr/>
                 <div className="row">

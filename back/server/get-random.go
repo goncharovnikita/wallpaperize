@@ -28,7 +28,7 @@ func (s *Server) handleGetRandom() http.HandlerFunc {
 			fnames = append(fnames[:index], fnames[index+1:]...)
 		}
 
-		data, err := json.Marshal(fnames)
+		data, err := json.Marshal(result)
 		if err != nil {
 			log.Println(err)
 			rw.WriteHeader(500)

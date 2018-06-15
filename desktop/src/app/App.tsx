@@ -20,6 +20,7 @@ export class App extends React.Component {
                 selected: '',
                 images: [],
                 cachedImages: [],
+                afterTitle: <i className="fas fa-xs ml-2 fa-sync"></i>,
                 loadHandler: () => this._loadRandomHandler(),
                 getSrc: this.getRemoteSrc
             },
