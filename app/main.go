@@ -17,7 +17,7 @@ var (
 type application struct {
 	cache       *cacher
 	rec         *recoverer
-	master      Wallmaster
+	master      api.Wallmaster
 	dailyGetter *daily.Daily
 	rndGetter   *random.Random
 }

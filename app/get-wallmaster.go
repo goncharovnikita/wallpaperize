@@ -1,7 +1,10 @@
 package main
 
-import "github.com/goncharovnikita/wallpaperize/app/wallmaster"
+import (
+	"github.com/goncharovnikita/wallpaperize/app/api"
+	"github.com/goncharovnikita/wallpaperize/app/wallmaster"
+)
 
-func getWallmaster() Wallmaster {
+func getWallmaster() api.Wallmaster {
 	return wallmaster.Wallmaster{}
 }

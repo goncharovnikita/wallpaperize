@@ -11,3 +11,8 @@ func randStringBytes(n int) string {
 	}
 	return string(b)
 }
+
+func getBytesFromGigabytes(gb int) int64 {
+	result := gb * (1024 * 4)
+	return int64(result)
+}
