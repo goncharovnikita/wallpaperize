@@ -9,6 +9,7 @@ jobs:
   include:
     - stage: Build desktop MAC
       os: osx
+      language: node_js
       script:
         - cd desktop
         - npm install
