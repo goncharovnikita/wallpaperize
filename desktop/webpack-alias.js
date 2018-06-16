@@ -3,6 +3,9 @@ module.exports = {
     renderer: __dirname + '/src/renderer/index.tsx',
     vendor: __dirname + '/src/vendor/vendor.ts'
   },
+  node: {
+    __dirname: false
+  },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
     alias: {
