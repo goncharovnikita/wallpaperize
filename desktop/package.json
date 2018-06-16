@@ -10,9 +10,10 @@
     "build:electron": "webpack-cli --config webpack.electron.ts --progress",
     "prestart": "rimraf dist && yarn run build:electron",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "dist": "electron-builder && build --publish onTagOrDraft",
     "precompile": "rimraf dist",
-    "predist": "yarn compile"
+    "predist": "yarn compile",
+    "postinstall": "install-app-deps"
   },
   "keywords": [
     "Wallpaperize"
@@ -55,6 +56,38 @@
   "electronWebpack": {
     "renderer": {
       "webpackConfig": "webpack-alias.js"
+    }
+  },
+  "build": {
+    "appId": "org.breta.MemoryKing",
+    "category": "public.app-category.education",
+    "files": [
+        "dist/",
+        "node_modules/",
+        "package.json"
+      ],
+    "dmg": {
+        "contents": [
+          {
+            "x": 130,
+            "y": 220
+          },
+          {
+            "x": 410,
+            "y": 220,
+            "type": "link",
+            "path": "/Applications"
+          }
+        ]
+    },
+    "win": {
+        "target": "nsis"
+      },
+    "linux": {
+        "target": [
+          "AppImage",
+          "deb"
+        ]
     }
   }
 }

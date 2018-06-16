@@ -10,19 +10,9 @@ branches:
 
 jobs:
   include:
-    - deploy_back:
+    - stage: Build desktop MAC
+      os: osx
       script:
-        - cd back
-        - docker build -t goncharovnikita/wallpaperize:back --rm .
-        - docker push goncharovnikita/wallpaperize:back
-    - deploy_app:
-      script:
-        - cd app
-        - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-        - dep ensure
-        - make deploy
-    - deploy_web:
-      script:
-        - cd web
-        - docker build -t goncharovnikita/wallpaperize:web --rm .
-        - docker push goncharovnikita/wallpaperize:web
+        - cd desktop
+        - npm install
+        - yarn dist
