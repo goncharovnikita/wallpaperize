@@ -19,6 +19,8 @@ export class Image extends Component<ImageProps, ImageProps> {
         if (this.props.cached) {
             return <div className="lead"><i className="position-absolute far fa-check-circle"></i></div>;
         }
+
+        return undefined;
     }
 
     getClassName(): string {

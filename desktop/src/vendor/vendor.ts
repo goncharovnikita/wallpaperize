@@ -1,1 +1,1 @@
-import '@app/styles.sass';
+import '@approot/styles.sass';
