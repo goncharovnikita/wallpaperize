@@ -108,6 +108,21 @@ const menuTemplate: any[] = [
             focusedWindow.webContents.openDevTools();
           }
         }
+      },
+      {
+        label: 'Reload window',
+        accelerator: (() => {
+          if (process.platform === 'darwin') {
+            return 'Command+R';
+          } else {
+            return 'Ctrl+R';
+          }
+        })(),
+        click: (_, focusedWindow) => {
+          if (focusedWindow) {
+            focusedWindow.webContents.reload();
+          }
+        }
       }
     ]
   })
