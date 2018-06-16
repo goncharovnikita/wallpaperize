@@ -59,35 +59,11 @@
     }
   },
   "build": {
-    "appId": "org.breta.MemoryKing",
-    "category": "public.app-category.education",
+    "appId": "com.electron.wallpaperize",
     "files": [
         "dist/",
         "node_modules/",
         "package.json"
-      ],
-    "dmg": {
-        "contents": [
-          {
-            "x": 130,
-            "y": 220
-          },
-          {
-            "x": 410,
-            "y": 220,
-            "type": "link",
-            "path": "/Applications"
-          }
-        ]
-    },
-    "win": {
-        "target": "nsis"
-      },
-    "linux": {
-        "target": [
-          "AppImage",
-          "deb"
-        ]
-    }
+      ]
   }
 }
