@@ -48,6 +48,9 @@ func main() {
 	rndCrawler := crawler.NewRandomCrawler(randomImagesPath, maxRandomUsageInt, api.UnsplashAPI{})
 	go rndCrawler.Crawl()
 
+	minCrawer := crawler.NewMinCrawler([]string{randomImagesPath})
+	go minCrawer.Crawl()
+
 	s := server.NewServer(path, randomImagesPath)
 	go s.Serve()
 	println("app listen on :: ", port)
