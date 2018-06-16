@@ -13,7 +13,7 @@
     "dist": "electron-builder && build --publish onTagOrDraft",
     "precompile": "rimraf dist",
     "predist": "yarn compile",
-    "postinstall": "install-app-deps"
+    "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [
     "Wallpaperize"
