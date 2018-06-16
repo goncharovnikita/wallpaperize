@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Image } from '@app/app/images-sector/image/Image';
+import { setWallpaper } from '@app/wallpaperize-proxy/set-wallpaper';
 
 export interface ImagesSectorProps {
     title: string;
@@ -12,24 +13,29 @@ export interface ImagesSectorProps {
 }
 
 export class ImagesSector extends React.Component<ImagesSectorProps, ImagesSectorProps> {
-    constructor(props: ImagesSectorProps) {
+    constructor(public props: ImagesSectorProps) {
         super(props);
         this.state = props;
     }
 
-    shouldComponentUpdate(nextProps: ImagesSectorProps, _: any): boolean {
-        const shouldUpdate = nextProps.images !== this.state.images;
+    shouldComponentUpdate(nextProps: ImagesSectorProps, nextState: ImagesSectorProps): boolean {
+        const shouldUpdate = nextProps.images.some(i => this.state.images.indexOf(i) === -1);
+        const selectedChanged = this.state.selected !== nextState.selected;
         if (shouldUpdate) {
             this.setState(nextProps);
         }
-        return shouldUpdate;
+        const result = shouldUpdate || selectedChanged;
+        return result;
     }
 
-    getImages(): JSX.Element[] {
-        return this.state.images.map((img, index) => {
+    mapImages(imgs: string[]): JSX.Element[] {
+        return imgs.map((img) => {
             const cached = this.state.cachedImages.some(v => v === img);
             const selected = img === this.state.selected;
-            return <Image key={index} {...{image: img, getSrc: this.state.getSrc, cached, selected}} />;
+            return (
+                <Image key={img} {
+                    ...{image: img, getSrc: this.state.getSrc, cached, selected, onclick: this.onImgClick(img)}} />
+            );
         });
     }
 
@@ -45,9 +51,21 @@ export class ImagesSector extends React.Component<ImagesSectorProps, ImagesSecto
                 </h3>
                 <hr/>
                 <div className="row">
-                    {this.getImages()}
+                    {this.mapImages(this.state.images)}
                 </div>
             </div>
         );
+    }
+
+    onImgClick = (img: string): () => void => {
+        return () => {
+            this.setState((prevState: ImagesSectorProps) => {
+                return {
+                    selected: img,
+                    cachedImages: [...prevState.cachedImages, img]
+                };
+            });
+            setWallpaper(this.state.getSrc(img));
+        };
     }
 }
