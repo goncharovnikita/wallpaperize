@@ -8,6 +8,7 @@ branches:
 jobs:
   include:
     - stage: Build desktop MAC
+      if: tag IS present
       os: osx
       language: node_js
       node_js:

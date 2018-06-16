@@ -2,15 +2,17 @@
   "name": "wallpaperize-desktop",
   "version": "1.0.0-beta",
   "description": "A wallpaperize desktop application",
+  "repository": {
+    "url": "https://github.com/goncharovnikita/wallpaperize"
+  },
   "scripts": {
     "compile": "electron-webpack",
-    "start": "electron dist/index.js",
+    "start": "electron-webpack dev",
     "start:hot": "webpack-dev-server --config webpack.electron-front.ts",
     "build:prod": "webpack-cli --config webpack.electron-prod.ts --progress",
     "build:electron": "webpack-cli --config webpack.electron.ts --progress",
-    "prestart": "rimraf dist && yarn run build:electron",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder && build --publish onTagOrDraft",
+    "dist": "electron-builder && build --publish always",
     "precompile": "rimraf dist",
     "predist": "yarn compile",
     "postinstall": "electron-builder install-app-deps"
@@ -43,6 +45,7 @@
     "@types/webpack": "^4.4.0",
     "electron": "2.0.0",
     "electron-builder": "^20.15.1",
+    "electron-updater": "^2.21.10",
     "electron-webpack": "^2.0.1",
     "electron-webpack-ts": "^2.0.2",
     "node-sass": "^4.9.0",
@@ -57,13 +60,5 @@
     "renderer": {
       "webpackConfig": "webpack-alias.js"
     }
-  },
-  "build": {
-    "appId": "com.electron.wallpaperize",
-    "files": [
-        "dist/",
-        "node_modules/",
-        "package.json"
-      ]
   }
 }

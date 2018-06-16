@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
 import { app, BrowserWindow, Menu, MenuItem } from 'electron';
+import { autoUpdater } from 'electron-updater';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -44,6 +45,11 @@ app.on('ready', () => {
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
   createWindow();
+  setTimeout(() => {
+    if (mainWindow && mainWindow.isFocused()) {
+      autoUpdater.checkForUpdatesAndNotify();
+    }
+  }, 30000);
 });
 
 // Quit when all windows are closed.
