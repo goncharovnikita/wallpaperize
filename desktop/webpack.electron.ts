@@ -5,11 +5,11 @@ import config from './webpack.config';
 const mainConf: webpack.Configuration = {
   ...config,
   target: 'electron-main',
-  entry: './src/main.ts',
+  entry: './src/index.ts',
   mode: 'development',
   output: {
-    path: __dirname + '/dist',
-    filename: '[name].js'
+    path: __dirname + '/dist/main',
+    filename: 'main.js'
   }
 };
 

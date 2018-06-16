@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu, MenuItem } from 'electron';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -41,8 +41,8 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  // const menu = Menu.buildFromTemplate(menuTemplate);
-  // Menu.setApplicationMenu(menu);
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
   createWindow();
 });
 
@@ -66,23 +66,43 @@ app.on('activate', function() {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-// const openAbout = () => {
-//   const modalPath = 'http://localhost:4200#/menu/about';
-//   let win: BrowserWindow|null = new BrowserWindow({ width: 400, height: 320 });
+const openAbout = () => {
+  const modalPath = 'http://localhost:4200#/menu/about';
+  let win: BrowserWindow | null = new BrowserWindow({
+    width: 400,
+    height: 320
+  });
 
-//   win.on('close', () => { win = null; });
-//   win.loadURL(modalPath);
-//   win.show();
-// };
+  win.on('close', () => {
+    win = null;
+  });
+  win.loadURL(modalPath);
+  win.show();
+};
 
-// const menuTemplate: any[] = [
-//   {
-//     label: 'About',
-//     submenu: [
-//       {
-//         label: 'about',
-//         click: () => openAbout()
-//       }
-//     ]
-//   }
-// ];
+const menuTemplate: any[] = [
+  new MenuItem({
+    label: 'About',
+    submenu: [
+      {
+        label: 'About',
+        click: () => openAbout()
+      },
+      {
+        label: 'Toggle Developer Tools',
+        accelerator: (() => {
+          if (process.platform === 'darwin') {
+            return 'Alt+Command+I';
+          } else {
+            return 'Ctrl+Shift+I';
+          }
+        })(),
+        click: (_, focusedWindow) => {
+          if (focusedWindow) {
+            focusedWindow.webContents.openDevTools();
+          }
+        }
+      }
+    ]
+  })
+];
