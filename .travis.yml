@@ -10,6 +10,8 @@ jobs:
     - stage: Build desktop MAC
       os: osx
       language: node_js
+      node_js:
+        - "9"
       script:
         - cd desktop
         - npm install
