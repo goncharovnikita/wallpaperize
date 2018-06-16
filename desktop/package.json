@@ -14,6 +14,7 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder && build --publish always",
     "precompile": "rimraf dist",
+    "dist:simple": "electron-builder",
     "predist": "yarn compile",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -44,7 +45,7 @@
     "@types/react-router-dom": "^4.2.7",
     "@types/webpack": "^4.4.0",
     "electron": "2.0.0",
-    "electron-builder": "^20.15.1",
+    "electron-builder": "20.14.7",
     "electron-updater": "^2.21.10",
     "electron-webpack": "^2.0.1",
     "electron-webpack-ts": "^2.0.2",
@@ -60,5 +61,8 @@
     "renderer": {
       "webpackConfig": "webpack-alias.js"
     }
+  },
+  "build": {
+    "appId": "org.electron.wallpaperize"
   }
 }
