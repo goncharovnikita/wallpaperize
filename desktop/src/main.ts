@@ -1,24 +1,27 @@
 // Modules to control application life and create native browser window
-import {app, BrowserWindow} from 'electron';
+import { app, BrowserWindow } from 'electron';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow: Electron.BrowserWindow|null;
+let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow(
-    {
-      width: 800,
-      height: 600,
-      webPreferences: {
-        webSecurity: false
-      }
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      webSecurity: false
     }
-  );
+  });
 
-  // const fileName = `file://${__dirname}/index.html`;
-  const fileName = `http://localhost:4200#/main`;
+  const fileName = (() => {
+    if (process.env.NODE_ENV === 'production') {
+      return `file://${__dirname}/index.html`;
+    } else {
+      return `http://localhost:4200#/main`;
+    }
+  })();
   // and load the index.html of the app.
   mainWindow.loadURL(fileName);
 

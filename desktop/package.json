@@ -1,27 +1,23 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "wallpaperize-desktop",
+  "version": "1.0.0-beta",
+  "description": "A wallpaperize desktop application",
   "scripts": {
     "start": "electron dist/main.js",
     "start:hot": "webpack-dev-server --config webpack.electron-front.ts",
     "start:web": "parcel src/index.html",
     "build:web": "parcel build index.html",
+    "build:prod": "webpack-cli --config webpack.electron-prod.ts --progress",
     "build:electron": "webpack-cli --config webpack.electron.ts --progress",
     "prebuild:web": "rm -rf dist",
     "prebuild:electron": "rm -rf dist",
     "prestart": "yarn run build:electron"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Wallpaperize"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Goncharov Nikita",
+  "license": "MIT",
   "devDependencies": {
     "@types/react-router-dom": "^4.2.7",
     "babel-core": "^6.26.3",

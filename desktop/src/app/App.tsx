@@ -11,6 +11,7 @@ interface AppState {
 }
 
 export class App extends React.Component {
+    randomPath = 'https://wallpaperize.goncharovnikita.com/i/random/';
     state: AppState;
     constructor(props: any) {
         super(props);
@@ -42,7 +43,7 @@ export class App extends React.Component {
 
     getRemoteSrc = (p: string): string => {
         // return 'http://localhost:2015/' + p;
-        return 'https://wallpaperize.goncharovnikita.com/i/random/' + p;
+        return this.randomPath + 'min/' + p.replace('.jpg', '-min.jpg');
     }
 
     render() {
