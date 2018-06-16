@@ -17,3 +17,14 @@ jobs:
         - cd desktop
         - npm install
         - yarn dist
+    - stage: Build desktop MAC
+      if: tag IS present
+      os: linux
+      dist: ubuntu
+      language: node_js
+      node_js:
+        - "9"
+      script:
+        - cd desktop
+        - npm install
+        - yarn dist

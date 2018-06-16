@@ -12,7 +12,7 @@
     "build:prod": "webpack-cli --config webpack.electron-prod.ts --progress",
     "build:electron": "webpack-cli --config webpack.electron.ts --progress",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder && build --publish always",
+    "dist": "electron-builder && build --publish onTagOrDraft",
     "precompile": "rimraf dist",
     "predist": "yarn compile",
     "postinstall": "electron-builder install-app-deps"
