@@ -9,4 +9,5 @@ type App interface {
 	Restore()
 	Set(path string)
 	GetSelected()
+	Place()
 }
