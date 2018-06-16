@@ -8,7 +8,6 @@ branches:
 jobs:
   include:
     - stage: Build desktop MAC
-      if: tag IS present
       os: osx
       language: node_js
       node_js:
@@ -17,8 +16,7 @@ jobs:
         - cd desktop
         - npm install
         - yarn dist
-    - stage: Build desktop MAC
-      if: tag IS present
+    - stage: Build desktop Linux
       os: linux
       dist: ubuntu
       language: node_js
