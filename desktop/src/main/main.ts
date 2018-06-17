@@ -17,10 +17,11 @@ function createWindow() {
   });
 
   const fileName = (() => {
+    console.log(process.env.NODE_ENV);
     if (process.env.NODE_ENV === 'production') {
       return `file://${__dirname}/index.html`;
     } else {
-      return `http://localhost:4200#/main`;
+      return `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`;
     }
   })();
   // and load the index.html of the app.

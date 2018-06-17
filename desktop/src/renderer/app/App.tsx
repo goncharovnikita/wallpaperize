@@ -21,6 +21,7 @@ export class App extends React.Component {
 
     setImages = async (): Promise<void> => {
         const { random_images, daily_images} = await getInfo();
+        console.log(random_images, daily_images)
         const random = await getRandom();
         const randomCached = random_images.map(i => i.split('/').pop());
         const selected = await getSelected();

@@ -10,6 +10,7 @@ jobs:
     - stage: Build desktop MAC
       os: osx
       language: node_js
+      if: tag IS present
       node_js:
         - "9"
       script:
@@ -19,6 +20,7 @@ jobs:
     - stage: Build desktop Linux
       os: linux
       dist: ubuntu
+      if: tag IS present
       language: node_js
       node_js:
         - "9"
@@ -26,3 +28,22 @@ jobs:
         - cd desktop
         - npm install
         - yarn dist
+    - stage: Deploy back
+      script:
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        - cd back
+        - docker build -t goncharovnikita/wallpaperize:back --rm .
+        - docker push goncharovnikita/wallpaperize:back
+    - stage: Deploy app
+      script:
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        - cd app
+        - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+        - dep ensure
+        - make deploy
+    - stage: Deploy web
+      script:
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+        - cd web
+        - docker build -t goncharovnikita/wallpaperize:web --rm .
+        - docker push goncharovnikita/wallpaperize:web
