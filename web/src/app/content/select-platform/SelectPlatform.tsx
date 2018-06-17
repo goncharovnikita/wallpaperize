@@ -63,8 +63,8 @@ export class SelectPlatform extends React.Component {
                 platform: Platform.Mac
             },
             {
-                text: 'Ubuntu',
-                platform: Platform.Ubuntu
+                text: 'Linux',
+                platform: Platform.Linux
             }
         ];
     }

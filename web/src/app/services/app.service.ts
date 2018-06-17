@@ -1,59 +1,78 @@
-import { Observable, ReplaySubject, from } from "rxjs";
-import { Platform } from "../platform/platform";
-import * as Axios from 'axios';
+import { Observable, ReplaySubject, from } from 'rxjs';
+import { Platform } from '../platform/platform';
+import Axios from 'axios';
+
+export interface DownloadLinks {
+  mac: string;
+  linux: string;
+}
 
 class App {
-    private _baseURL = '';
-    private _selectedPlatform: ReplaySubject<Platform>;
-    private _selectedVersion: ReplaySubject<string>;
+  private _baseURL = '';
+  private _selectedPlatform: ReplaySubject<Platform>;
+  private _selectedVersion: ReplaySubject<string>;
+  private _downloadLinks: ReplaySubject<DownloadLinks>;
 
-    constructor(env: string) {
-        if (env === 'production') {
-            this._baseURL = 'https://wallpaperize.goncharovnikita.com/api';
-        } else {
-            this._baseURL = 'http://localhost:8080/';
-        }
-        this._selectedPlatform = this._getSelectedPlatform();
-        this._selectedVersion = this._getSelectedVersion();
+  constructor(env: string) {
+    if (env === 'production') {
+      this._baseURL = 'https://wallpaperize.goncharovnikita.com/api';
+    } else {
+      this._baseURL = 'http://localhost:3000/';
     }
+    this._selectedPlatform = this._getSelectedPlatform();
+    this._selectedVersion = this._getSelectedVersion();
+    this._downloadLinks = this._getDownloadLinks();
+  }
 
-    getBaseURL(): string {
-        return this._baseURL;
+  getBaseURL(): string {
+    return this._baseURL;
+  }
+
+  getSelectedPlatform(): Observable<Platform> {
+    return this._selectedPlatform;
+  }
+
+  selectPlatform(p: Platform): void {
+    this._selectedPlatform.next(p);
+  }
+
+  getSelectedVersion(): Observable<string> {
+    return this._selectedVersion;
+  }
+
+  getDownloadLinks(): Observable<DownloadLinks> {
+    return this._downloadLinks;
+  }
+
+  private _getSelectedPlatform(): ReplaySubject<Platform> {
+    const result = new ReplaySubject<Platform>();
+    if (/mac(\w+)?/gim.test(navigator.platform)) {
+      result.next(Platform.Mac);
+    } else {
+      result.next(Platform.Linux);
     }
+    return result;
+  }
 
-    getSelectedPlatform(): Observable<Platform> {
-        return this._selectedPlatform;
-    }
+  private _getSelectedVersion(): ReplaySubject<string> {
+    const result = new ReplaySubject<string>();
 
-    selectPlatform(p: Platform): void {
-        this._selectedPlatform.next(p);
-    }
+    from(Axios.get(this._baseURL + 'get/maxversion')).subscribe(r => {
+      result.next(r.data);
+    });
 
-    getSelectedVersion(): Observable<string> {
-        return this._selectedVersion;
-    }
+    return result;
+  }
 
-    private  _getSelectedPlatform(): ReplaySubject<Platform> {
-        const result = new ReplaySubject<Platform>();
-        if (/mac(\w+)?/gmi.test(navigator.platform)) {
-            result.next(Platform.Mac);
-        } else {
-            result.next(Platform.Ubuntu);
-        }
-        return result;
-    }
+  private _getDownloadLinks(): ReplaySubject<DownloadLinks> {
+    const result = new ReplaySubject<DownloadLinks>();
 
-    private _getSelectedVersion(): ReplaySubject<string> {
-        const result = new ReplaySubject<string>();
+    from(Axios.get(this._baseURL + 'get/links')).subscribe(r =>
+      result.next(r.data)
+    );
 
-        from(
-            Axios.default.get(this._baseURL + 'get/maxversion')
-        ).subscribe((r) => {
-            result.next(r.data);
-        });
-
-        return result;
-    }
+    return result;
+  }
 }
 
 const app = new App(process.env.NODE_ENV);

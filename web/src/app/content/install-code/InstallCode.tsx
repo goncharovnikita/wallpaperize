@@ -1,61 +1,50 @@
 import * as React from 'react';
 import { Observable, zip } from 'rxjs';
-import { AppService } from '../../services/app.service';
+import { AppService, DownloadLinks } from '../../services/app.service';
 import { map, switchMap } from 'rxjs/operators';
 import { Platform } from '../../platform/platform';
 
-export class InstallCode extends React.Component {
-    private _downloadURL: string;
-    state: {
-        code: string;
-    };
+interface InstallCodeState {
+    link: string;
+}
+
+export class InstallCode extends React.Component<{}, InstallCodeState> {
     constructor(props) {
         super(props);
-        this.state = {
-            code: '',
-        };
-        this._downloadURL = 'https://wallpaperize.goncharovnikita.com/builds';
+        this.state = {link: ''};
     }
 
     componentDidMount() {
-        this._getSelectedCode()
-            .subscribe(code => {
-                this.setState({code});
+        AppService.getDownloadLinks()
+            .subscribe(links => {
+                AppService.getSelectedPlatform()
+                .subscribe(p => {
+                    switch (p) {
+                        case Platform.Linux:
+                        this.setState({link: links.linux});
+                        break;
+                        case Platform.Mac:
+                        this.setState({link: links.mac});
+                        break;
+                    }
+                });
             });
     }
 
     render() {
         return (
             <div className="lead">
-                {this.state.code}
+                <a href={this.state.link} target="_blank">
+                    <button className="btn btn-primaty">Download</button>
+                </a>
             </div>
         );
     }
 
-    private _getSelectedCode(): Observable<string> {
-        return AppService.getSelectedVersion()
-            .pipe(
-                switchMap(version => {
-                    return AppService.getSelectedPlatform()
-                        .pipe(
-                            map(platform => {
-                                switch (platform) {
-                                    case Platform.Mac:
-                                    // return this._getInstallCode(`darwin-amd64-${version}`, this._downloadURL);
-                                    return this._getInstallCode(`darwin-amd64-1.0.0`, this._downloadURL);
-                                    default:
-                                    return this._getInstallCode(`linux-amd64-${version}`, this._downloadURL);
-                                }
-                            })
-                        );
-                })
-            );
-    }
-
-    private _getInstallCode(version: string, url: string): string {
-        return `
-        curl ${url}/${version} --output wallpaperize && chmod +x ./wallpaperize &&
-        sudo mv ./wallpaperize /usr/local/bin/wallpaperize && . ~/.bashrc
-        `;
-    }
+    // private _getInstallCode(version: string, url: string): string {
+    //     return `
+    //     curl ${url}/${version} --output wallpaperize && chmod +x ./wallpaperize &&
+    //     sudo mv ./wallpaperize /usr/local/bin/wallpaperize && . ~/.bashrc
+    //     `;
+    // }
 }

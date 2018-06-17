@@ -20,7 +20,7 @@ export class Content extends React.Component {
                     <div className="col-md-10">
                         <SelectPlatform />
                         <div className="alert alert-dark">
-                            <div className="code">
+                            <div className="code d-flex justify-content-around">
                                 <InstallCode />
                             </div>
                         </div>

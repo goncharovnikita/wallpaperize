@@ -4,12 +4,12 @@ language: go
 branches:
   only:
     - master
-    - /v*/
+    - desktop
 
 jobs:
   include:
     - stage: Build desktop MAC
-      if: branch =~ /v*/
+      if: branch =~ desktop
       os: osx
       language: node_js
       node_js:
@@ -19,7 +19,7 @@ jobs:
         - npm install
         - yarn dist
     - stage: Build desktop Linux
-      if: branch =~ /v*/
+      if: branch =~ desktop
       os: linux
       dist: ubuntu
       language: node_js
