@@ -4,13 +4,14 @@ language: go
 branches:
   only:
     - master
+    - /v*/
 
 jobs:
   include:
     - stage: Build desktop MAC
+      if: branch =~ /v*/
       os: osx
       language: node_js
-      if: tag IS present
       node_js:
         - "9"
       script:
@@ -18,9 +19,9 @@ jobs:
         - npm install
         - yarn dist
     - stage: Build desktop Linux
+      if: branch =~ /v*/
       os: linux
       dist: ubuntu
-      if: tag IS present
       language: node_js
       node_js:
         - "9"
@@ -29,12 +30,14 @@ jobs:
         - npm install
         - yarn dist
     - stage: Deploy back
+      if: branch = master
       script:
         - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
         - cd back
         - docker build -t goncharovnikita/wallpaperize:back --rm .
         - docker push goncharovnikita/wallpaperize:back
     - stage: Deploy app
+      if: branch = master
       script:
         - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
         - cd app
@@ -42,6 +45,7 @@ jobs:
         - dep ensure
         - make deploy
     - stage: Deploy web
+      if: branch = master
       script:
         - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
         - cd web
