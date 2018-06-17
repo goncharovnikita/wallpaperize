@@ -65,6 +65,10 @@ export class SelectPlatform extends React.Component {
             {
                 text: 'Linux',
                 platform: Platform.Linux
+            },
+            {
+                text: 'Windows',
+                platform: Platform.Windows
             }
         ];
     }
