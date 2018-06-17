@@ -17,6 +17,7 @@
     "precompile": "rimraf dist",
     "dist:simple": "electron-builder",
     "predist": "yarn compile",
+    "predist:all": "yarn compile",
     "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [
