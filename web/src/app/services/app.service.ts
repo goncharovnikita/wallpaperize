@@ -5,6 +5,7 @@ import Axios from 'axios';
 export interface DownloadLinks {
   mac: string;
   linux: string;
+  windows: string;
 }
 
 class App {
@@ -46,10 +47,15 @@ class App {
 
   private _getSelectedPlatform(): ReplaySubject<Platform> {
     const result = new ReplaySubject<Platform>();
-    if (/mac(\w+)?/gim.test(navigator.platform)) {
-      result.next(Platform.Mac);
-    } else {
-      result.next(Platform.Linux);
+    switch (true) {
+      case /mac(\w+)?/gim.test(navigator.platform):
+        result.next(Platform.Mac);
+        break;
+      case /win(\w+)?/gim.test(navigator.platform):
+        result.next(Platform.Windows);
+        break;
+      default:
+        result.next(Platform.Linux);
     }
     return result;
   }

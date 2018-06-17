@@ -1,4 +1,5 @@
 export enum Platform {
   Mac,
-  Linux
+  Linux,
+  Windows
 }

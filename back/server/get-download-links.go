@@ -12,8 +12,9 @@ import (
 
 // DownloadLinks type
 type DownloadLinks struct {
-	Mac   string `json:"mac"`
-	Linux string `json:"linux"`
+	Mac     string `json:"mac"`
+	Linux   string `json:"linux"`
+	Windows string `json:"windows"`
 }
 
 func (s Server) handleGetDownloadLinks() http.HandlerFunc {
@@ -45,6 +46,11 @@ func (s Server) handleGetDownloadLinks() http.HandlerFunc {
 
 			if strings.HasSuffix(name, ".AppImage") {
 				result.Linux = *(v.BrowserDownloadURL)
+				continue
+			}
+
+			if strings.HasSuffix(name, ".exe") {
+				result.Windows = *(v.BrowserDownloadURL)
 				continue
 			}
 		}

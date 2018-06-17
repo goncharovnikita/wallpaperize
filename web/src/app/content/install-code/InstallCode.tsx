@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { Observable, zip } from 'rxjs';
-import { AppService, DownloadLinks } from '../../services/app.service';
-import { map, switchMap } from 'rxjs/operators';
+import { AppService } from '../../services/app.service';
 import { Platform } from '../../platform/platform';
 
 interface InstallCodeState {
@@ -23,6 +21,9 @@ export class InstallCode extends React.Component<{}, InstallCodeState> {
                         case Platform.Linux:
                         this.setState({link: links.linux});
                         break;
+                        case Platform.Windows:
+                        this.setState({link: links.windows});
+                        break;
                         case Platform.Mac:
                         this.setState({link: links.mac});
                         break;
@@ -40,11 +41,4 @@ export class InstallCode extends React.Component<{}, InstallCodeState> {
             </div>
         );
     }
-
-    // private _getInstallCode(version: string, url: string): string {
-    //     return `
-    //     curl ${url}/${version} --output wallpaperize && chmod +x ./wallpaperize &&
-    //     sudo mv ./wallpaperize /usr/local/bin/wallpaperize && . ~/.bashrc
-    //     `;
-    // }
 }

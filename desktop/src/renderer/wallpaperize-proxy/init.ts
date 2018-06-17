@@ -76,6 +76,8 @@ const getDownloadLink = async (version: string): Promise<string> => {
       return BUILDS_PATH + 'darwin-amd64-' + version;
     case 'linux':
       return BUILDS_PATH + 'linux-amd64-' + version;
+    case 'win32':
+      return BUILDS_PATH + 'windows-amd64-' + version;
     default:
       throw new Error('Unsupported platform');
   }

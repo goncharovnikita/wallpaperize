@@ -2,7 +2,7 @@
 
 version=$(cat .info | cut -d'=' -f 2)
 build=$(git rev-parse HEAD)
-platforms=("darwin/amd64" "linux/amd64")
+platforms=("darwin/amd64" "linux/amd64" "windows/amd64")
 
 for platform in "${platforms[@]}"
 do
