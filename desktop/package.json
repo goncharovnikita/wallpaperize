@@ -13,7 +13,7 @@
     "build:electron": "webpack-cli --config webpack.electron.ts --progress",
     "pack": "electron-builder --dir",
     "dist": "electron-builder && build --publish always",
-    "dist:all": "electron-builder -m -l --publish always",
+    "dist:all": "electron-builder -m -l --win --publish always",
     "precompile": "rimraf dist",
     "dist:simple": "electron-builder",
     "predist": "yarn compile",
