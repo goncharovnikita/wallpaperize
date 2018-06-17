@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 func (a application) Set(path string) {
@@ -41,10 +42,13 @@ func (a application) setFromRemote(path string) {
 			log.Fatal(err)
 		}
 
-		defer file.Close()
-
 		io.Copy(file, resp.Body)
+		file.Close()
 	}
+
+	time.Sleep(100 * time.Millisecond)
+
+	println(name)
 
 	err = a.master.SetFromFile(name)
 	if err != nil {

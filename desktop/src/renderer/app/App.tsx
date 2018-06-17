@@ -5,6 +5,7 @@ import { loadRandom } from '@app/wallpaperize-proxy/load-random';
 import { getRandom } from '@app/wallpaperize-proxy/get-random';
 import { getSelected } from '@app/wallpaperize-proxy/get-selected';
 import { AppService } from '@app/app/app.service';
+import * as ospath from 'path';
 
 interface AppState {
     random: ImagesSectorProps;
@@ -41,7 +42,8 @@ export class App extends React.Component {
     }
 
     getSrc = (path: string): string => {
-        return 'file://' + path;
+        console.log('file://' + ospath.resolve(path));
+        return 'file://' + ospath.resolve(path);
     }
 
     getRemoteSrc = (p: string): string => {

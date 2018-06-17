@@ -1,17 +1,19 @@
+import { getBinname } from './../../shared/get-binname';
 // import { exec } from 'child_process';
 import { stat, mkdirSync, writeFileSync, chmodSync } from 'fs';
 import Axios from 'axios';
 import { homedir } from 'os';
 import * as os from 'os';
-import * as fs from 'fs';
 import { getInfo } from '@app/wallpaperize-proxy/get-info';
-const APP_PLACEMENT = homedir() + '/.wallpaperize';
-export const BIN_NAME = APP_PLACEMENT + '/wallpaperize';
+import * as path from 'path';
+export const APP_PLACEMENT = path.resolve(homedir(), '.wallpaperize');
+export const BIN_NAME = getBinname();
 const SITE_ROOT = 'https://wallpaperize.goncharovnikita.com/';
 const GET_VERSION_PATH = SITE_ROOT + 'api/get/maxversion';
 const BUILDS_PATH = SITE_ROOT + 'builds/';
 
 export const init = async (): Promise<boolean> => {
+  console.log(os.arch())
   return new Promise(resolve => {
     stat(APP_PLACEMENT, async (err, stats) => {
       if (err) {
@@ -61,7 +63,7 @@ const initBin = async () => {
         resolve();
       } catch (e) {
         console.log(e);
-        fs.unlinkSync(BIN_NAME);
+        // fs.unlinkSync(BIN_NAME);
       }
     };
 
