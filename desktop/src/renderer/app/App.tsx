@@ -4,6 +4,7 @@ import { getInfo } from '@app/wallpaperize-proxy/get-info';
 import { loadRandom } from '@app/wallpaperize-proxy/load-random';
 import { getRandom } from '@app/wallpaperize-proxy/get-random';
 import { getSelected } from '@app/wallpaperize-proxy/get-selected';
+import { AppService } from '@app/app/app.service';
 
 interface AppState {
     random: ImagesSectorProps;
@@ -13,10 +14,12 @@ interface AppState {
 export class App extends React.Component {
     randomPath = 'https://wallpaperize.goncharovnikita.com/i/random/';
     state: AppState;
+    service: AppService;
     constructor(props: any) {
         super(props);
         this.state = this.initState();
         this.setImages();
+        this.service = new AppService();
     }
 
     setImages = async (): Promise<void> => {

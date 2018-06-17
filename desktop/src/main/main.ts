@@ -1,12 +1,12 @@
 // Modules to control application life and create native browser window
 import { app, BrowserWindow, Menu, MenuItem } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import { Updater } from './updater';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: Electron.BrowserWindow | null;
 
-function createWindow() {
+function createWindow(): BrowserWindow {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
@@ -19,7 +19,7 @@ function createWindow() {
   const fileName = (() => {
     console.log(process.env.NODE_ENV);
     if (process.env.NODE_ENV === 'production') {
-      return `file://${__dirname}/index.html`;
+      return `file://${__dirname}/index.html#/init`;
     } else {
       return `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}#/init`;
     }
@@ -37,6 +37,8 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+
+  return mainWindow;
 }
 
 // This method will be called when Electron has finished
@@ -45,12 +47,9 @@ function createWindow() {
 app.on('ready', () => {
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
-  createWindow();
-  setTimeout(() => {
-    if (mainWindow && mainWindow.isFocused()) {
-      autoUpdater.checkForUpdatesAndNotify();
-    }
-  }, 30000);
+  const win = createWindow();
+  const updater = new Updater(win);
+  updater.init();
 });
 
 // Quit when all windows are closed.
