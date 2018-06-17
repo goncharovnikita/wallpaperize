@@ -43,33 +43,36 @@ const initAppdir = () => {
 };
 
 const initBin = async () => {
-  const version = await getMaxVersion();
-  const downloadLink = await getDownloadLink(version);
-  const result = await Axios({
-    method: 'GET',
-    url: downloadLink,
-    responseType: 'blob'
-  });
-  const freader = new FileReader();
-  freader.onload = async () => {
-    writeFileSync(BIN_NAME, freader.result, 'binary');
+  return new Promise(async resolve => {
+    const version = await getMaxVersion();
+    const downloadLink = await getDownloadLink(version);
+    const result = await Axios({
+      method: 'GET',
+      url: downloadLink,
+      responseType: 'blob'
+    });
+    const freader = new FileReader();
+    freader.onload = async () => {
+      writeFileSync(BIN_NAME, freader.result, 'binary');
 
-    chmodSync(BIN_NAME, '0777');
+      chmodSync(BIN_NAME, '0777');
 
-    try {
-      const info = await getInfo();
-      if (info.app_version === version) {
-        console.log('app successfully initialized');
-      } else {
-        console.log(info.app_version);
+      try {
+        const info = await getInfo();
+        if (info.app_version === version) {
+          console.log('app successfully initialized');
+        } else {
+          console.log(info.app_version);
+        }
+        resolve();
+      } catch (e) {
+        console.log(e);
+        fs.unlinkSync(BIN_NAME);
       }
-    } catch (e) {
-      console.log(e);
-      fs.unlinkSync(BIN_NAME);
-    }
-  };
+    };
 
-  freader.readAsBinaryString(result.data);
+    freader.readAsBinaryString(result.data);
+  });
 };
 
 const getDownloadLink = async (version: string): Promise<string> => {

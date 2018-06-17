@@ -13,7 +13,6 @@ export interface WallpaperizeInfo {
 export const getInfo = async (): Promise<WallpaperizeInfo> => {
   return new Promise((resolve, reject) => {
     exec(BIN_NAME + ' info -o json', (err, stdout, stderr) => {
-      console.log(err, stdout, stderr);
       if (err) {
         reject(err);
         return;
