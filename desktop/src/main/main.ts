@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 import { app, BrowserWindow, Menu, MenuItem } from 'electron';
 import { Updater } from './updater';
+import { getAppRoot } from '../shared/get-approot';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -16,14 +17,7 @@ function createWindow(): BrowserWindow {
     }
   });
 
-  const fileName = (() => {
-    console.log(process.env.NODE_ENV);
-    if (process.env.NODE_ENV === 'production') {
-      return `file://${__dirname}/index.html#/init`;
-    } else {
-      return `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}#/init`;
-    }
-  })();
+  const fileName = getAppRoot() + '/init';
   // and load the index.html of the app.
   mainWindow.loadURL(fileName);
 
@@ -73,9 +67,7 @@ app.on('activate', function() {
 // code. You can also put them in separate files and require them here.
 
 const openAbout = () => {
-  const modalPath = `http://localhost:${
-    process.env.ELECTRON_WEBPACK_WDS_PORT
-  }#/menu/about`;
+  const modalPath = `${getAppRoot()}/menu/about`;
   let win: BrowserWindow | null = new BrowserWindow({
     width: 400,
     height: 320

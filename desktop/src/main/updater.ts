@@ -1,9 +1,12 @@
 import { BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import * as applog from 'electron-log';
 
 export class Updater {
   constructor(private win: BrowserWindow) {}
   init(): void {
+    applog.transports.file.level = 'info';
+    autoUpdater.logger = applog;
     autoUpdater.on('checking-for-update', () => {
       this.sendStatus('Checking for update...');
     });
