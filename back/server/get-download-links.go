@@ -20,7 +20,7 @@ type DownloadLinks struct {
 func (s Server) handleGetDownloadLinks() http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		client := github.NewClient(nil)
-		releases, _, err := client.Repositories.ListReleases(context.Background(), "goncharovnikita", "wallpaperize", nil)
+		release, _, err := client.Repositories.GetLatestRelease(context.Background(), "goncharovnikita", "wallpaperize")
 		if err != nil {
 			log.Println(err)
 			rw.WriteHeader(500)
@@ -28,13 +28,11 @@ func (s Server) handleGetDownloadLinks() http.HandlerFunc {
 			return
 		}
 
-		if len(releases) < 1 {
+		if release == nil {
 			rw.WriteHeader(400)
 			rw.Write([]byte("repo dont have releases"))
 			return
 		}
-
-		release := releases[0]
 
 		result := DownloadLinks{}
 		for _, v := range release.Assets {
