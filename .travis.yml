@@ -9,7 +9,7 @@ branches:
 jobs:
   include:
     - stage: Build desktop MAC
-      if: branch =~ desktop
+      if: branch = desktop
       os: osx
       language: node_js
       node_js:
@@ -17,18 +17,7 @@ jobs:
       script:
         - cd desktop
         - npm install
-        - yarn dist
-    - stage: Build desktop Linux
-      if: branch =~ desktop
-      os: linux
-      dist: ubuntu
-      language: node_js
-      node_js:
-        - "9"
-      script:
-        - cd desktop
-        - npm install
-        - yarn dist
+        - yarn dist:all
     - stage: Deploy back
       if: branch = master
       script:

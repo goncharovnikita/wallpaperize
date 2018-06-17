@@ -1,12 +1,13 @@
 // Modules to control application life and create native browser window
 import { app, BrowserWindow, Menu, MenuItem } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import { Updater } from './updater';
+import { getAppRoot } from '../shared/get-approot';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: Electron.BrowserWindow | null;
 
-function createWindow() {
+function createWindow(): BrowserWindow {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
@@ -16,14 +17,7 @@ function createWindow() {
     }
   });
 
-  const fileName = (() => {
-    console.log(process.env.NODE_ENV);
-    if (process.env.NODE_ENV === 'production') {
-      return `file://${__dirname}/index.html`;
-    } else {
-      return `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`;
-    }
-  })();
+  const fileName = getAppRoot() + '/init';
   // and load the index.html of the app.
   mainWindow.loadURL(fileName);
 
@@ -37,6 +31,8 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+
+  return mainWindow;
 }
 
 // This method will be called when Electron has finished
@@ -45,12 +41,9 @@ function createWindow() {
 app.on('ready', () => {
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
-  createWindow();
-  setTimeout(() => {
-    if (mainWindow && mainWindow.isFocused()) {
-      autoUpdater.checkForUpdatesAndNotify();
-    }
-  }, 30000);
+  const win = createWindow();
+  const updater = new Updater(win);
+  updater.init();
 });
 
 // Quit when all windows are closed.
@@ -74,7 +67,7 @@ app.on('activate', function() {
 // code. You can also put them in separate files and require them here.
 
 const openAbout = () => {
-  const modalPath = 'http://localhost:4200#/menu/about';
+  const modalPath = `${getAppRoot()}/menu/about`;
   let win: BrowserWindow | null = new BrowserWindow({
     width: 400,
     height: 320

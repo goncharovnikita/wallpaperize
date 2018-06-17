@@ -1,6 +1,6 @@
 {
   "name": "wallpaperize-desktop",
-  "version": "1.0.0-beta",
+  "version": "1.0.2-beta",
   "description": "A wallpaperize desktop application",
   "repository": {
     "url": "https://github.com/goncharovnikita/wallpaperize"
@@ -13,9 +13,12 @@
     "build:electron": "webpack-cli --config webpack.electron.ts --progress",
     "pack": "electron-builder --dir",
     "dist": "electron-builder && build --publish always",
+    "dist:all": "electron-builder -m -l --win --publish always",
     "precompile": "rimraf dist",
     "dist:simple": "electron-builder",
     "predist": "yarn compile",
+    "predist:all": "yarn compile",
+    "predist:simple": "yarn compile",
     "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [
@@ -26,6 +29,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.1.1",
+    "electron-log": "^2.2.15",
     "fix-path": "^2.1.0",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.3",
@@ -44,7 +48,7 @@
     "@types/react-router": "^4.0.26",
     "@types/react-router-dom": "^4.2.7",
     "@types/webpack": "^4.4.0",
-    "electron": "2.0.0",
+    "electron": "^2.0.2",
     "electron-builder": "20.14.7",
     "electron-updater": "^2.21.10",
     "electron-webpack": "^2.0.1",
