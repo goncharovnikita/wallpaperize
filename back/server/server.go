@@ -57,4 +57,12 @@ func (s *Server) serve() {
 				map[string]string{"Content-Type": "application/json"},
 				s.handleGetRandom())),
 	)
+
+	http.HandleFunc(
+		"/get/links",
+		corsHeader(
+			addHeadersFilter(
+				map[string]string{"Content-Type": "application/json"},
+				s.handleGetDownloadLinks())),
+	)
 }
