@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
-	"github.com/goncharovnikita/wallpaperize/app/cerrors"
 )
 
 func (a application) Set(path string) {
@@ -29,25 +27,23 @@ func (a application) setFromRemote(path string) {
 	name := a.cache.getRandomPath() + "/" + last
 	_, err := os.Stat(name)
 	if err != nil {
-		if err.Error() == cerrors.NewStatNoSuchFileErr(name).Error() {
-			resp, err := http.Get(path)
-			if err != nil {
-				println("ERROR")
-				log.Fatal(err)
-			}
-
-			defer resp.Body.Close()
-
-			file, err := os.OpenFile(name, os.O_CREATE|os.O_RDWR, 0777)
-			if err != nil {
-				println("ERROR")
-				log.Fatal(err)
-			}
-
-			defer file.Close()
-
-			io.Copy(file, resp.Body)
+		resp, err := http.Get(path)
+		if err != nil {
+			println("ERROR")
+			log.Fatal(err)
 		}
+
+		defer resp.Body.Close()
+
+		file, err := os.OpenFile(name, os.O_CREATE|os.O_RDWR, 0777)
+		if err != nil {
+			println("ERROR")
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+
+		io.Copy(file, resp.Body)
 	}
 
 	err = a.master.SetFromFile(name)

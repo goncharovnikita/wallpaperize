@@ -4,21 +4,16 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	"github.com/goncharovnikita/wallpaperize/app/cerrors"
 )
 
 func ensureDir(path string) {
 	info, err := os.Stat(path)
 	if err != nil {
-		if err.Error() == cerrors.NewStatNoSuchFileErr(path).Error() {
-			err = os.Mkdir(path, 0777)
-			if err != nil {
-				log.Fatal(err)
-			}
-			return
+		err = os.Mkdir(path, 0777)
+		if err != nil {
+			log.Fatal(err)
 		}
-		log.Fatal(err)
+		return
 	}
 
 	if !info.IsDir() {
@@ -29,15 +24,12 @@ func ensureDir(path string) {
 func ensureFile(path string) {
 	info, err := os.Stat(path)
 	if err != nil {
-		if err.Error() == cerrors.NewStatNoSuchFileErr(path).Error() {
-			file, err := os.OpenFile(path, os.O_CREATE, 0777)
-			if err != nil {
-				log.Fatal(err)
-			}
-			file.Close()
-			return
+		file, err := os.OpenFile(path, os.O_CREATE, 0777)
+		if err != nil {
+			log.Fatal(err)
 		}
-		log.Fatal(err)
+		file.Close()
+		return
 	}
 
 	if info.IsDir() {
