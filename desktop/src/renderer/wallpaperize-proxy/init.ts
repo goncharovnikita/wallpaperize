@@ -1,11 +1,5 @@
 // import { exec } from 'child_process';
-import {
-  stat,
-  mkdirSync,
-  writeFileSync,
-  chmodSync,
-  createWriteStream
-} from 'fs';
+import { stat, mkdirSync, writeFileSync, chmodSync } from 'fs';
 import Axios from 'axios';
 import { homedir } from 'os';
 import * as os from 'os';
