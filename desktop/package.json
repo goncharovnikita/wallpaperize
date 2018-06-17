@@ -1,6 +1,6 @@
 {
   "name": "wallpaperize-desktop",
-  "version": "1.0.0-beta-1",
+  "version": "1.0.0-beta-2",
   "description": "A wallpaperize desktop application",
   "repository": {
     "url": "https://github.com/goncharovnikita/wallpaperize"
@@ -26,6 +26,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.1.1",
+    "electron": "^2.0.2",
     "fix-path": "^2.1.0",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.3",
@@ -44,7 +45,6 @@
     "@types/react-router": "^4.0.26",
     "@types/react-router-dom": "^4.2.7",
     "@types/webpack": "^4.4.0",
-    "electron": "2.0.0",
     "electron-builder": "20.14.7",
     "electron-updater": "^2.21.10",
     "electron-webpack": "^2.0.1",

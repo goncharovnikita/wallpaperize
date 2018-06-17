@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { WallpaperizeInfo, getInfo } from '@app/wallpaperize-proxy/get-info';
+import * as electron from 'electron';
 
 export class MenuAbout extends React.Component {
     state: {about: WallpaperizeInfo};
@@ -16,7 +17,10 @@ export class MenuAbout extends React.Component {
 
     render() {
         return (
-            <h1>Wallpaperize version {this.state.about.app_version}</h1>
+            <div>
+                <h1>Wallpaperize version {this.state.about.app_version}</h1>
+                <h2>Desktop version {electron.remote.app.getVersion()}</h2>
+            </div>
         );
     }
 }

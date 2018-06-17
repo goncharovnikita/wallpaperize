@@ -21,7 +21,7 @@ function createWindow() {
     if (process.env.NODE_ENV === 'production') {
       return `file://${__dirname}/index.html`;
     } else {
-      return `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`;
+      return `http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}#/init`;
     }
   })();
   // and load the index.html of the app.
@@ -74,7 +74,9 @@ app.on('activate', function() {
 // code. You can also put them in separate files and require them here.
 
 const openAbout = () => {
-  const modalPath = 'http://localhost:4200#/menu/about';
+  const modalPath = `http://localhost:${
+    process.env.ELECTRON_WEBPACK_WDS_PORT
+  }#/menu/about`;
   let win: BrowserWindow | null = new BrowserWindow({
     width: 400,
     height: 320
