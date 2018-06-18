@@ -6,6 +6,8 @@ import { getRandom } from '@app/wallpaperize-proxy/get-random';
 import { getSelected } from '@app/wallpaperize-proxy/get-selected';
 import { AppService } from '@app/app/app.service';
 import * as ospath from 'path';
+import { Menu } from '@app/menu/Menu';
+import './App.sass';
 
 interface AppState {
     random: ImagesSectorProps;
@@ -53,9 +55,12 @@ export class App extends React.Component {
 
     render() {
         return (
-            <div>
-                <ImagesSector {...this.state.daily} />
-                <ImagesSector {...this.state.random} />
+            <div className="d-flex h-100">
+                <Menu />
+                <div className="main-sector container">
+                    <ImagesSector {...this.state.daily} />
+                    <ImagesSector {...this.state.random} />
+                </div>
             </div>
         );
     }

@@ -17,7 +17,7 @@ export class Image extends Component<ImageProps, ImageProps> {
 
     getCached = (): JSX.Element|undefined => {
         if (this.props.cached) {
-            return <div className="lead"><i className="position-absolute far fa-check-circle"></i></div>;
+            return <div className="lead"><i className="cached position-absolute far fa-check-circle"></i></div>;
         }
 
         return undefined;
