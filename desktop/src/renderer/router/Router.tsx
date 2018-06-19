@@ -1,17 +1,32 @@
 import * as React from 'react';
-import { Route } from 'react-router';
-import { App } from '../app/App';
-import { MenuAbout } from '../global-menu/about/About';
-import { InitApp } from '@app/init/Init';
+import { MainRedux } from '@app/main/MainRedux';
+import { InitRedux } from '@app/init/InitRedux';
+import { AppPath } from '@app/state/app-state';
 
-export class Router extends React.Component {
+export class Router extends React.Component<{path: AppPath}> {
+    constructor(props) {
+        super(props);
+    }
+
+    shouldComponentUpdate(p, v): boolean {
+        return true;
+    }
+
+    component = (): JSX.Element => {
+        switch (this.props.path) {
+            case AppPath.Saved:
+            case AppPath.Main:
+            return <MainRedux />;
+            case AppPath.Init:
+            default:
+            return <InitRedux />;
+        }
+    }
+
     render() {
         return (
             <div>
-                <Route path="/main" component={App} />
-                <Route path="/init" component={InitApp} />
-                <Route path="/menu/about" component={MenuAbout} />
-                {/* <Redirect from="/" to="/init" /> */}
+                {this.component()}
             </div>
         );
     }

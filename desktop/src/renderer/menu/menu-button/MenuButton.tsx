@@ -7,8 +7,7 @@ export interface MenuButtonProps {
 
 export class MenuButton extends React.Component<MenuButtonProps> {
     private baseClass = "menu-but d-flex mt-2 align-items-center ";
-    mainClass = (): string => this.props.opened ? this.baseClass + "justify-content-start"
-        : this.baseClass + 'justify-conent-around'
+    mainClass = (): string => this.baseClass + 'justify-content-around';
 
     render(): JSX.Element {
         return (

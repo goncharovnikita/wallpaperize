@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { ImagesSector, ImagesSectorProps } from '@app/app/images-sector/ImagesSector';
+import { ImagesSector, ImagesSectorProps } from '@app/images-sector/ImagesSector';
 import { getInfo } from '@app/wallpaperize-proxy/get-info';
 import { loadRandom } from '@app/wallpaperize-proxy/load-random';
 import { getRandom } from '@app/wallpaperize-proxy/get-random';
 import { getSelected } from '@app/wallpaperize-proxy/get-selected';
 import { AppService } from '@app/app/app.service';
 import * as ospath from 'path';
-import { Menu } from '@app/menu/Menu';
 import './App.sass';
 
 interface AppState {
@@ -44,23 +43,18 @@ export class App extends React.Component {
     }
 
     getSrc = (path: string): string => {
-        console.log('file://' + ospath.resolve(path));
         return 'file://' + ospath.resolve(path);
     }
 
     getRemoteSrc = (p: string): string => {
-        // return 'http://localhost:2015/' + p;
         return this.randomPath + 'min/' + p.replace('.jpg', '-min.jpg');
     }
 
     render() {
         return (
-            <div className="d-flex h-100">
-                <Menu />
-                <div className="main-sector container">
-                    <ImagesSector {...this.state.daily} />
-                    <ImagesSector {...this.state.random} />
-                </div>
+            <div className="main-sector container">
+                <ImagesSector {...this.state.daily} />
+                <ImagesSector {...this.state.random} />
             </div>
         );
     }

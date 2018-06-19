@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image } from '@app/app/images-sector/image/Image';
+import { Image } from '@app/images-sector/image/Image';
 import { setWallpaper } from '@app/wallpaperize-proxy/set-wallpaper';
 
 export interface ImagesSectorProps {
