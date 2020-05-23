@@ -3,6 +3,7 @@
 package wallmaster
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"os/user"
@@ -26,7 +27,7 @@ func (Wallmaster) Get() (string, error) {
 
 // SetFromFile uses AppleScript to tell Finder to set the desktop wallpaper to specified file.
 func (Wallmaster) SetFromFile(file string) error {
-	cmd := exec.Command("sqlite3", os.Getenv("HOME")+"/Library/Application Support/Dock/desktoppicture.db", "update data set value = '"+file+"'")
+	cmd := exec.Command("osascript", fmt.Sprintf("-e tell application \"System Events\" to tell every desktop to set picture to \"%s\"", file))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
