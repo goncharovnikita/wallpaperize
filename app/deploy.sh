@@ -13,7 +13,7 @@ do
     output_name=$GOOS'-'$GOARCH'-'$version
     env GOOS=$GOOS GOARCH=$GOARCH go build -ldflags "-X=main.appVersion=$version -X=main.appBuild=$build" -o $output_name
     curl --data-binary "@${output_name}" -L --header "BUILD_VERSION: ${output_name}" \
-        https://wallpaperize.goncharovnikita.com/add/build
+        https://api.wallpaperize.goncharovnikita.com/add/build
 
     if [ $? -ne 0 ]; then
         echo 'An error has occurred! Aborting the script execution...'
