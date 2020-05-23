@@ -9,10 +9,6 @@ WORKDIR ${dist}
 RUN apk add curl --no-cache && \
     apk add git --no-cache
 
-RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-
-RUN dep ensure
-
 RUN env GOOS=linux GOARCH=386 go build
 
 FROM alpine
