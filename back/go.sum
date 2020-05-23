@@ -1,0 +1,14 @@
+github.com/goncharovnikita/wallpaperize v0.0.0-20180615080457-6978f9f3ba79 h1:mqpAH2oYZdsU8DfQXmoa5wY//3Xe94Vg0EZ5yYG89LY=
+github.com/goncharovnikita/wallpaperize v0.0.0-20180615080457-6978f9f3ba79/go.mod h1:33WF5NrytaASb5aC31DKOK/zOugZbyIp+pRIPeDr+/c=
+github.com/goncharovnikita/wallpaperize v1.0.3-beta.0.20200523142050-8854bcbc79de h1:B8KW/vGwMgnrYdsxFPDmOnfW0AcVaPrSNV0UQ7cP6QA=
+github.com/goncharovnikita/wallpaperize v1.0.3-beta.0.20200523142050-8854bcbc79de/go.mod h1:33WF5NrytaASb5aC31DKOK/zOugZbyIp+pRIPeDr+/c=
+github.com/goncharovnikita/wallpaperize v1.0.4-beta h1:dU9CzVFeUtD3NcY006D4/zuZCuZQPIKW41cHX24CTvM=
+github.com/goncharovnikita/wallpaperize v1.0.4-beta/go.mod h1:33WF5NrytaASb5aC31DKOK/zOugZbyIp+pRIPeDr+/c=
+github.com/google/go-github v17.0.0+incompatible h1:N0LgJ1j65A7kfXrZnUDaYCs/Sf4rEjNlfyDHW9dolSY=
+github.com/google/go-github v17.0.0+incompatible/go.mod h1:zLgOLi98H3fifZn+44m+umXrS52loVEgC2AApnigrVQ=
+github.com/google/go-querystring v1.0.0 h1:Xkwi/a1rcvNg1PPYe5vI8GbeBY/jrVuDX5ASuANWTrk=
+github.com/google/go-querystring v1.0.0/go.mod h1:odCYkC5MyYFN7vkCjXpyrEuKhc/BUO6wN/zVPAxq5ck=
+github.com/joho/godotenv v1.3.0 h1:Zjp+RcGpHhGlrMbJzXTrZZPrWj+1vfm90La1wgB6Bhc=
+github.com/joho/godotenv v1.3.0/go.mod h1:7hK45KPybAkOC6peb+G5yklZfMxEjkZhHbwpqxOKXbg=
+github.com/kelseyhightower/envconfig v1.4.0 h1:Im6hONhd3pLkfDFsbRgu68RDNkGF1r3dvMUtDTo2cv8=
+github.com/kelseyhightower/envconfig v1.4.0/go.mod h1:cccZRl6mQpaq41TPp5QxidR+Sa3axMbJDNb//FQX6Gg=
