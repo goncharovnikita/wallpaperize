@@ -2,12 +2,16 @@ import * as React from 'react';
 
 import styles from './index.module.scss';
 
-import { setWallpaper } from '../../wallpaperize-proxy';
-
-export default function ImagesSector({ title, afterTitle, getSrc, images }) {
+export default function ImagesSector({
+  title,
+  afterTitle,
+  getSrc,
+  images,
+  onImageClick
+}) {
   const onImgClick = React.useCallback(
     img => {
-      setWallpaper(getSrc(img));
+      onImageClick(img);
     },
     [getSrc]
   );

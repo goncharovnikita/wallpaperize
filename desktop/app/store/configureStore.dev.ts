@@ -1,11 +1,12 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
+import createSagaMiddleware from 'redux-saga';
 import createRootReducer from '../reducers';
 import * as picturesActions from '../actions/pictures';
 import { AppState } from '../reducers/types';
+import sagas from '../sagas';
 
 declare global {
   interface Window {
@@ -24,14 +25,12 @@ declare global {
 const history = createHashHistory();
 
 const rootReducer = createRootReducer(history);
+const sagaMiddleware = createSagaMiddleware();
 
 const configureStore = (initialState?: AppState) => {
   // Redux Configuration
-  const middleware = [];
+  const middleware = [sagaMiddleware];
   const enhancers = [];
-
-  // Thunk Middleware
-  middleware.push(thunk);
 
   // Logging Middleware
   const logger = createLogger({
@@ -70,12 +69,29 @@ const configureStore = (initialState?: AppState) => {
   // Create Store
   const store = createStore(rootReducer, initialState, enhancer);
 
+  let sagaTask = sagaMiddleware.run(sagas);
+
   if (module.hot) {
     module.hot.accept(
       '../reducers',
       // eslint-disable-next-line global-require
       () => store.replaceReducer(require('../reducers').default)
     );
+
+    module.hot.accept('../sagas', () => {
+      // eslint-disable-next-line global-require
+      const getNewSagas = require('../sagas');
+      const reloadSaga = () => {
+        sagaTask = sagaMiddleware.run(function* replacedSaga() {
+          yield getNewSagas.default();
+        });
+      };
+      sagaTask
+        .toPromise()
+        .then(reloadSaga)
+        .catch(reloadSaga);
+      sagaTask.cancel();
+    });
   }
 
   return store;

@@ -8,7 +8,8 @@ module.exports = {
     'react/sort-comp': 0,
     'react/jsx-props-no-spreading': 0,
     'import/prefer-default-export': 0,
-    'no-param-reassign': 0
+    'no-param-reassign': 0,
+    'consistent-return': 0
   },
   settings: {
     'import/resolver': {
