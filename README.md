@@ -1,4 +1,7 @@
 # Wallpaperize
+Master pipeline [![Build Status](https://travis-ci.org/goncharovnikita/wallpaperize.svg?branch=master)](https://travis-ci.org/goncharovnikita/wallpaperize)
+Desktop pipeline [![Build Status](https://travis-ci.org/goncharovnikita/wallpaperize.svg?branch=desktop)](https://travis-ci.org/goncharovnikita/wallpaperize)
+
 Util for setting wallpapers from most famous sources
 
 ## Supported platforms
