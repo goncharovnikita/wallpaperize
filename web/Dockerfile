@@ -18,6 +18,6 @@ RUN npm run build
 
 FROM abiosoft/caddy
 
-COPY --from=dist /web/dist /app
+COPY --from=dist /web/build /app
 
 COPY Caddyfile /etc/Caddyfile
