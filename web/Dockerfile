@@ -14,7 +14,7 @@ COPY . /web
 
 WORKDIR /web
 
-RUN npm run build:prod
+RUN npm run build
 
 FROM abiosoft/caddy
 
