@@ -1,7 +1,7 @@
 {
   "name": "wallpaperize-desktop",
   "productName": "Wallpaperize",
-  "version": "1.0.4-beta",
+  "version": "1.0.5-beta",
   "description": "Wallpaperize desktop application",
   "main": "./main.prod.js",
   "author": {
