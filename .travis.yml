@@ -13,11 +13,11 @@ jobs:
       os: osx
       language: node_js
       node_js:
-        - "9"
+        - "12"
       script:
         - cd desktop
         - npm install
-        - yarn dist:all
+        - npm run package-all
     - stage: Deploy back
       if: branch = master
       script:
