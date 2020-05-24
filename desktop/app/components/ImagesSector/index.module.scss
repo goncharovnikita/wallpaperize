@@ -1,0 +1,27 @@
+.container {
+  padding: 1em;
+}
+
+.header {
+  color: black;
+  font-size: 3rem;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-gap: 1em;
+
+  @media screen and (min-width: 769px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.row {
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+}
