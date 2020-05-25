@@ -154,11 +154,20 @@ export const loadRandom = async (): Promise<boolean> => {
   }) as Promise<boolean>;
 };
 
-export const setWallpaper = async (path: string): Promise<void> => {
+export const setWallpaper = async (path: string): Promise<[string, string]> => {
   const resolvedPath = path
     .replace('/random_images_min', '/random_images')
     .replace('-min', '');
   const cmd = `${BIN_NAME} set ${resolvedPath}`;
 
-  exec(cmd, console.log);
+  return new Promise((resolve, reject) => {
+    exec(cmd, (err, stdout, stderr) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      resolve([stdout, stderr]);
+    });
+  })
 };

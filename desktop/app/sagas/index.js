@@ -31,6 +31,23 @@ function* watchRequestImages() {
   });
 }
 
+function* watchRequestInstallImage() {
+  yield takeEvery(appActions.requestInstallImage, function*({
+    payload: { src }
+  }) {
+    yield put(appActions.setImageInstallStatus('installing'));
+
+    yield call(() => wp.setWallpaper(src));
+
+    yield put(appActions.setImageInstallStatus('idle'));
+    // yield put(picturesActions.setImages(``))
+  });
+}
+
 export default function*() {
-  yield all([watchRequestInitApp(), watchRequestImages()]);
+  yield all([
+    watchRequestInitApp(),
+    watchRequestImages(),
+    watchRequestInstallImage()
+  ]);
 }
