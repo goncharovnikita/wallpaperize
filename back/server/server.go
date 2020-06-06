@@ -3,6 +3,10 @@ package server
 import (
 	"log"
 	"net/http"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/cors"
 )
 
 const (
@@ -17,52 +21,69 @@ func init() {
 type Server struct {
 	buildPath  string
 	randomPath string
+	debug      bool
 }
 
 // NewServer creates new server
-func NewServer(bp, rp string) *Server {
+func NewServer(bp, rp string, debug bool) *Server {
 	return &Server{
 		buildPath:  bp,
 		randomPath: rp,
+		debug:      debug,
 	}
 }
 
 // Serve bootstraps server
-func (s *Server) Serve() {
-	s.serve()
+func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	s.serve(w, r)
 }
 
-func (s *Server) serve() {
-	http.HandleFunc(
-		"/add/build",
-		mFilter("POST",
-			contentLengthFilter(
-				headersFilter(
-					[]string{VERSION_HEADER},
-					addBuild(s.buildPath),
-				),
-			),
-		),
-	)
+func (s *Server) serve(rw http.ResponseWriter, request *http.Request) {
+	log.Println("server serving")
+	r := chi.NewRouter()
 
-	http.HandleFunc(
+	r.Use(middleware.Recoverer)
+	r.Use(middleware.RequestID)
+	r.Use(middleware.RealIP)
+
+	allowedOrigins := make([]string, 0)
+
+	if s.debug {
+		allowedOrigins = []string{"*"}
+		r.Use(middleware.Logger)
+	} else {
+		allowedOrigins = []string{"https://wallpaperize.goncharovnikita.com"}
+	}
+
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   allowedOrigins,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300,
+	}))
+
+	r.Get("/add/build", addBuild(s.buildPath))
+
+	r.Get(
 		"/get/maxversion",
-		corsHeader(maxVersionHandler(s.buildPath)),
+		maxVersionHandler(s.buildPath),
 	)
 
-	http.HandleFunc(
+	r.Get(
 		"/get/random",
-		corsHeader(
-			addHeadersFilter(
-				map[string]string{"Content-Type": "application/json"},
-				s.handleGetRandom())),
+		addHeadersFilter(
+			map[string]string{"Content-Type": "application/json"},
+			s.handleGetRandom()),
 	)
 
-	http.HandleFunc(
+	r.Get(
 		"/get/links",
-		corsHeader(
-			addHeadersFilter(
-				map[string]string{"Content-Type": "application/json"},
-				s.handleGetDownloadLinks())),
+		addHeadersFilter(
+			map[string]string{"Content-Type": "application/json"},
+			s.handleGetDownloadLinks()),
 	)
+
+	r.ServeHTTP(rw, request)
 }
