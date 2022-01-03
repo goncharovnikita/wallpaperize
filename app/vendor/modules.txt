@@ -1,0 +1,23 @@
+# github.com/inconshreveable/mousetrap v1.0.0
+## explicit
+github.com/inconshreveable/mousetrap
+# github.com/kardianos/osext v0.0.0-20170510131534-ae77be60afb1
+## explicit
+github.com/kardianos/osext
+# github.com/reujab/wallpaper v0.0.0-20180613211457-f0fd3f26db29
+## explicit
+github.com/reujab/wallpaper
+# github.com/smartystreets/goconvey v1.7.2
+## explicit; go 1.16
+# github.com/spf13/cobra v0.0.3
+## explicit
+github.com/spf13/cobra
+# github.com/spf13/pflag v1.0.1
+## explicit
+github.com/spf13/pflag
+# gopkg.in/ini.v1 v1.37.0
+## explicit
+gopkg.in/ini.v1
+# gopkg.in/yaml.v2 v2.2.1
+## explicit
+gopkg.in/yaml.v2
