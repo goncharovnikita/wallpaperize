@@ -2,39 +2,45 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 )
 
-func ensureDir(path string) {
+func ensureDir(path string) error {
 	info, err := os.Stat(path)
 	if err != nil {
 		err = os.Mkdir(path, 0777)
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
-		return
+
+		return nil
 	}
 
 	if !info.IsDir() {
-		log.Fatal("Path is not directory. Remove or replace file - " + path)
+		return fmt.Errorf("path is not directory. Remove or replace file - %s", path)
 	}
+
+	return nil
 }
 
-func ensureFile(path string) {
+func ensureFile(path string) error {
 	info, err := os.Stat(path)
 	if err != nil {
 		file, err := os.OpenFile(path, os.O_CREATE, 0777)
 		if err != nil {
-			log.Fatal(err)
+			return fmt.Errorf("error opening file %s: %w", path, err)
 		}
+
 		file.Close()
-		return
+
+		return nil
 	}
 
 	if info.IsDir() {
-		log.Fatal("Path is directory. Remove or replace file - " + path)
+		return fmt.Errorf("path is directory. Remove or replace file - %s", path)
 	}
+
+	return nil
 }
 
 func getSizeAsString(size int64) string {

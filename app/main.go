@@ -14,34 +14,30 @@ var (
 	appBuild   string
 )
 
-type application struct {
-	cache       *cacher
-	rec         *recoverer
-	master      api.Wallmaster
-	dailyGetter *daily.Daily
-	rndGetter   *random.Random
-}
+func main() {
+	logger := log.Default()
+	logger.SetFlags(log.LstdFlags | log.Lshortfile)
 
-func newApplication() *application {
 	master := getWallmaster()
 	cache := newCacher()
-	rec := newRecoverer(master, cache.getRecoverPath())
+	rec, err := newRecoverer(master, cache.getRecoverPath())
+	if err != nil {
+		log.Println(err)
+
+		return
+	}
+
 	dailyGetter := daily.NewDailyGetter(api.BingAPI{}, cache.getDailyPath())
 	rndGetter := random.NewRandomImageGetter(api.UnsplashAPI{}, cache.getRandomPath())
-	return &application{
-		cache:       cache,
-		rec:         rec,
-		master:      master,
-		dailyGetter: dailyGetter,
-		rndGetter:   rndGetter,
-	}
-}
 
-func init() {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
-}
+	app := newApplication(
+		cache,
+		rec,
+		master,
+		dailyGetter,
+		rndGetter,
+		logger,
+	)
 
-func main() {
-	app := newApplication()
 	cmd.Execute(app)
 }

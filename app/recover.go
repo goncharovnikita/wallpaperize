@@ -1,8 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 
 	"github.com/goncharovnikita/wallpaperize/app/api"
@@ -16,41 +16,50 @@ func (r *recoverer) getRecoverFilepath() string {
 	return r.filepath
 }
 
-func newRecoverer(master api.Wallmaster, path string) *recoverer {
-	ensureFile(path + "/config.txt")
+func newRecoverer(master api.Wallmaster, path string) (*recoverer, error) {
+	if err := ensureFile(path + "/config.txt"); err != nil {
+		return nil, err
+	}
+
 	rec := &recoverer{}
-	rec.initRecoverImage(master, path)
-	return rec
+
+	if err := rec.initRecoverImage(master, path); err != nil {
+		return nil, err
+	}
+
+	return rec, nil
 }
 
-func (r *recoverer) initRecoverImage(master api.Wallmaster, path string) {
-
+func (r *recoverer) initRecoverImage(master api.Wallmaster, path string) error {
 	file, err := os.OpenFile(path+"/config.txt", os.O_RDWR, 0777)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("error opening config file %s: %w", path+"/config.txt", err)
 	}
 
 	defer file.Close()
 
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("error reading config file: %w", err)
 	}
 
 	if len(data) < 1 {
 		fname, err := master.Get()
 		if err != nil {
-			log.Fatal(err)
+			return fmt.Errorf("error getting current wallpaper: %w", err)
 		}
 
 		_, err = file.WriteString(fname)
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 
 		r.filepath = fname
-		return
+
+		return nil
 	}
 
 	r.filepath = string(data)
+
+	return nil
 }
