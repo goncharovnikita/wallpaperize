@@ -65,7 +65,7 @@ func (u *UnsplashAPI) GetRandomImage() (*UnsplashRandomImageResponse, error) {
 		return nil, err
 	}
 
-	request.Header.Set("Authorization", "Bearer "+token)
+	request.Header.Set("Authorization", "Client-ID "+token)
 
 	response, err := client.Do(request)
 	if err != nil {
