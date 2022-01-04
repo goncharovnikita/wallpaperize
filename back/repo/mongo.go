@@ -2,14 +2,14 @@ package repo
 
 import "go.mongodb.org/mongo-driver/mongo"
 
-// Repo type
-type Repo struct {
+// Mongo type
+type Mongo struct {
 	imagesCol *mongo.Collection
 }
 
-// New creates new Repo
-func New(db *mongo.Database) *Repo {
-	return &Repo{
+// NewMongo creates new Repo
+func NewMongo(db *mongo.Database) *Mongo {
+	return &Mongo{
 		imagesCol: db.Collection("images"),
 	}
 }
