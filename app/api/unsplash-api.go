@@ -32,7 +32,18 @@ func NewUnsplashAPI(idGetter idGetter) *UnsplashAPI {
 }
 
 type unsplashRandomImageURLs struct {
-	RAW string `json:"raw"`
+	RAW     string `json:"raw"`
+	Full    string `json:"full"`
+	Regular string `json:"regular"`
+	Small   string `json:"small"`
+	Thumb   string `json:"thumb"`
+}
+
+type imageLinks struct {
+	Self             string `json:"self"`
+	Html             string `json:"html"`
+	Download         string `json:"download"`
+	DownloadLocation string `json:"download_location"`
 }
 
 type UnsplashRandomImage struct {
@@ -43,6 +54,7 @@ type UnsplashRandomImage struct {
 	Height      int                     `json:"height"`
 	Description string                  `json:"description"`
 	URLs        unsplashRandomImageURLs `json:"urls"`
+	Links       imageLinks              `json:"links"`
 }
 
 type UnsplashRandomImageResponse struct {
