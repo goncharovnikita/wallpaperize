@@ -3,7 +3,6 @@ package daily
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -26,23 +25,18 @@ func NewDailyGetter(dg DailyGetter, cachePath string) *Daily {
 
 // GetImage ImageGetter implementation
 func (d *Daily) GetImage() (string, error) {
-	return d.getImage()
-}
+	name := d.path + "/" + getToday() + ".jpg"
 
-func (d *Daily) getImage() (name string, err error) {
-	name = d.path + "/" + getToday() + ".jpg"
 	info, err := os.Stat(name)
 	if err != nil {
 		if err.Error() == cerrors.NewStatNoSuchFileErr(name).Error() {
 			img, err := d.dg.GetDailyImage()
 			if err != nil {
-				log.Println(err)
 				return "", err
 			}
 
 			file, err := os.OpenFile(name, os.O_CREATE|os.O_RDWR, 0777)
 			if err != nil {
-				log.Println(err)
 				return "", err
 			}
 
@@ -50,24 +44,24 @@ func (d *Daily) getImage() (name string, err error) {
 
 			_, err = file.Write(img)
 			if err != nil {
-				log.Println(err)
 				return "", err
 			}
+
 			return name, nil
 		}
-		log.Println(err)
+
 		return "", err
 	}
 
 	if info.IsDir() {
-		return "", fmt.Errorf("Path is directory, please delete and retry again - %s", name)
+		return "", fmt.Errorf("path is directory, please delete and retry again - %s", name)
 	}
 
 	return name, nil
 }
 
 func getToday() string {
-	now := time.Now()
-	year, month, day := now.Date()
+	year, month, day := time.Now().Date()
+
 	return fmt.Sprintf("%d.%s.%d", day, month, year)
 }

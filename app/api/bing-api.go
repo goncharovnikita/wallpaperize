@@ -2,8 +2,8 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -32,12 +32,7 @@ type getImageInfoResponse struct {
 }
 
 // GetDailyImage implementation
-func (b BingAPI) GetDailyImage() (result []byte, err error) {
-	var (
-		data getImageInfoResponse
-		url  string
-	)
-
+func (b BingAPI) GetDailyImage() ([]byte, error) {
 	client := http.Client{}
 
 	req1, err := http.NewRequest("GET", apiURL, nil)
@@ -57,11 +52,13 @@ func (b BingAPI) GetDailyImage() (result []byte, err error) {
 
 	defer response1.Body.Close()
 
-	body1, err := ioutil.ReadAll(response1.Body)
+	body1, err := io.ReadAll(response1.Body)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
+
+	var data getImageInfoResponse
 
 	if err = json.Unmarshal(body1, &data); err != nil {
 		log.Println(err)
@@ -73,63 +70,22 @@ func (b BingAPI) GetDailyImage() (result []byte, err error) {
 		log.Fatal("images size less than 1")
 	}
 
-	if url = data.Images[0].URL; len(url) < 1 {
-		log.Fatal("url len less than 1")
+	url := data.Images[0].URL
+	if len(url) < 1 {
+		return nil, fmt.Errorf("url len less than 1")
 	}
 
 	response2, err := http.Get(apiPrefix + url)
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
 	defer response2.Body.Close()
 
-	body2, err := ioutil.ReadAll(response2.Body)
+	body2, err := io.ReadAll(response2.Body)
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
 	return body2, nil
-}
-
-// GetImageReader implementation
-func (b BingAPI) GetImageReader() (result io.ReadCloser, err error) {
-	var (
-		response *http.Response
-		data     getImageInfoResponse
-		url      string
-		body     []byte
-	)
-
-	if response, err = http.Get(apiURL); err != nil {
-		log.Fatal(err)
-	}
-
-	defer response.Body.Close()
-
-	if body, err = ioutil.ReadAll(response.Body); err != nil {
-		log.Fatal(err)
-	}
-
-	if err = json.Unmarshal(body, &data); err != nil {
-		log.Fatal(err)
-	}
-
-	if len(data.Images) < 1 {
-		log.Printf("%+v\n", data)
-		log.Fatal("images size less than 1")
-	}
-
-	if url = data.Images[0].URL; len(url) < 1 {
-		log.Fatal("url len less than 1")
-	}
-
-	if response, err = http.Get(apiPrefix + url); err != nil {
-		log.Fatal(err)
-	}
-
-	result = response.Body
-	return
 }

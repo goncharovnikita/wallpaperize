@@ -44,6 +44,10 @@ func (c cacher) getRandomPath() string {
 	return c.dir + "/random"
 }
 
+func (c cacher) getConfigPath() string {
+	return c.dir + "/config/config.txt"
+}
+
 func (c *cacher) setCacheDir() {
 	result, err := filepath.Abs(os.Getenv("HOME") + "/.wallpaperize_cache")
 	if err != nil {
@@ -54,12 +58,9 @@ func (c *cacher) setCacheDir() {
 }
 
 func (c *cacher) initCacheDir() {
-	path := c.dir
-	dailyPath := path + "/daily"
-	randomPath := path + "/random"
-	preservedPath := path + "/preserved"
-	ensureDir(path)
-	ensureDir(dailyPath)
-	ensureDir(randomPath)
-	ensureDir(preservedPath)
+	ensureDir(c.dir)
+	ensureDir(c.dir + "/daily")
+	ensureDir(c.dir + "/random")
+	ensureDir(c.dir + "/preserved")
+	ensureDir(c.dir + "/config")
 }

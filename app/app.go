@@ -13,17 +13,19 @@ import (
 	"time"
 
 	"github.com/goncharovnikita/wallpaperize/app/api"
-	"github.com/goncharovnikita/wallpaperize/app/daily"
-	"github.com/goncharovnikita/wallpaperize/app/random"
 	"github.com/kardianos/osext"
 )
+
+type imageGetter interface {
+	GetImage() (string, error)
+}
 
 type application struct {
 	cache       *cacher
 	rec         *recoverer
 	master      api.Wallmaster
-	dailyGetter *daily.Daily
-	rndGetter   *random.Random
+	dailyGetter imageGetter
+	rndGetter   imageGetter
 	logger      *log.Logger
 }
 
@@ -31,8 +33,8 @@ func newApplication(
 	cache *cacher,
 	rec *recoverer,
 	master api.Wallmaster,
-	dailyGetter *daily.Daily,
-	rndGetter *random.Random,
+	dailyGetter imageGetter,
+	rndGetter imageGetter,
 	logger *log.Logger,
 ) *application {
 	return &application{
@@ -45,7 +47,6 @@ func newApplication(
 	}
 }
 
-// Daily is cmd app daily method implementation
 func (a application) Daily() error {
 	name, err := a.dailyGetter.GetImage()
 	if err != nil {
@@ -147,7 +148,6 @@ func (a application) getDirInfo(path string) []os.FileInfo {
 	return result
 }
 
-// GetSelected implementation
 func (a application) GetSelected() error {
 	selected, err := a.master.Get()
 	if err != nil {
@@ -159,7 +159,6 @@ func (a application) GetSelected() error {
 	return nil
 }
 
-// Place implementatipn
 func (a application) Place() error {
 	filename, err := osext.Executable()
 	if err != nil {
@@ -171,7 +170,6 @@ func (a application) Place() error {
 	return nil
 }
 
-// Random implementation
 func (a application) Random(loadOnly bool) error {
 	fname, err := a.rndGetter.GetImage()
 	if err != nil {
@@ -185,8 +183,11 @@ func (a application) Random(loadOnly bool) error {
 	return nil
 }
 
-// Restore set wallpaper to its original file
 func (a application) Restore() error {
+	if a.rec.failed {
+		return fmt.Errorf("could not recover original image")
+	}
+
 	return a.master.SetFromFile(a.rec.getRecoverFilepath())
 }
 

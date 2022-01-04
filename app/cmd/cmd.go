@@ -139,7 +139,7 @@ func createRandomCommand(app App) *cobra.Command {
 		Short: "Set random image from internet as wallpaper",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := app.Random(randomLoadOnly); err != nil {
-				fmt.Errorf(err.Error())
+				fmt.Printf("error get random image: %v", err)
 			}
 		},
 	}

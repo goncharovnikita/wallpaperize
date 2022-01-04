@@ -6,10 +6,12 @@ import (
 )
 
 // Hash256 hashes given bytes to string
-func Hash256(r []byte) string {
+func Hash256(r []byte) (string, error) {
 	hsh := sha256.New()
 
-	hsh.Write(r)
+	if _, err := hsh.Write(r); err != nil {
+		return "", err
+	}
 
-	return fmt.Sprintf("%x", hsh.Sum(nil))
+	return fmt.Sprintf("%x", hsh.Sum(nil)), nil
 }

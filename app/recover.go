@@ -10,6 +10,7 @@ import (
 
 type recoverer struct {
 	filepath string
+	failed   bool
 }
 
 func (r *recoverer) getRecoverFilepath() string {
@@ -46,7 +47,9 @@ func (r *recoverer) initRecoverImage(master api.Wallmaster, path string) error {
 	if len(data) < 1 {
 		fname, err := master.Get()
 		if err != nil {
-			return fmt.Errorf("error getting current wallpaper: %w", err)
+			r.failed = true
+
+			return nil
 		}
 
 		_, err = file.WriteString(fname)
