@@ -1,58 +1,58 @@
 package server
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
+	"github.com/goncharovnikita/wallpaperize/back/models"
+	"github.com/sirupsen/logrus"
 )
 
 const (
 	VERSION_HEADER = "BUILD_VERSION"
 )
 
-func init() {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
+type imagesGetter interface {
+	GetImages(limit int) ([]*models.ResponseImage, error)
 }
 
 // Server type
 type Server struct {
-	buildPath  string
-	randomPath string
-	debug      bool
+	buildPath    string
+	randomPath   string
+	debug        bool
+	imagesGetter imagesGetter
+	logger       *logrus.Logger
 }
 
 // NewServer creates new server
-func NewServer(bp, rp string, debug bool) *Server {
+func NewServer(bp, rp string, imagesGetter imagesGetter, debug bool) *Server {
 	return &Server{
-		buildPath:  bp,
-		randomPath: rp,
-		debug:      debug,
+		buildPath:    bp,
+		randomPath:   rp,
+		imagesGetter: imagesGetter,
+		debug:        debug,
 	}
 }
 
-// Serve bootstraps server
-func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.serve(w, r)
-}
-
-func (s *Server) serve(rw http.ResponseWriter, request *http.Request) {
-	log.Println("server serving")
+func (s *Server) Listen() *chi.Mux {
 	r := chi.NewRouter()
 
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 
-	allowedOrigins := make([]string, 0)
+	var allowedOrigins []string
 
 	if s.debug {
 		allowedOrigins = []string{"*"}
-		r.Use(middleware.Logger)
 	} else {
-		allowedOrigins = []string{"https://wallpaperize.goncharovnikita.com"}
+		allowedOrigins = []string{
+			"https://wallpaperize.goncharovnikita.com",
+			"https://goncharovnikita.com",
+		}
 	}
 
 	r.Use(cors.Handler(cors.Options{
@@ -75,15 +75,23 @@ func (s *Server) serve(rw http.ResponseWriter, request *http.Request) {
 		"/get/random",
 		addHeadersFilter(
 			map[string]string{"Content-Type": "application/json"},
-			s.handleGetRandom()),
+			s.handleGetRandom(),
+		),
 	)
 
 	r.Get(
 		"/get/links",
 		addHeadersFilter(
 			map[string]string{"Content-Type": "application/json"},
-			s.handleGetDownloadLinks()),
+			s.handleGetDownloadLinks(),
+		),
 	)
 
-	r.ServeHTTP(rw, request)
+	return r
+}
+
+func getLogger(logger *logrus.Logger, r *http.Request) *logrus.Entry {
+	return logger.WithFields(logrus.Fields{
+		"path": r.URL.Path,
+	})
 }

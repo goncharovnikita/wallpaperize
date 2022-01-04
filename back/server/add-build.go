@@ -1,12 +1,12 @@
 package server
 
 import (
+	"errors"
 	"io"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/goncharovnikita/wallpaperize/app/cerrors"
 	"github.com/goncharovnikita/wallpaperize/back/utils"
 )
 
@@ -44,7 +44,7 @@ func handleNewBuild(rdr io.Reader, path string, name string) error {
 
 	_, err = os.Stat(fname)
 	if err != nil {
-		if err.Error() == cerrors.NewStatNoSuchFileErr(fname).Error() {
+		if errors.Is(err, os.PathError) {
 			file, err := os.OpenFile(fname, os.O_CREATE|os.O_RDWR, 0777)
 			if err != nil {
 				log.Println(err)
