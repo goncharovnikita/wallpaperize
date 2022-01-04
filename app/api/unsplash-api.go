@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os/exec"
 	"runtime"
+	"strconv"
 )
 
 var (
@@ -34,7 +35,7 @@ type unsplashRandomImageURLs struct {
 	RAW string `json:"raw"`
 }
 
-type unsplashRandomImageResponse struct {
+type UnsplashRandomImage struct {
 	ID          string                  `json:"id"`
 	CreatedAt   string                  `json:"created_at"`
 	UpdatedAt   string                  `json:"updated_at"`
@@ -44,8 +45,12 @@ type unsplashRandomImageResponse struct {
 	URLs        unsplashRandomImageURLs `json:"urls"`
 }
 
-// GetImage implementation
-func (u *UnsplashAPI) GetImage() ([]byte, error) {
+type UnsplashRandomImageResponse struct {
+	Data               UnsplashRandomImage
+	RateLimitRemaining int
+}
+
+func (u *UnsplashAPI) GetRandomImage() (*UnsplashRandomImageResponse, error) {
 	token, err := u.idGetter.GetToken()
 	if err != nil {
 		return nil, err
@@ -81,28 +86,22 @@ func (u *UnsplashAPI) GetImage() ([]byte, error) {
 		return nil, err
 	}
 
-	var data unsplashRandomImageResponse
+	rateLimitRemainingStr := response.Header.Get("X-Ratelimit-Remaining")
+	rateLimitRemaining, err := strconv.Atoi(rateLimitRemainingStr)
+	if err != nil {
+		return nil, err
+	}
+
+	var data UnsplashRandomImage
 
 	if err := json.Unmarshal(body, &data); err != nil {
 		return nil, err
 	}
 
-	if len(data.URLs.RAW) < 1 {
-		return nil, fmt.Errorf("raw url len less than 1")
-	}
-
-	if response, err = http.Get(data.URLs.RAW); err != nil {
-		return nil, err
-	}
-
-	defer response.Body.Close()
-
-	body, err = ioutil.ReadAll(response.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	return body, nil
+	return &UnsplashRandomImageResponse{
+		Data:               data,
+		RateLimitRemaining: rateLimitRemaining,
+	}, nil
 }
 
 type tokenStore interface {
