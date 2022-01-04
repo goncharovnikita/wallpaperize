@@ -36,15 +36,17 @@ func (r *SQLite) Prepare() error {
 
 func (r *SQLite) SetImages(images []*models.DBImage) error {
 	preparedValues := make([]string, 0, len(images))
-	imageDatas := make([][]byte, 0, len(images))
+	sqlArgs := make([]interface{}, 0, len(images))
 
 	for _, image := range images {
 		preparedValues = append(preparedValues, "(?)")
-		imageDatas = append(imageDatas, image.Data)
+		sqlArgs = append(sqlArgs, image.Data)
 	}
 
+	q := fmt.Sprintf(`INSERT INTO images (data) VALUES %s`, strings.Join(preparedValues, ","))
+
 	stmt, err := r.db.Prepare(
-		fmt.Sprintf(`INSERT INTO images (data) VALUES (%s)`, strings.Join(preparedValues, ",")),
+		q,
 	)
 	if err != nil {
 		return err
@@ -52,7 +54,7 @@ func (r *SQLite) SetImages(images []*models.DBImage) error {
 
 	defer stmt.Close()
 
-	if _, err := stmt.Exec(imageDatas); err != nil {
+	if _, err := stmt.Exec(sqlArgs...); err != nil {
 		return err
 	}
 

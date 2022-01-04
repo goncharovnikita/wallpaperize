@@ -5,12 +5,11 @@ go 1.17
 require (
 	github.com/go-chi/chi v4.1.1+incompatible
 	github.com/go-chi/cors v1.1.1
-	github.com/goncharovnikita/wallpaperize/app/api v1.0.7
+	github.com/goncharovnikita/wallpaperize/app/api v1.0.10
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/joho/godotenv v1.3.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/mattn/go-sqlite3 v1.14.10
-	github.com/sirupsen/logrus v1.8.1
 	go.mongodb.org/mongo-driver v1.3.3
 )
 
@@ -25,6 +24,5 @@ require (
 	golang.org/x/crypto v0.0.0-20190530122614-20be4c3c3ed5 // indirect
 	golang.org/x/net v0.0.0-20200520182314-0ba52f642ac2 // indirect
 	golang.org/x/sync v0.0.0-20190423024810-112230192c58 // indirect
-	golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd // indirect
 	golang.org/x/text v0.3.2 // indirect
 )

@@ -1,13 +1,12 @@
 package server
 
 import (
-	"net/http"
+	"log"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
 	"github.com/goncharovnikita/wallpaperize/back/models"
-	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -15,7 +14,7 @@ const (
 )
 
 type imagesGetter interface {
-	GetImages(limit int) ([]*models.ResponseImage, error)
+	GetImages(limit int) ([]*models.UnsplashImage, error)
 }
 
 // Server type
@@ -24,16 +23,22 @@ type Server struct {
 	randomPath   string
 	debug        bool
 	imagesGetter imagesGetter
-	logger       *logrus.Logger
+	logger       *log.Logger
 }
 
 // NewServer creates new server
-func NewServer(bp, rp string, imagesGetter imagesGetter, debug bool) *Server {
+func NewServer(
+	bp, rp string,
+	imagesGetter imagesGetter,
+	logger *log.Logger,
+	debug bool,
+) *Server {
 	return &Server{
 		buildPath:    bp,
 		randomPath:   rp,
 		imagesGetter: imagesGetter,
 		debug:        debug,
+		logger:       logger,
 	}
 }
 
@@ -88,10 +93,4 @@ func (s *Server) Listen() *chi.Mux {
 	)
 
 	return r
-}
-
-func getLogger(logger *logrus.Logger, r *http.Request) *logrus.Entry {
-	return logger.WithFields(logrus.Fields{
-		"path": r.URL.Path,
-	})
 }

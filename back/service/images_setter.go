@@ -10,11 +10,22 @@ type ImagesSetter struct {
 	repo imagesSetterRepo
 }
 
-func (s *ImagesSetter) SetImages(images []*models.ResponseImage) error {
+func NewImagesSetter(repo imagesSetterRepo) *ImagesSetter {
+	return &ImagesSetter{
+		repo: repo,
+	}
+}
+
+func (s *ImagesSetter) SetImages(images []*models.UnsplashImage) error {
 	result := make([]*models.DBImage, 0, len(images))
 
 	for _, image := range images {
-		result = append(result, models.MakeDBImage(image))
+		img, err := models.MakeDBImage(image)
+		if err != nil {
+			return err
+		}
+
+		result = append(result, img)
 	}
 
 	if err := s.repo.SetImages(result); err != nil {

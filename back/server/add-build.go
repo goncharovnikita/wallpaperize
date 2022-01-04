@@ -3,6 +3,7 @@ package server
 import (
 	"errors"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -44,7 +45,7 @@ func handleNewBuild(rdr io.Reader, path string, name string) error {
 
 	_, err = os.Stat(fname)
 	if err != nil {
-		if errors.Is(err, os.PathError) {
+		if errors.Is(err, fs.ErrNotExist) {
 			file, err := os.OpenFile(fname, os.O_CREATE|os.O_RDWR, 0777)
 			if err != nil {
 				log.Println(err)

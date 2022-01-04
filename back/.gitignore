@@ -2,3 +2,4 @@ back
 uploads
 random_images*
 gin-bin
+.env

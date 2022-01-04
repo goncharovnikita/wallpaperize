@@ -16,16 +16,21 @@ func NewImagesGetter(repo imagesGetterRepo) *ImagesGetter {
 	}
 }
 
-func (s *ImagesGetter) GetImages(limit int) ([]*models.ResponseImage, error) {
+func (s *ImagesGetter) GetImages(limit int) ([]*models.UnsplashImage, error) {
 	images, err := s.repo.GetImages(limit)
 	if err != nil {
 		return nil, err
 	}
 
-	result := make([]*models.ResponseImage, 0, len(images))
+	result := make([]*models.UnsplashImage, 0, len(images))
 
-	for _, img := range images {
-		result = append(result, models.MakeResponseImage(img))
+	for _, image := range images {
+		img, err := models.MakeUnsplashImage(image)
+		if err != nil {
+			return nil, err
+		}
+
+		result = append(result, img)
 	}
 
 	return result, nil

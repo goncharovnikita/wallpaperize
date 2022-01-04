@@ -14,6 +14,7 @@ import (
 	"github.com/goncharovnikita/wallpaperize/back/repo"
 	"github.com/goncharovnikita/wallpaperize/back/server"
 	"github.com/goncharovnikita/wallpaperize/back/service"
+	"github.com/goncharovnikita/wallpaperize/back/updater"
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
 )
@@ -27,6 +28,7 @@ type Spec struct {
 	MaxRandomDiskUsageGB float64 `required:"false" default:"1" envconfig:"MAX_RANDOM_DISK_USAGE_GB"`
 	Debug                bool    `required:"false" default:"true"`
 	UnsplashAccessToken  string  `required:"true" envconfig:"UNSPLASH_ACCESS_TOKEN"`
+	EnableUpdater        bool    `required:"false" envconfig:"ENABLE_UPDATER"`
 }
 
 func main() {
@@ -36,6 +38,8 @@ func main() {
 
 	infoLogger := log.New(os.Stdout, "INFO ", log.LUTC)
 	errLogger := log.New(os.Stderr, "ERR ", log.LUTC)
+	updaterLogger := log.New(os.Stdout, "INFO [Updater] ", log.LUTC)
+	serverLogger := log.New(os.Stdout, "INFO [Server] ", log.LUTC)
 
 	infoLogger.Println("logger inited")
 
@@ -66,16 +70,21 @@ func main() {
 		spec.BuildsPath,
 		spec.RandomImagesPath,
 		imagesGetter,
+		serverLogger,
 		spec.Debug,
 	)
+
+	imagesSetter := service.NewImagesSetter(sqliteRepo)
+	updater := updater.NewUnsplash(spec.UnsplashAccessToken, imagesSetter, updaterLogger)
 
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	shutdownHTTP := make(chan struct{}, 1)
+	shutdownUpdater := make(chan struct{}, 1)
 
 	var shutdownWG sync.WaitGroup
 
-	shutdownWG.Add(1)
+	shutdownWG.Add(2)
 
 	go func(shutdown <-chan struct{}, wg *sync.WaitGroup) {
 		defer wg.Done()
@@ -108,11 +117,38 @@ func main() {
 		infoLogger.Println("http server stopped")
 	}(shutdownHTTP, &shutdownWG)
 
+	go func(shutdown <-chan struct{}, wg *sync.WaitGroup) {
+		defer wg.Done()
+
+		if !spec.EnableUpdater {
+			return
+		}
+
+		go func() {
+			if err := updater.Run(); err != nil {
+				errLogger.Printf("error running updater: %v\n", err)
+
+				return
+			}
+		}()
+
+		infoLogger.Println("upater is running")
+
+		<-shutdown
+
+		infoLogger.Println("stopping updater...")
+
+		updater.Stop()
+
+		infoLogger.Println("updater is stopped")
+	}(shutdownUpdater, &shutdownWG)
+
 	<-done
 
 	infoLogger.Println("stopping application...")
 
 	shutdownHTTP <- struct{}{}
+	shutdownUpdater <- struct{}{}
 
 	shutdownWG.Wait()
 
