@@ -6,7 +6,7 @@ on:
       - master
     tags:
     paths:
-      - ".github/workflows/ci-build-backend.yml"
+      - ".github/workflows/ci-build-backend.yaml"
       - "back/**"
       - ".dockerignore"
 
