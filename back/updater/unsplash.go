@@ -42,6 +42,7 @@ func NewUnsplash(
 			token: accessToken,
 		}),
 		imagesSetter: imagesSetter,
+		repoCleaner:  repoCleaner,
 		logger:       logger,
 		shouldStop:   false,
 		mux:          &sync.Mutex{},
