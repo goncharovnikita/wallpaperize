@@ -75,7 +75,12 @@ func main() {
 	)
 
 	imagesSetter := service.NewImagesSetter(sqliteRepo)
-	updater := updater.NewUnsplash(spec.UnsplashAccessToken, imagesSetter, updaterLogger)
+	updater := updater.NewUnsplash(
+		spec.UnsplashAccessToken,
+		imagesSetter,
+		sqliteRepo,
+		updaterLogger,
+	)
 
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)

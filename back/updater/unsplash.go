@@ -9,21 +9,32 @@ import (
 	"github.com/goncharovnikita/wallpaperize/back/models"
 )
 
+const limitPerLoop = 50
+const maxImagesCount = 3000
+const removeImagesCount = 1000
+
 type imagesSetter interface {
 	SetImages([]*models.UnsplashImage) error
 }
 
+type repoCleaner interface {
+	ImagesCount() (int, error)
+	RemoveFirstImages(count int) error
+}
+
 type Unsplash struct {
-	api *api.UnsplashAPI
-	imagesSetter
-	logger     *log.Logger
-	shouldStop bool
-	mux        *sync.Mutex
+	api          *api.UnsplashAPI
+	imagesSetter imagesSetter
+	repoCleaner  repoCleaner
+	logger       *log.Logger
+	shouldStop   bool
+	mux          *sync.Mutex
 }
 
 func NewUnsplash(
 	accessToken string,
 	imagesSetter imagesSetter,
+	repoCleaner repoCleaner,
 	logger *log.Logger,
 ) *Unsplash {
 	return &Unsplash{
@@ -39,8 +50,37 @@ func NewUnsplash(
 
 func (u *Unsplash) Run() error {
 	for {
+		u.mux.Lock()
+
+		if u.shouldStop {
+			u.mux.Unlock()
+
+			return nil
+		}
+
+		u.mux.Unlock()
+
+		imagesCount, err := u.repoCleaner.ImagesCount()
+		if err != nil {
+			u.logger.Printf("error getting items count: %v", err)
+
+			continue
+		}
+
+		if imagesCount >= maxImagesCount {
+			u.logger.Printf("removing %d images", removeImagesCount)
+
+			if err := u.repoCleaner.RemoveFirstImages(removeImagesCount); err != nil {
+				u.logger.Printf("error removing repo items: %v", err)
+
+				continue
+			}
+
+			u.logger.Printf("successfully removed %d images", removeImagesCount)
+		}
+
 		images := make([]*models.UnsplashImage, 0)
-		ctr := 2
+		ctr := limitPerLoop
 
 		for {
 			u.mux.Lock()

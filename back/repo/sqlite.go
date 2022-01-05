@@ -90,3 +90,21 @@ func (r *SQLite) GetImages(limit int) ([]*models.DBImage, error) {
 
 	return result, nil
 }
+
+func (r *SQLite) ImagesCount() (int, error) {
+	var result int
+
+	if err := r.db.QueryRow("SELECT COUNT(*) FROM images", nil).Scan(&result); err != nil {
+		return 0, err
+	}
+
+	return result, nil
+}
+
+func (r *SQLite) RemoveFirstImages(count int) error {
+	if _, err := r.db.Exec("DELETE FROM images ORDER BY rowid LIMIT ?", count); err != nil {
+		return err
+	}
+
+	return nil
+}
