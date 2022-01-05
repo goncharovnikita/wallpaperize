@@ -1,4 +1,4 @@
-FROM golang:1.17 as backdist
+FROM golang:alpine as backdist
 
 ENV dist=/go/src/github.com/goncharovnikita/wallpaperize/back
 
@@ -6,7 +6,11 @@ ADD . ${dist}
 
 WORKDIR ${dist}
 
-RUN env CGO_ENABLED=1 GOOS=linux GOARCH=386 go build -o ./back
+RUN apk add curl git --no-cache
+
+RUN apk add --update gcc musl-dev
+
+RUN env CGO_ENABLED=1 GOOS=linux GOARCH=386 go build --tags "libsqlite3 linux" -o ./back
 
 FROM alpine
 
