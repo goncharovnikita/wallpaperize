@@ -1,16 +1,10 @@
-FROM golang:alpine as backdist
+FROM golang:1.17 as backdist
 
 ENV dist=/go/src/github.com/goncharovnikita/wallpaperize/back
 
 ADD . ${dist}
 
 WORKDIR ${dist}
-
-RUN apk add curl git clang clang-dev musl-dev git gcc --no-cache
-
-ENV CXX=clang++
-
-ENV CC=clang
 
 RUN env CGO_ENABLED=1 GOOS=linux GOARCH=386 go build -o ./back
 
