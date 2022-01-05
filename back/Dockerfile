@@ -9,7 +9,7 @@ WORKDIR ${dist}
 RUN apk add curl --no-cache && \
     apk add git --no-cache
 
-RUN env GOOS=linux GOARCH=386 go build -o ./back
+RUN env CGO_ENABLED=1 GOOS=linux GOARCH=386 go build -o ./back
 
 FROM alpine
 

@@ -40,5 +40,5 @@ jobs:
           echo ${DOCKER_HUB_TOKEN} | docker login -u goncharovnikita --password-stdin
           docker buildx build --push \
               --build-arg GITHUB_SHA=${GITHUB_SHA} --build-arg GIT_BRANCH=${ref} \
-              --platform linux/amd64,linux/arm64 \
+              --platform linux/amd64 \
               -t goncharovnikita/wallpaperize:back-${ref} -f ./back/Dockerfile ./back/.
