@@ -7,9 +7,9 @@ ADD . ${dist}
 WORKDIR ${dist}
 
 RUN apk add curl --no-cache && \
-    apk add git --no-cache
-
-RUN apk --no-cache add gcc libc-dev
+    apk add git --no-cache && \
+    apk add make --no-cache && \
+    apk add build-base
 
 RUN env CGO_ENABLED=1 GOOS=linux GOARCH=386 go build -o ./back
 
