@@ -82,6 +82,7 @@ func (u *Unsplash) Run() error {
 
 		images := make([]*models.UnsplashImage, 0)
 		ctr := limitPerLoop
+		remaining := 50
 
 		for {
 			u.mux.Lock()
@@ -101,6 +102,12 @@ func (u *Unsplash) Run() error {
 				break
 			}
 
+			if img.RateLimitRemaining == remaining {
+				continue
+			}
+
+			remaining = img.RateLimitRemaining
+
 			images = append(images, models.MakeUnsplashImageFromAPI(&img.Data))
 
 			u.logger.Printf("saved: %d, to proceed: %d\n", len(images), img.RateLimitRemaining)
@@ -110,6 +117,9 @@ func (u *Unsplash) Run() error {
 			}
 
 			ctr--
+
+			// Unsplash caches sequential requests
+			time.Sleep(1 * time.Second)
 		}
 
 		if len(images) > 0 {
