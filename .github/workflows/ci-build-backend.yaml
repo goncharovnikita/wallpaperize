@@ -1,0 +1,44 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+    paths:
+      - ".github/workflows/ci-build-backend.yml"
+      - "back/**"
+      - ".dockerignore"
+
+jobs:
+  build-images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: available platforms
+        run: echo ${{ steps.buildx.outputs.platforms }}
+
+      - name: build and deploy master image to dockerhub
+        if: ${{ github.ref == 'refs/heads/master' }}
+        env:
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+          USERNAME: ${{ github.actor }}
+          GITHUB_SHA: ${{ github.sha}}
+          GITHUB_REF: ${{ github.ref}}
+        run: |
+          ref="$(echo ${GITHUB_REF} | cut -d'/' -f3)"
+          echo GITHUB_REF - $ref
+          echo ${DOCKER_HUB_TOKEN} | docker login -u goncharovnikita --password-stdin
+          docker buildx build --push \
+              --build-arg GITHUB_SHA=${GITHUB_SHA} --build-arg GIT_BRANCH=${ref} \
+              --platform linux/amd64,linux/arm64 \
+              -t goncharovnikita/wallpaperize:back-${ref} -f ./back/Dockerfile ./back/.
