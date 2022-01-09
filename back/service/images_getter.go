@@ -3,7 +3,7 @@ package service
 import "github.com/goncharovnikita/wallpaperize/back/models"
 
 type imagesGetterRepo interface {
-	GetImages(limit int) ([]*models.DBImage, error)
+	GetRandomImages(limit int) ([]*models.DBImage, error)
 }
 
 type ImagesGetter struct {
@@ -17,7 +17,7 @@ func NewImagesGetter(repo imagesGetterRepo) *ImagesGetter {
 }
 
 func (s *ImagesGetter) GetImages(limit int) ([]*models.UnsplashImage, error) {
-	images, err := s.repo.GetImages(limit)
+	images, err := s.repo.GetRandomImages(limit)
 	if err != nil {
 		return nil, err
 	}

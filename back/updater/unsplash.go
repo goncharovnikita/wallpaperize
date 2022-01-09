@@ -9,7 +9,7 @@ import (
 	"github.com/goncharovnikita/wallpaperize/back/models"
 )
 
-const limitPerLoop = 50
+const limitPerLoop = 1
 const maxImagesCount = 3000
 const removeImagesCount = 1000
 
@@ -112,7 +112,7 @@ func (u *Unsplash) Run() error {
 
 			u.logger.Printf("saved: %d, to proceed: %d\n", len(images), img.RateLimitRemaining)
 
-			if img.RateLimitRemaining < 1 || ctr <= 0 {
+			if img.RateLimitRemaining < 1 || ctr <= 1 {
 				break
 			}
 

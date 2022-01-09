@@ -92,5 +92,7 @@ func (s *Server) Listen() *chi.Mux {
 		),
 	)
 
+	r.Get("/random/image.jpg", s.handleGetRandomImage())
+
 	return r
 }

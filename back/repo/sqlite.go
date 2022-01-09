@@ -61,9 +61,9 @@ func (r *SQLite) SetImages(images []*models.DBImage) error {
 	return nil
 }
 
-func (r *SQLite) GetImages(limit int) ([]*models.DBImage, error) {
+func (r *SQLite) GetRandomImages(limit int) ([]*models.DBImage, error) {
 	stmt, err := r.db.Prepare(
-		`SELECT data FROM images limit ?`,
+		`SELECT data FROM images ORDER BY random() LIMIT ?`,
 	)
 	if err != nil {
 		return nil, err
