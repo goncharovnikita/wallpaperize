@@ -21,17 +21,33 @@ import (
 
 func main() {
 	background, err := wallpaper.Get()
-
-	if err != nil {
-		panic(err)
-	}
-
+	check(err)
 	fmt.Println("Current wallpaper:", background)
-	wallpaper.SetFromFile("/usr/share/backgrounds/gnome/adwaita-day.jpg")
-	wallpaper.SetFromURL("https://i.imgur.com/pIwrYeM.jpg")
+
+	err = wallpaper.SetFromFile("/usr/share/backgrounds/gnome/adwaita-day.jpg")
+	check(err)
+
+	err = wallpaper.SetFromURL("https://i.imgur.com/pIwrYeM.jpg")
+	check(err)
+
+	err = wallpaper.SetMode(wallpaper.Crop)
+	check(err)
 }
+
 ```
 
-## Notes
+## Supported desktops
 
-* Enlightenment is not supported.
+* Windows
+* macOS
+* GNOME
+* KDE
+* Cinnamon
+* Unity
+* Budgie
+* XFCE
+* LXDE
+* MATE
+* Deepin
+* Most Wayland compositors (set only, requires swaybg)
+* i3 (set only, requires feh)

@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-func parseKDEConfig() (string, error) {
+func getKDE() (string, error) {
 	usr, err := user.Current()
 	if err != nil {
 		return "", err
@@ -49,12 +49,43 @@ func parseKDEConfig() (string, error) {
 	return "", errors.New("kde image not found")
 }
 
-func setKDEBackground(uri string) error {
-	return exec.Command("qdbus", "org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell.evaluateScript", `
-		const monitors = desktops()
-		for (var i = 0; i < monitors.length; i++) {
-			monitors[i].currentConfigGroup = ["Wallpaper"]
-			monitors[i].writeConfig("Image", `+strconv.Quote(uri)+`)
+func setKDE(path string) error {
+	return evalKDE(`
+		for (const desktop of desktops()) {
+			desktop.currentConfigGroup = ["Wallpaper", "org.kde.image", "General"]
+			desktop.writeConfig("Image", ` + strconv.Quote("file://"+path) + `)
 		}
-	`).Run()
+	`)
+}
+
+func setKDEMode(mode Mode) error {
+	return evalKDE(`
+		for (const desktop of desktops()) {
+			desktop.currentConfigGroup = ["Wallpaper", "org.kde.image", "General"]
+			desktop.writeConfig("FillMode", ` + mode.getKDEString() + `)
+		}
+	`)
+}
+
+func evalKDE(script string) error {
+	return exec.Command("qdbus", "org.kde.plasmashell", "/PlasmaShell", "org.kde.PlasmaShell.evaluateScript", script).Run()
+}
+
+func (mode Mode) getKDEString() string {
+	switch mode {
+	case Center:
+		return "6"
+	case Crop:
+		return "2"
+	case Fit:
+		return "1"
+	case Span:
+		return "2"
+	case Stretch:
+		return "0"
+	case Tile:
+		return "3"
+	default:
+		panic("invalid walllpaper mode")
+	}
 }
