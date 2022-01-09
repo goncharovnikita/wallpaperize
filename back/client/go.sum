@@ -1,0 +1,4 @@
+github.com/goncharovnikita/wallpaperize/app/api v1.0.10 h1:houg+XMhIqe6RNs4BlMKsJ3KztmxbNGor6tVx2CDZ+A=
+github.com/goncharovnikita/wallpaperize/app/api v1.0.10/go.mod h1:qeUCS2U3GQ9BssDSZ56q4CCPJX3iKufqWtlg00qYy9I=
+github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220109124207-df9f4af62425 h1:NtfkRUxjj7QetzVYoZRLSeS4a/ZQDGLCLHoMtQrssTk=
+github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220109124207-df9f4af62425/go.mod h1:mrre7VLXHpXQh9bBiPJIWVtmdsPPCSnl4d2WFcN6kiw=
