@@ -1,25 +1,41 @@
 package main
 
 import (
-	"fyne.io/fyne/v2"
+	"log"
+	"os"
+
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/widget"
+	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/storage"
+
+	"github.com/goncharovnikita/wallpaperize/back/client"
 )
 
 func main() {
-	a := app.New()
+	myApp := app.New()
+	w := myApp.NewWindow("Image")
 
-	w := a.NewWindow("Wallpaperize")
-	w.Resize(fyne.NewSize(480, 320))
+	errLogger := log.New(os.Stderr, "ERR", 0)
 
-	hello := widget.NewLabel("Hello Fyne!")
-	w.SetContent(container.NewVBox(
-		hello,
-		widget.NewButton("Hi!", func() {
-			hello.SetText("Welcome :)")
-		}),
-	))
+	c := client.NewHTTP("http://goncharovnikita.com/wallpaperize/api")
+
+	img, err := c.GetRandomImages(1)
+	if err != nil {
+		errLogger.Printf("could not get images from api %v", err)
+
+		return
+	}
+
+	imgURI, err := storage.ParseURI(img[0].URLs.Small)
+	if err != nil {
+		errLogger.Printf("error parsing uri: %v", err)
+
+		return
+	}
+
+	image := canvas.NewImageFromURI(imgURI)
+	image.FillMode = canvas.ImageFillOriginal
+	w.SetContent(image)
 
 	w.ShowAndRun()
 }
