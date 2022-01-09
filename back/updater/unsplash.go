@@ -9,7 +9,7 @@ import (
 	"github.com/goncharovnikita/wallpaperize/back/models"
 )
 
-const limitPerLoop = 1
+const limitPerLoop = 50
 const maxImagesCount = 3000
 const removeImagesCount = 1000
 
