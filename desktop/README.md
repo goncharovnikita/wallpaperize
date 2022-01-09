@@ -1,1 +1,0 @@
-# Wallpaperize desktop
