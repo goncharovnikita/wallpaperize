@@ -102,7 +102,13 @@ func (r *SQLite) ImagesCount() (int, error) {
 }
 
 func (r *SQLite) RemoveFirstImages(count int) error {
-	if _, err := r.db.Exec("DELETE FROM images ORDER BY rowid LIMIT ?", count); err != nil {
+	if _, err := r.db.Exec(`
+	DELETE FROM images WHERE rowid IN (
+		SELECT rowid FROM images
+		ORDER BY rowid
+		LIMIT ?
+	)
+	`, count); err != nil {
 		return err
 	}
 
