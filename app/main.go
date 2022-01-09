@@ -2,13 +2,12 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/goncharovnikita/wallpaperize/app/api"
 	"github.com/goncharovnikita/wallpaperize/app/cmd"
 	"github.com/goncharovnikita/wallpaperize/app/daily"
 	"github.com/goncharovnikita/wallpaperize/app/random"
-	"github.com/goncharovnikita/wallpaperize/app/store"
+	"github.com/goncharovnikita/wallpaperize/back/client"
 )
 
 var (
@@ -30,16 +29,8 @@ func main() {
 	}
 
 	dailyGetter := daily.NewDailyGetter(api.BingAPI{}, cache.getDailyPath())
-	tokenStore := store.NewFile(cache.getConfigPath())
-	clientID := os.Getenv("WALLPAPERIZE_UNSPLASH_APP_ID")
-	clientSecret := os.Getenv("WALLPAPERIZE_UNSPLASH_APP_SECRET")
-	unsplashAuthorizer := api.NewUnsplashAuthorizer(
-		clientID,
-		clientSecret,
-		tokenStore,
-	)
-	unsplashApi := api.NewUnsplashAPI(unsplashAuthorizer)
-	rndGetter := random.NewRandomImageGetter(unsplashApi, cache.getRandomPath())
+	imagesApi := client.NewHTTP("http://goncharovnikita.com/wallpaperize/api")
+	rndGetter := random.NewRandomImageGetter(imagesApi, cache.getRandomPath())
 
 	app := newApplication(
 		cache,
