@@ -1,7 +1,9 @@
 package server
 
 import (
+	"encoding/json"
 	"log"
+	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -48,6 +50,7 @@ func (s *Server) Listen() *chi.Mux {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
+	r.Use(middleware.Logger)
 
 	var allowedOrigins []string
 
@@ -95,4 +98,17 @@ func (s *Server) Listen() *chi.Mux {
 	r.Get("/random/image.jpg", s.handleGetRandomImage())
 
 	return r
+}
+
+type logger interface {
+	Printf(msg string, args ...interface{})
+}
+
+func write500(rw http.ResponseWriter, r *http.Request, log logger, err error) {
+	rw.WriteHeader(http.StatusInternalServerError)
+	if err := json.NewEncoder(rw).Encode(models.ResponseError{
+		Error: err.Error(),
+	}); err != nil {
+		log.Printf("failed to write response: %v\n", err)
+	}
 }

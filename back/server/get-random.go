@@ -2,6 +2,8 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 
@@ -60,23 +62,13 @@ func (s *Server) handleGetRandomImage() http.HandlerFunc {
 		if err != nil {
 			s.logger.Printf("error get image: %v\n", err)
 
-			rw.WriteHeader(http.StatusInternalServerError)
-			if err := json.NewEncoder(rw).Encode(models.ResponseError{
-				Error: "could not get image",
-			}); err != nil {
-				s.logger.Printf("failed to write response: %v\n", err)
-			}
+			write500(rw, r, s.logger, fmt.Errorf("could not get image"))
 
 			return
 		}
 
 		if len(images) != 1 {
-			rw.WriteHeader(http.StatusInternalServerError)
-			if err := json.NewEncoder(rw).Encode(models.ResponseError{
-				Error: "no images in database",
-			}); err != nil {
-				s.logger.Printf("failed to write response: %v\n", err)
-			}
+			write500(rw, r, s.logger, fmt.Errorf("no images in database"))
 
 			return
 		}
@@ -89,6 +81,31 @@ func (s *Server) handleGetRandomImage() http.HandlerFunc {
 			imageURL = image.URLs.Small
 		case "raw":
 			imageURL = image.URLs.RAW
+		}
+
+		if r.URL.Query().Get("mode") == "proxy" {
+			res, err := http.Get(imageURL)
+			if err != nil {
+				write500(rw, r, s.logger, err)
+
+				return
+			}
+
+			if res.StatusCode != http.StatusOK {
+				write500(rw, r, s.logger, fmt.Errorf("response status is not ok: %d", res.StatusCode))
+
+				return
+			}
+
+			if _, err := io.Copy(rw, res.Body); err != nil {
+				write500(rw, r, s.logger, fmt.Errorf("error copy response: %w", err))
+
+				return
+			}
+
+			rw.WriteHeader(http.StatusOK)
+
+			return
 		}
 
 		http.Redirect(rw, r, imageURL, http.StatusFound)
