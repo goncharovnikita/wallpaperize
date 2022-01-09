@@ -6,6 +6,7 @@ require (
 	github.com/go-chi/chi v4.1.1+incompatible
 	github.com/go-chi/cors v1.1.1
 	github.com/goncharovnikita/wallpaperize/app/api v1.0.10
+	github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220109124207-df9f4af62425
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/joho/godotenv v1.3.0
 	github.com/kelseyhightower/envconfig v1.4.0

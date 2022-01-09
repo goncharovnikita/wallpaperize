@@ -14,6 +14,9 @@ github.com/golang/snappy
 # github.com/goncharovnikita/wallpaperize/app/api v1.0.10
 ## explicit; go 1.17
 github.com/goncharovnikita/wallpaperize/app/api
+# github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220109124207-df9f4af62425
+## explicit; go 1.17
+github.com/goncharovnikita/wallpaperize/back/models
 # github.com/google/go-github v17.0.0+incompatible
 ## explicit
 github.com/google/go-github/github
