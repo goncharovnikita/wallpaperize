@@ -3,7 +3,7 @@ package models
 import (
 	"encoding/json"
 
-	"github.com/goncharovnikita/wallpaperize/app/api"
+	"github.com/goncharovnikita/unsplash"
 )
 
 type DBImage struct {
@@ -36,7 +36,7 @@ type UnsplashImage struct {
 	Links       UnsplashImageLinks `json:"links"`
 }
 
-func MakeUnsplashImageFromAPI(image *api.UnsplashRandomImage) *UnsplashImage {
+func MakeUnsplashImageFromAPI(image *unsplash.Image) *UnsplashImage {
 	return &UnsplashImage{
 		ID:          image.ID,
 		CreatedAt:   image.CreatedAt,

@@ -1,2 +1,4 @@
-github.com/goncharovnikita/wallpaperize/app/api v1.0.10 h1:houg+XMhIqe6RNs4BlMKsJ3KztmxbNGor6tVx2CDZ+A=
-github.com/goncharovnikita/wallpaperize/app/api v1.0.10/go.mod h1:qeUCS2U3GQ9BssDSZ56q4CCPJX3iKufqWtlg00qYy9I=
+github.com/goncharovnikita/unsplash v0.0.0-20220114193841-138edb65dd82 h1:g4HszPcKz26FxEt3hCgtJqyh7ctz853uGVgXgZE7bhU=
+github.com/goncharovnikita/unsplash v0.0.0-20220114193841-138edb65dd82/go.mod h1:ZZwWnnrOdqjiBWxX4AvTgiNI/xvY6Pm1jOGpw1nmKJw=
+github.com/goncharovnikita/unsplash v0.0.0-20220114194236-312cc538e424 h1:8oaqB2OuZfnElOoEU0LEQ5uQhpcRPOCVf76GLjIE9o0=
+github.com/goncharovnikita/unsplash v0.0.0-20220114194236-312cc538e424/go.mod h1:ZZwWnnrOdqjiBWxX4AvTgiNI/xvY6Pm1jOGpw1nmKJw=
