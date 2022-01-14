@@ -1,13 +1,5 @@
 package models
 
-import (
-	"encoding/json"
-)
-
-type DBImage struct {
-	Data []byte
-}
-
 type UnsplashImageURL struct {
 	RAW     string `json:"raw"`
 	Full    string `json:"full"`
@@ -36,28 +28,4 @@ type UnsplashImage struct {
 
 type ImagesResponse struct {
 	Data []*UnsplashImage `json:"data"`
-}
-
-func MakeUnsplashImage(image *DBImage) (*UnsplashImage, error) {
-	var data UnsplashImage
-	if err := json.Unmarshal(image.Data, &data); err != nil {
-		return nil, err
-	}
-
-	return &data, nil
-}
-
-func MakeDBImage(image *UnsplashImage) (*DBImage, error) {
-	data, err := json.Marshal(image)
-	if err != nil {
-		return nil, err
-	}
-
-	return &DBImage{
-		Data: data,
-	}, nil
-}
-
-type ResponseError struct {
-	Error string `json:"error"`
 }
