@@ -2,8 +2,6 @@ package models
 
 import (
 	"encoding/json"
-
-	"github.com/goncharovnikita/unsplash"
 )
 
 type DBImage struct {
@@ -34,30 +32,6 @@ type UnsplashImage struct {
 	Description string             `json:"description"`
 	URLs        UnsplashImageURL   `json:"urls"`
 	Links       UnsplashImageLinks `json:"links"`
-}
-
-func MakeUnsplashImageFromAPI(image *unsplash.Image) *UnsplashImage {
-	return &UnsplashImage{
-		ID:          image.ID,
-		CreatedAt:   image.CreatedAt,
-		UpdatedAt:   image.UpdatedAt,
-		Width:       image.Width,
-		Height:      image.Height,
-		Description: image.Description,
-		URLs: UnsplashImageURL{
-			RAW:     image.URLs.RAW,
-			Full:    image.URLs.Full,
-			Regular: image.URLs.Regular,
-			Small:   image.URLs.Small,
-			Thumb:   image.URLs.Thumb,
-		},
-		Links: UnsplashImageLinks{
-			Self:             image.Links.Self,
-			Html:             image.Links.Html,
-			Download:         image.Links.Download,
-			DownloadLocation: image.Links.DownloadLocation,
-		},
-	}
 }
 
 type ImagesResponse struct {
