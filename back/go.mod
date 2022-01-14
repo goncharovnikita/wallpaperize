@@ -5,8 +5,8 @@ go 1.17
 require (
 	github.com/go-chi/chi v4.1.1+incompatible
 	github.com/go-chi/cors v1.1.1
-	github.com/goncharovnikita/wallpaperize/app/api v1.0.10
-	github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220109124207-df9f4af62425
+	github.com/goncharovnikita/unsplash v0.0.0-20220114194236-312cc538e424
+	github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220114195641-eaa24a7875e0
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/joho/godotenv v1.3.0
 	github.com/kelseyhightower/envconfig v1.4.0
@@ -17,6 +17,7 @@ require (
 require (
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
+	github.com/goncharovnikita/wallpaperize/app/api v1.0.10 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/klauspost/compress v1.9.5 // indirect
 	github.com/pkg/errors v0.8.1 // indirect

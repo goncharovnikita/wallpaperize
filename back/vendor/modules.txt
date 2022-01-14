@@ -11,10 +11,12 @@ github.com/go-stack/stack
 # github.com/golang/snappy v0.0.1
 ## explicit
 github.com/golang/snappy
+# github.com/goncharovnikita/unsplash v0.0.0-20220114194236-312cc538e424
+## explicit; go 1.17
+github.com/goncharovnikita/unsplash
 # github.com/goncharovnikita/wallpaperize/app/api v1.0.10
 ## explicit; go 1.17
-github.com/goncharovnikita/wallpaperize/app/api
-# github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220109124207-df9f4af62425
+# github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220114195641-eaa24a7875e0
 ## explicit; go 1.17
 github.com/goncharovnikita/wallpaperize/back/models
 # github.com/google/go-github v17.0.0+incompatible

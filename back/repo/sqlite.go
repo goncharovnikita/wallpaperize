@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/goncharovnikita/wallpaperize/back/models"
+	"github.com/goncharovnikita/wallpaperize/back/internal/models"
 	_ "github.com/mattn/go-sqlite3"
 )
 

@@ -2,10 +2,12 @@ package updater
 
 import (
 	"log"
+	"net/http"
 	"sync"
 	"time"
 
-	"github.com/goncharovnikita/wallpaperize/app/api"
+	"github.com/goncharovnikita/unsplash"
+	"github.com/goncharovnikita/wallpaperize/back/mapper"
 	"github.com/goncharovnikita/wallpaperize/back/models"
 )
 
@@ -23,7 +25,7 @@ type repoCleaner interface {
 }
 
 type Unsplash struct {
-	api          *api.UnsplashAPI
+	api          *unsplash.API
 	imagesSetter imagesSetter
 	repoCleaner  repoCleaner
 	logger       *log.Logger
@@ -38,9 +40,9 @@ func NewUnsplash(
 	logger *log.Logger,
 ) *Unsplash {
 	return &Unsplash{
-		api: api.NewUnsplashAPI(staticTokenGetter{
+		api: unsplash.NewUnsplashAPI(staticTokenGetter{
 			token: accessToken,
-		}),
+		}, http.DefaultClient),
 		imagesSetter: imagesSetter,
 		repoCleaner:  repoCleaner,
 		logger:       logger,
@@ -95,7 +97,7 @@ func (u *Unsplash) Run() error {
 
 			u.mux.Unlock()
 
-			img, err := u.api.GetRandomImage()
+			img, err := u.api.GetRandomImage("landscape", "1920", "1080")
 			if err != nil {
 				u.logger.Printf("getting random image from unsplash, %v\n", err)
 
@@ -108,7 +110,7 @@ func (u *Unsplash) Run() error {
 
 			remaining = img.RateLimitRemaining
 
-			images = append(images, models.MakeUnsplashImageFromAPI(&img.Data))
+			images = append(images, mapper.MakeUnsplashImageFromAPI(&img.Data))
 
 			u.logger.Printf("saved: %d, to proceed: %d\n", len(images), img.RateLimitRemaining)
 

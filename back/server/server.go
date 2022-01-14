@@ -8,7 +8,8 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
-	"github.com/goncharovnikita/wallpaperize/back/models"
+	"github.com/goncharovnikita/wallpaperize/back/internal/models"
+	pubmodels "github.com/goncharovnikita/wallpaperize/back/models"
 )
 
 const (
@@ -16,7 +17,7 @@ const (
 )
 
 type imagesGetter interface {
-	GetImages(limit int) ([]*models.UnsplashImage, error)
+	GetImages(limit int) ([]*pubmodels.UnsplashImage, error)
 }
 
 // Server type

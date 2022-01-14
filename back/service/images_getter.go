@@ -1,6 +1,10 @@
 package service
 
-import "github.com/goncharovnikita/wallpaperize/back/models"
+import (
+	"github.com/goncharovnikita/wallpaperize/back/internal/models"
+	"github.com/goncharovnikita/wallpaperize/back/mapper"
+	pubmodels "github.com/goncharovnikita/wallpaperize/back/models"
+)
 
 type imagesGetterRepo interface {
 	GetRandomImages(limit int) ([]*models.DBImage, error)
@@ -16,16 +20,16 @@ func NewImagesGetter(repo imagesGetterRepo) *ImagesGetter {
 	}
 }
 
-func (s *ImagesGetter) GetImages(limit int) ([]*models.UnsplashImage, error) {
+func (s *ImagesGetter) GetImages(limit int) ([]*pubmodels.UnsplashImage, error) {
 	images, err := s.repo.GetRandomImages(limit)
 	if err != nil {
 		return nil, err
 	}
 
-	result := make([]*models.UnsplashImage, 0, len(images))
+	result := make([]*pubmodels.UnsplashImage, 0, len(images))
 
 	for _, image := range images {
-		img, err := models.MakeUnsplashImage(image)
+		img, err := mapper.MakeUnsplashImage(image)
 		if err != nil {
 			return nil, err
 		}

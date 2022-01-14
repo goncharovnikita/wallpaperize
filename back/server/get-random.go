@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/goncharovnikita/wallpaperize/back/models"
+	"github.com/goncharovnikita/wallpaperize/back/internal/models"
 )
 
 func (s *Server) handleGetRandom() http.HandlerFunc {
