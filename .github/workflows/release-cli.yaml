@@ -1,0 +1,39 @@
+on:
+  push:
+    tags:
+      - release/app/v*
+    paths:
+      - ".github/workflows/release-cli.yaml"
+      - "app/**"
+
+jobs:
+  release-linux-amd64:
+    name: release linux/amd64
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, windows, darwin]
+        goarch: ["386", amd64, arm64]
+        exclude:
+          - goarch: "386"
+            goos: darwin
+          - goarch: arm64
+            goos: windows
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF_NAME/release\/app\/v}
+
+    - uses: wangyoucao577/go-release-action@v1.22
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: ${{ matrix.goarch }}
+        goversion: 1.17
+        project_path: ./app
+        binary_name: wallpaperize
+        ldflags: -X=main.appVersion=${{ steps.get_version.outputs.VERSION }} -X=main.appBuild=${GITHUB_SHA}
+        asset_name: wallpaperize-${{ matrix.goos }}-${{ matrix.goarch }}
+
