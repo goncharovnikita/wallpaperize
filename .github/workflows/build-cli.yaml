@@ -32,7 +32,7 @@ jobs:
       uses: wangyoucao577/go-release-action@v1.22
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        pre_command: go mod vendor
+        pre_command: cd app && go mod vendor
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
         goversion: 1.17
