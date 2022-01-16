@@ -1,0 +1,20 @@
+name: Make cli release
+
+on:
+  push:
+    tags:
+      - release/app/v*
+
+jobs:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF_NAME/release\/app\/v}
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Wallpaperize cli ${{ steps.get_version.outputs.VERSION }}
+

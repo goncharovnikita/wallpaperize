@@ -1,13 +1,11 @@
+name: Add cli binary to release
+
 on:
-  push:
-    tags:
-      - release/app/v*
-    paths:
-      - ".github/workflows/release-cli.yaml"
-      - "app/**"
+  release:
+    types: [created]
 
 jobs:
-  release-linux-amd64:
+  release-matrix:
     name: release linux/amd64
     runs-on: ubuntu-latest
     strategy:
@@ -20,13 +18,15 @@ jobs:
           - goarch: arm64
             goos: windows
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
 
     - name: Get the version
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF_NAME/release\/app\/v}
 
-    - uses: wangyoucao577/go-release-action@v1.22
+    - name: Release go binary
+      uses: wangyoucao577/go-release-action@v1.22
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
@@ -36,4 +36,5 @@ jobs:
         binary_name: wallpaperize
         ldflags: -X=main.appVersion=${{ steps.get_version.outputs.VERSION }} -X=main.appBuild=${GITHUB_SHA}
         asset_name: wallpaperize-${{ matrix.goos }}-${{ matrix.goarch }}
+
 
