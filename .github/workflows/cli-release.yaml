@@ -2,7 +2,7 @@ name: Build cli
 
 on:
   release:
-    types: [released]
+    types: [created]
 
 jobs:
   release-matrix:

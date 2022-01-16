@@ -23,4 +23,5 @@ jobs:
         name: Wallpaperize cli ${{ steps.get_version.outputs.VERSION }}
         draft: false
         prerelease: false
+        token: ${{ secrets.MY_GH_TOKEN }}
 
