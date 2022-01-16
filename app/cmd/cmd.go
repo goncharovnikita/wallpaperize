@@ -25,7 +25,6 @@ func Execute(app App) {
 
 	rootCmd.AddCommand(createSetCommand(app))
 	rootCmd.AddCommand(createDailyCommand(app))
-	rootCmd.AddCommand(createGetCommand(app))
 	rootCmd.AddCommand(createGetSelectedCommand(app))
 	rootCmd.AddCommand(createInfoCommand(app))
 	rootCmd.AddCommand(createPlaceCommand(app))
@@ -45,7 +44,7 @@ func createRootCommand() *cobra.Command {
 		Short: "Wallpaperize is tool for setting up wallpaper quickly",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := cmd.Usage(); err != nil {
-				fmt.Errorf(err.Error())
+				fmt.Printf("error printing usage: %v", err)
 			}
 		},
 	}
@@ -58,10 +57,10 @@ func createSetCommand(app App) *cobra.Command {
 		Short: "Set image from given path as wallpaper",
 		Run: func(cmd *cobra.Command, args []string) {
 			if len(args) < 1 {
-				fmt.Errorf("path to file must be specified")
+				fmt.Printf("path to file must be specified")
 			} else {
 				if err := app.Set(args[0]); err != nil {
-					fmt.Errorf(err.Error())
+					fmt.Printf("error setting wallpaper: %v", err)
 				}
 			}
 		},
@@ -75,19 +74,7 @@ func createDailyCommand(app App) *cobra.Command {
 		Short: "Sets daily image as wallpaper",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := app.Daily(); err != nil {
-				fmt.Errorf(err.Error())
-			}
-		},
-	}
-}
-
-func createGetCommand(app App) *cobra.Command {
-	return &cobra.Command{
-		Use:   "get",
-		Short: "Get something that wallpaperize can give",
-		Run: func(cmd *cobra.Command, args []string) {
-			if err := cmd.Usage(); err != nil {
-				fmt.Errorf(err.Error())
+				fmt.Printf("error setting daily image: %v", err)
 			}
 		},
 	}
@@ -99,7 +86,7 @@ func createGetSelectedCommand(app App) *cobra.Command {
 		Short: "Get selected wallpaper path",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := app.GetSelected(); err != nil {
-				fmt.Errorf(err.Error())
+				fmt.Printf("error getting selected wallpaper path: %v", err)
 			}
 		},
 	}
@@ -113,7 +100,7 @@ func createInfoCommand(app App) *cobra.Command {
 		Short: "Get info about wallpaperize disk usage",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := app.Info(infoOutputType); err != nil {
-				fmt.Errorf(err.Error())
+				fmt.Printf("error getting info: %v", err)
 			}
 		},
 	}
@@ -125,7 +112,7 @@ func createPlaceCommand(app App) *cobra.Command {
 		Short: "Place print wallpaperize bin placement",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := app.Place(); err != nil {
-				fmt.Errorf(err.Error())
+				fmt.Printf("error getting bin placement: %v", err)
 			}
 		},
 	}
@@ -151,7 +138,7 @@ func createRestoreCommand(app App) *cobra.Command {
 		Short: "Set initial desktop wallpaper",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := app.Restore(); err != nil {
-				fmt.Errorf(err.Error())
+				fmt.Printf("error restoring wallpaper: %v", err)
 			}
 		},
 	}

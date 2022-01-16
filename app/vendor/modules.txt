@@ -1,12 +1,9 @@
+# github.com/goncharovnikita/bing-wallpaper v0.0.0-20220116115253-a622250a0da3
+## explicit; go 1.17
+github.com/goncharovnikita/bing-wallpaper
 # github.com/goncharovnikita/unsplash v0.0.0-20220114194236-312cc538e424
 ## explicit; go 1.17
 github.com/goncharovnikita/unsplash
-# github.com/goncharovnikita/wallpaperize/app/api v1.0.10
-## explicit; go 1.17
-github.com/goncharovnikita/wallpaperize/app/api
-# github.com/goncharovnikita/wallpaperize/app/wallmaster v1.0.0
-## explicit; go 1.17
-github.com/goncharovnikita/wallpaperize/app/wallmaster
 # github.com/goncharovnikita/wallpaperize/back/client v0.0.0-20220114195641-eaa24a7875e0
 ## explicit; go 1.17
 github.com/goncharovnikita/wallpaperize/back/client

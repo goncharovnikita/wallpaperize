@@ -12,7 +12,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/goncharovnikita/wallpaperize/app/api"
 	"github.com/kardianos/osext"
 	"github.com/reujab/wallpaper"
 )
@@ -70,12 +69,21 @@ func (a application) Info(format string) error {
 	}
 }
 
+type appInfo struct {
+	AppVersion   string   `json:"app_version"`
+	Arch         string   `json:"arch"`
+	OS           string   `json:"os"`
+	Build        string   `json:"build"`
+	DailyImages  []string `json:"daily_images"`
+	RandomImages []string `json:"random_images"`
+}
+
 func (a application) jsonInfo() error {
 	randomDir := a.cache.getRandomPath()
 	dailyDir := a.cache.getDailyPath()
 	randomInfo := a.getDirInfo(randomDir)
 	dailyInfo := a.getDirInfo(dailyDir)
-	data := api.AppInfo{
+	data := appInfo{
 		AppVersion:   appVersion,
 		Arch:         runtime.GOARCH,
 		OS:           runtime.GOOS,
