@@ -22,5 +22,5 @@ jobs:
       with:
         name: Wallpaperize cli ${{ steps.get_version.outputs.VERSION }}
         draft: false
-        prerelease: true
+        prerelease: false
 
