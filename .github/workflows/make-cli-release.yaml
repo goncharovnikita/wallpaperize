@@ -3,7 +3,7 @@ name: Make cli release
 on:
   push:
     tags:
-      - release/app/v*
+      - '*'
 
 jobs:
   create-release:
