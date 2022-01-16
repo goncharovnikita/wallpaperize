@@ -1,9 +1,6 @@
 name: Build cli
 
 on:
-  push:
-    branches:
-      master
   release:
     types: [created]
 
@@ -13,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goos: [linux, darwin]
+        goos: [linux, darwin, windows]
         goarch: ["386", amd64, arm64]
         exclude:
           - goarch: "386"
