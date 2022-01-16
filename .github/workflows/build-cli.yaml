@@ -37,6 +37,5 @@ jobs:
         binary_name: wallpaperize
         ldflags: -X=main.appVersion=${{ steps.get_version.outputs.VERSION }} -X=main.appBuild=${GITHUB_SHA}
         asset_name: wallpaperize-${{ matrix.goos }}-${{ matrix.goarch }}
-
-
+        release_tag: release/app/v${{ steps.get_version.outputs.VERSION }}
 
