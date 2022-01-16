@@ -7,7 +7,6 @@ import (
 	"github.com/goncharovnikita/wallpaperize/app/cmd"
 	"github.com/goncharovnikita/wallpaperize/app/daily"
 	"github.com/goncharovnikita/wallpaperize/app/random"
-	"github.com/goncharovnikita/wallpaperize/app/wallmaster"
 	"github.com/goncharovnikita/wallpaperize/back/client"
 )
 
@@ -20,9 +19,8 @@ func main() {
 	logger := log.Default()
 	logger.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	master := wallmaster.Wallmaster{}
 	cache := newCacher()
-	rec, err := newRecoverer(master, cache.getRecoverPath())
+	rec, err := newRecoverer(cache.getRecoverPath())
 	if err != nil {
 		log.Println(err)
 
@@ -36,7 +34,6 @@ func main() {
 	app := newApplication(
 		cache,
 		rec,
-		master,
 		dailyGetter,
 		rndGetter,
 		logger,

@@ -14,6 +14,7 @@ import (
 
 	"github.com/goncharovnikita/wallpaperize/app/api"
 	"github.com/kardianos/osext"
+	"github.com/reujab/wallpaper"
 )
 
 type imageGetter interface {
@@ -23,7 +24,6 @@ type imageGetter interface {
 type application struct {
 	cache       *cacher
 	rec         *recoverer
-	master      api.Wallmaster
 	dailyGetter imageGetter
 	rndGetter   imageGetter
 	logger      *log.Logger
@@ -32,7 +32,6 @@ type application struct {
 func newApplication(
 	cache *cacher,
 	rec *recoverer,
-	master api.Wallmaster,
 	dailyGetter imageGetter,
 	rndGetter imageGetter,
 	logger *log.Logger,
@@ -40,7 +39,6 @@ func newApplication(
 	return &application{
 		cache:       cache,
 		rec:         rec,
-		master:      master,
 		dailyGetter: dailyGetter,
 		rndGetter:   rndGetter,
 		logger:      logger,
@@ -53,12 +51,10 @@ func (a application) Daily() error {
 		return err
 	}
 
-	err = a.master.SetFromFile(name)
+	err = wallpaper.SetFromFile(name)
 	if err != nil {
 		return err
 	}
-
-	log.Println("** success **")
 
 	return nil
 }
@@ -149,12 +145,12 @@ func (a application) getDirInfo(path string) []os.FileInfo {
 }
 
 func (a application) GetSelected() error {
-	selected, err := a.master.Get()
+	selected, err := wallpaper.Get()
 	if err != nil {
 		return err
 	}
 
-	log.Println(selected)
+	a.logger.Println(selected)
 
 	return nil
 }
@@ -177,7 +173,7 @@ func (a application) Random(loadOnly bool) error {
 	}
 
 	if !loadOnly {
-		return a.master.SetFromFile(fname)
+		return wallpaper.SetFromFile(fname)
 	}
 
 	return nil
@@ -188,7 +184,7 @@ func (a application) Restore() error {
 		return fmt.Errorf("could not recover original image")
 	}
 
-	return a.master.SetFromFile(a.rec.getRecoverFilepath())
+	return wallpaper.SetFromFile(a.rec.getRecoverFilepath())
 }
 
 func (a application) Set(path string) error {
@@ -199,12 +195,10 @@ func (a application) Set(path string) error {
 		return nil
 	}
 
-	err := a.master.SetFromFile(path)
+	err := wallpaper.SetFromFile(path)
 	if err != nil {
 		return err
 	}
-
-	a.logger.Print("** success **")
 
 	return nil
 }
@@ -237,14 +231,10 @@ func (a application) setFromRemote(path string) error {
 
 	time.Sleep(100 * time.Millisecond)
 
-	log.Println(name)
-
-	err = a.master.SetFromFile(name)
+	err = wallpaper.SetFromFile(name)
 	if err != nil {
 		return nil
 	}
-
-	log.Println("** success **")
 
 	return nil
 }

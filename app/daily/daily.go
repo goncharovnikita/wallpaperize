@@ -2,11 +2,10 @@
 package daily
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
-
-	"github.com/goncharovnikita/wallpaperize/app/cerrors"
 )
 
 // Daily fetch daily images
@@ -29,7 +28,7 @@ func (d *Daily) GetImage() (string, error) {
 
 	info, err := os.Stat(name)
 	if err != nil {
-		if err.Error() == cerrors.NewStatNoSuchFileErr(name).Error() {
+		if errors.Is(err, &os.PathError{}) {
 			img, err := d.dg.GetDailyImage()
 			if err != nil {
 				return "", err
