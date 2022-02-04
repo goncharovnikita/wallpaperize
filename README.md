@@ -1,26 +1,32 @@
 # Wallpaperize
-Master pipeline [![Build Status](https://travis-ci.org/goncharovnikita/wallpaperize.svg?branch=master)](https://travis-ci.org/goncharovnikita/wallpaperize)
-Desktop pipeline [![Build Status](https://travis-ci.org/goncharovnikita/wallpaperize.svg?branch=desktop)](https://travis-ci.org/goncharovnikita/wallpaperize)
 
 Util for setting wallpapers from most famous sources
 
-## Supported platforms
+## Installation
 
-- Ubuntu 
-- - Gnome
-- Mac OS X
+### Mac OS
 
-## Installing
+Amd64:
 
-```go
-  go get github.com/goncharovnikita/wallpaperize
-  cd ~/go/src/github.com/goncharovnikita/wallpaperize
-  go install
+```bash
+  curl -L https://github.com/goncharovnikita/wallpaperize/releases/latest/download/wallpaperize-darwin-amd64.tar.gz > ./wallpaperize.tar.gz
+  tar -xvzf ./wallpaperize.tar.gz
+  mv ./wallpaperize /usr/local/bin/wallpaperize
+  rm ./wallpaperize.tar.gz
+```
+
+Arm64:
+
+```bash
+  curl -L https://github.com/goncharovnikita/wallpaperize/releases/latest/download/wallpaperize-darwin-arm64.tar.gz > ./wallpaperize.tar.gz
+  tar -xvzf ./wallpaperize.tar.gz
+  mv ./wallpaperize /usr/local/bin/wallpaperize
+  rm ./wallpaperize.tar.gz
 ```
 
 ## Usage
 
-```go
+```bash
   // Show all usage
   wallpaperize --help
 
