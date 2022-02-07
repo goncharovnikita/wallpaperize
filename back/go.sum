@@ -34,14 +34,8 @@ github.com/gobuffalo/packr/v2 v2.2.0/go.mod h1:CaAwI0GPIAv+5wKLtv8Afwl+Cm78K/I/V
 github.com/gobuffalo/syncx v0.0.0-20190224160051-33c29581e754/go.mod h1:HhnNqWY95UYwwW3uSASeV7vtgYkT2t16hJgV3AEPUpw=
 github.com/golang/snappy v0.0.1 h1:Qgr9rKW7uDUkrbSmQeiDsGa8SjGyCOGtuasMWwvp2P4=
 github.com/golang/snappy v0.0.1/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
-github.com/goncharovnikita/unsplash v0.0.0-20220114194236-312cc538e424 h1:8oaqB2OuZfnElOoEU0LEQ5uQhpcRPOCVf76GLjIE9o0=
-github.com/goncharovnikita/unsplash v0.0.0-20220114194236-312cc538e424/go.mod h1:ZZwWnnrOdqjiBWxX4AvTgiNI/xvY6Pm1jOGpw1nmKJw=
-github.com/goncharovnikita/wallpaperize/app/api v1.0.10 h1:houg+XMhIqe6RNs4BlMKsJ3KztmxbNGor6tVx2CDZ+A=
-github.com/goncharovnikita/wallpaperize/app/api v1.0.10/go.mod h1:qeUCS2U3GQ9BssDSZ56q4CCPJX3iKufqWtlg00qYy9I=
-github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220109124207-df9f4af62425 h1:NtfkRUxjj7QetzVYoZRLSeS4a/ZQDGLCLHoMtQrssTk=
-github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220109124207-df9f4af62425/go.mod h1:mrre7VLXHpXQh9bBiPJIWVtmdsPPCSnl4d2WFcN6kiw=
-github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220114194907-2dad5ba15364 h1:w1nv5tBwk+sZX1U5xEGbqHVg0Wl8vBWlZS1o1lVARfU=
-github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220114194907-2dad5ba15364/go.mod h1:5rEFNQf1iee/GvRLMpq7S3JX+qdp4a0s9mDDooVZdk0=
+github.com/goncharovnikita/unsplash v1.1.0 h1:CQIMYKAjqaXw/QriZH2cZ6GFE9d/YYtCbeHspo+rLpg=
+github.com/goncharovnikita/unsplash v1.1.0/go.mod h1:ZZwWnnrOdqjiBWxX4AvTgiNI/xvY6Pm1jOGpw1nmKJw=
 github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220114195641-eaa24a7875e0 h1:UUfHK9Ehv3d74tTFOWTK1aQcVgiLpCZji4c4xrYNoac=
 github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220114195641-eaa24a7875e0/go.mod h1:q8RQIPpDA5CkyeGBL2gQEi3S6ElFTIh5EmeDC2EWCE4=
 github.com/google/go-cmp v0.2.0 h1:+dTQ8DZQJz0Mb/HjFlkptS1FeQ4cWSnN941F8aEG4SQ=

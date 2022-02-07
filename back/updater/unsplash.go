@@ -1,6 +1,7 @@
 package updater
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"sync"
@@ -97,7 +98,10 @@ func (u *Unsplash) Run() error {
 
 			u.mux.Unlock()
 
-			img, err := u.api.GetRandomImage("landscape", "1920", "1080")
+			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			defer cancel()
+
+			img, err := u.api.GetRandomImage(ctx, "landscape", "1920", "1080")
 			if err != nil {
 				u.logger.Printf("getting random image from unsplash, %v\n", err)
 

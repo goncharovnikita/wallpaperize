@@ -1,6 +1,7 @@
 package unsplash
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -65,6 +66,7 @@ type ImageResponse struct {
 }
 
 func (u *API) GetRandomImage(
+	ctx context.Context,
 	orientation string,
 	width string,
 	height string,
@@ -83,7 +85,7 @@ func (u *API) GetRandomImage(
 		height,
 	)
 
-	request, err := http.NewRequest(http.MethodGet, url, nil)
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -95,14 +97,14 @@ func (u *API) GetRandomImage(
 		return nil, err
 	}
 
+	defer response.Body.Close()
+
 	if response.StatusCode != http.StatusOK {
 		var data interface{}
 		json.NewDecoder(response.Body).Decode(&data)
 
 		return nil, fmt.Errorf("error response status from unsplash: %d. %v", response.StatusCode, data)
 	}
-
-	defer response.Body.Close()
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {

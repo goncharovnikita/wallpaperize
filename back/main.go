@@ -36,10 +36,10 @@ func main() {
 	spec := Spec{}
 	envconfig.MustProcess("", &spec)
 
-	infoLogger := log.New(os.Stdout, "INFO ", log.LUTC)
-	errLogger := log.New(os.Stderr, "ERR ", log.LUTC)
-	updaterLogger := log.New(os.Stdout, "INFO [Updater] ", log.LUTC)
-	serverLogger := log.New(os.Stdout, "INFO [Server] ", log.LUTC)
+	infoLogger := log.New(os.Stdout, "INFO ", log.LstdFlags|log.LUTC)
+	errLogger := log.New(os.Stderr, "ERR ", log.LstdFlags|log.LUTC)
+	updaterLogger := log.New(os.Stdout, "INFO [Updater] ", log.LstdFlags|log.LUTC)
+	serverLogger := log.New(os.Stdout, "INFO [Server] ", log.LstdFlags|log.LUTC)
 
 	infoLogger.Println("logger inited")
 
