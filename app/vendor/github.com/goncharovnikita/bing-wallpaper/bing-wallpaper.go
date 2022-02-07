@@ -1,6 +1,7 @@
 package bing
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -39,11 +40,18 @@ type getImageInfoResponse struct {
 
 // GetDailyImage get daily image based on contry code
 // For example: en-EN
-func (b *Client) GetDailyImage(countryCode string) (*Image, error) {
-	res, err := b.c.Get(fmt.Sprintf("%s&mkt=%s", apiURL, countryCode))
+func (b *Client) GetDailyImage(ctx context.Context, countryCode string) (*Image, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("%s&mkt=%s", apiURL, countryCode), nil)
 	if err != nil {
 		return nil, err
 	}
+
+	res, err := b.c.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
 
 	var data getImageInfoResponse
 
@@ -60,8 +68,8 @@ func (b *Client) GetDailyImage(countryCode string) (*Image, error) {
 
 // GetDailyImageRaw get daily image raw data based on contry code
 // For example: en-EN
-func (b *Client) GetDailyImageRaw(countryCode string) ([]byte, error) {
-	img, err := b.GetDailyImage(countryCode)
+func (b *Client) GetDailyImageRaw(ctx context.Context, countryCode string) ([]byte, error) {
+	img, err := b.GetDailyImage(ctx, countryCode)
 	if err != nil {
 		return nil, err
 	}
@@ -71,10 +79,17 @@ func (b *Client) GetDailyImageRaw(countryCode string) ([]byte, error) {
 		return nil, fmt.Errorf("image url length is empty")
 	}
 
-	res, err := b.c.Get(imageURLHost + url)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, imageURLHost+url, nil)
 	if err != nil {
 		return nil, err
 	}
+
+	res, err := b.c.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
 
 	result, err := io.ReadAll(res.Body)
 	if err != nil {

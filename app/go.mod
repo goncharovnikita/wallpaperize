@@ -3,16 +3,15 @@ module github.com/goncharovnikita/wallpaperize/app
 go 1.17
 
 require (
-	github.com/goncharovnikita/bing-wallpaper v0.0.0-20220116115253-a622250a0da3
-	github.com/goncharovnikita/wallpaperize/back/client v0.0.0-20220114195641-eaa24a7875e0
-	github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220114194907-2dad5ba15364
+	github.com/goncharovnikita/bing-wallpaper v1.0.0
+	github.com/goncharovnikita/wallpaperize/back/client v0.0.0-20220204062927-1f95d75660ef
+	github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220114195641-eaa24a7875e0
 	github.com/kardianos/osext v0.0.0-20170510131534-ae77be60afb1
 	github.com/reujab/wallpaper v0.0.0-20210630195606-5f9f655b3740
 	github.com/spf13/cobra v1.3.0
 )
 
 require (
-	github.com/goncharovnikita/unsplash v0.0.0-20220114194236-312cc538e424 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect

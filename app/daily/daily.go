@@ -2,6 +2,7 @@
 package daily
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io/fs"
@@ -17,7 +18,7 @@ type Daily struct {
 
 // DailyGetter daily getter interface
 type DailyGetter interface {
-	GetDailyImageRaw(countryCode string) ([]byte, error)
+	GetDailyImageRaw(ctx context.Context, countryCode string) ([]byte, error)
 }
 
 // NewDailyGetter creates new daily getter instance
@@ -35,7 +36,10 @@ func (d *Daily) GetImage() (string, error) {
 	info, err := os.Stat(name)
 	if err != nil {
 		if errors.Is(err, fs.ErrNotExist) {
-			img, err := d.dg.GetDailyImageRaw("en-EN")
+			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			defer cancel()
+
+			img, err := d.dg.GetDailyImageRaw(ctx, "en-EN")
 			if err != nil {
 				return "", err
 			}

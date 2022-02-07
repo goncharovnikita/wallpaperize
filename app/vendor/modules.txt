@@ -1,13 +1,10 @@
-# github.com/goncharovnikita/bing-wallpaper v0.0.0-20220116115253-a622250a0da3
+# github.com/goncharovnikita/bing-wallpaper v1.0.0
 ## explicit; go 1.17
 github.com/goncharovnikita/bing-wallpaper
-# github.com/goncharovnikita/unsplash v0.0.0-20220114194236-312cc538e424
-## explicit; go 1.17
-github.com/goncharovnikita/unsplash
-# github.com/goncharovnikita/wallpaperize/back/client v0.0.0-20220114195641-eaa24a7875e0
+# github.com/goncharovnikita/wallpaperize/back/client v0.0.0-20220204062927-1f95d75660ef
 ## explicit; go 1.17
 github.com/goncharovnikita/wallpaperize/back/client
-# github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220114194907-2dad5ba15364
+# github.com/goncharovnikita/wallpaperize/back/models v0.0.0-20220114195641-eaa24a7875e0
 ## explicit; go 1.17
 github.com/goncharovnikita/wallpaperize/back/models
 # github.com/inconshreveable/mousetrap v1.0.0
